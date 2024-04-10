@@ -3,19 +3,25 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { BlogService } from '../../../services/blog.service';
-import { Blog } from '../../../models/blog.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MantblogComponent } from '../mantblog/mantblog.component';
 import { MaterialModule } from '../../../material.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { BlogService } from '../../../services/blog.service';
+import { Blog } from '../../../models/blog.model';
+import { SoporteComponent } from '../soporte/soporte.component';
 
 @Component({
   selector: 'app-bandeja',
   templateUrl: './bandeja.component.html',
   styleUrl: './bandeja.component.scss',
   standalone: true,
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule],
+  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatNativeDateModule],
 })
 
 export class BandejaComponent implements /*AfterViewInit,*/ OnInit {
@@ -48,9 +54,9 @@ export class BandejaComponent implements /*AfterViewInit,*/ OnInit {
     }
   }
 
-  openSnackBar(message: string, action: string = 'ok') {
+  openSnackBar(message: string, action: string = 'OK') {
     this._snackBar.open(message, action, {
-      duration: 1000,
+      duration: 3000,
       verticalPosition: 'top',
     });
   }
@@ -99,6 +105,10 @@ export class BandejaComponent implements /*AfterViewInit,*/ OnInit {
         }
       },
     });
+  }
+
+  openSoporteDialog(){
+    this._dialog.open(SoporteComponent);
   }
 
 }

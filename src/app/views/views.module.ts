@@ -6,10 +6,13 @@ import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StarterComponent } from './layout/starter/starter.component';
 import { BandejaComponent } from './layout/bandeja/bandeja.component';
+import { SoporteComponent } from './layout/soporte/soporte.component';
 
 
 @NgModule({
   declarations: [    
+  
+    SoporteComponent
   ],
   imports: [
     CommonModule,
