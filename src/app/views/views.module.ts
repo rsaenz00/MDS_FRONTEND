@@ -12,7 +12,6 @@ import { SoporteComponent } from './layout/soporte/soporte.component';
 @NgModule({
   declarations: [    
   
-    SoporteComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +19,8 @@ import { SoporteComponent } from './layout/soporte/soporte.component';
     FormsModule,
     RouterModule.forChild(ViewsRoutes),
     StarterComponent,
-    BandejaComponent
+    BandejaComponent,
+    SoporteComponent
   ]
 })
 export class ViewsModule { }
