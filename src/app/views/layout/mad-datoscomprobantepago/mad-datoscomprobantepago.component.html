@@ -1,0 +1,85 @@
+<div mat-dialog-title>
+    Datos para la emisión de comprobante electrónico por copago
+</div>
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-md-4">
+            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                <mat-label>Servicio</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-md-8">
+            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                <mat-label>Cod. servicio</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+        <mat-label>Paciente</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <div class="row">
+        <div class="col-md-4">
+            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                <mat-label>Tip. Documento</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-md-8">
+            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                <mat-label>Num. Documento</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Tipo E-mail</mat-label>
+                <mat-select>
+                    <mat-option>None</mat-option>
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-7">
+            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-form-field style="width: 100%;" appearance="outline">
+        <mat-label>Documento de pago</mat-label>
+        <mat-select>
+            <mat-option>None</mat-option>
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+            <mat-option value="option3">Option 3</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+        <mat-label>Distrito</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+        <mat-label>Dirección</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <mat-form-field style="width: 100%;" appearance="outline">
+        <mat-label>Enviar comprobante electrónico por:</mat-label>
+        <mat-select>
+            <mat-option>None</mat-option>
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+            <mat-option value="option3">Option 3</mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions class="text-center">
+    <button mat-flat-button color="accent">Actualizar</button>
+</mat-dialog-actions>

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FullComponent } from './views/layout/full/full.component';
 import { BlankComponent } from './views/layout/blank/blank.component';
 import { BandejaComponent } from './views/layout/bandeja/bandeja.component';
+import { MadBandejaComponent } from './views/layout/mad-bandeja/mad-bandeja.component';
+import { MadNuevatencionComponent } from './views/layout/mad-nuevatencion/mad-nuevatencion.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,20 @@ const routes: Routes = [
         component: BandejaComponent,
         data: {
           title: 'Bandeja de atenciones'
+        },
+      },
+      {
+        path: 'bandejamad',
+        component: MadBandejaComponent,
+        data: {
+          title: 'Bandeja de atenciones médico a domicilio (MAD)'
+        },
+      },
+      {
+        path: 'nuevatencionmad',
+        component: MadNuevatencionComponent,
+        data: {
+          title: 'Nueva atención médico a domicilio (MAD)'
         },
       },
     ],

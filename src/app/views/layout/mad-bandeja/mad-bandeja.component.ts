@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -14,19 +14,27 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { BlogService } from '../../../services/blog.service';
 import { Blog } from '../../../models/blog.model';
-import { SoporteComponent } from '../soporte/soporte.component';
+import { MadSeguimientoComponent } from '../mad-seguimiento/mad-seguimiento.component';
+import { MadIncidenciaComponent } from '../mad-incidencia/mad-incidencia.component';
+import { MadSoporteComponent } from '../mad-soporte/mad-soporte.component';
+import { MadAuditoriatencionComponent } from '../mad-auditoriatencion/mad-auditoriatencion.component';
+import { MadMostrardatosComponent } from '../mad-mostrardatos/mad-mostrardatos.component';
+import { MadIngresarcodigosComponent } from '../mad-ingresarcodigos/mad-ingresarcodigos.component';
+import { MadDatoscomprobantepagoComponent } from '../mad-datoscomprobantepago/mad-datoscomprobantepago.component';
+import { MadHistorialencuestaComponent } from '../mad-historialencuesta/mad-historialencuesta.component';
+import { MadEditarservicioComponent } from '../mad-editarservicio/mad-editarservicio.component';
+import { MadDatospacienteComponent } from '../mad-datospaciente/mad-datospaciente.component';
+import { MadNuevatencionComponent } from '../mad-nuevatencion/mad-nuevatencion.component';
 
 @Component({
-  selector: 'app-bandeja',
-  templateUrl: './bandeja.component.html',
-  styleUrl: './bandeja.component.scss',
+  selector: 'app-mad-bandeja',
+  templateUrl: './mad-bandeja.component.html',
+  styleUrl: './mad-bandeja.component.scss',
   standalone: true,
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatNativeDateModule],
+  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatNativeDateModule]
 })
-
-export class BandejaComponent implements /*AfterViewInit,*/ OnInit {
+export class MadBandejaComponent implements OnInit {
   displayedColumns: string[] = ['id', 'url', 'accion'];
-  //dataSource = new MatTableDataSource(ELEMENT_DATA);
   dataSource!: MatTableDataSource<Blog>;
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
@@ -43,11 +51,6 @@ export class BandejaComponent implements /*AfterViewInit,*/ OnInit {
   ngOnInit(): void {
     this.getBlogList();
   }
-
-  /*ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }*/
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
@@ -111,27 +114,43 @@ export class BandejaComponent implements /*AfterViewInit,*/ OnInit {
   }
 
   openSoporteDialog() {
-    this._dialog.open(SoporteComponent);
+    this._dialog.open(MadSoporteComponent);
   }
 
+  openSeguimientoDialog() {
+    this._dialog.open(MadSeguimientoComponent);
+  }
+
+  openIncidenciaDialog() {
+    this._dialog.open(MadIncidenciaComponent);
+  }
+
+  openAuditoriaDialog() {
+    this._dialog.open(MadAuditoriatencionComponent);
+  }
+
+  openMostrarDatosDialog() {
+    this._dialog.open(MadMostrardatosComponent);
+  }
+  
+  openIngresarCodigosDialog() {
+    this._dialog.open(MadIngresarcodigosComponent);
+  }
+  
+  openDatosComprobantePagoDialog() {
+    this._dialog.open(MadDatoscomprobantepagoComponent);
+  }
+  
+  openHistorialEncuestaDialog() {
+    this._dialog.open(MadHistorialencuestaComponent);
+  }
+  
+  openEditarServicioDialog() {
+    this._dialog.open(MadEditarservicioComponent);
+  }
+  
+  openDatosPacienteDialog() {
+    this._dialog.open(MadDatospacienteComponent);
+  }
+  
 }
-
-/*export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}*/
-
-/*const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];*/

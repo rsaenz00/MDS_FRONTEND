@@ -26,6 +26,9 @@ import { FilterPipe } from './pipe/filter.pipe';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { DateFormat } from './util/date.format';
+import { MatNativeDateModule } from '@angular/material/core';
+
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -55,6 +58,7 @@ export function HttpLoaderFactory(http: HttpClient): any {
       },
     }),
   ],
+  providers: [{ provide: MatNativeDateModule, useClass: DateFormat }],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,358 @@
+<div mat-dialog-title>
+    Incidencia
+</div>
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-md-6">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Datos el paciente</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Paciente</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Edad</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-5">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Fecha nacimiento</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>VIP</mat-label>
+                                <mat-select>
+                                    <mat-option>None</mat-option>
+                                    <mat-option value="option1">Option 1</mat-option>
+                                    <mat-option value="option2">Option 2</mat-option>
+                                    <mat-option value="option3">Option 3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Síntomas</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Descanso Médico N°</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Tipo de atención</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Datos del pago</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Cambio a realizar</mat-label>
+                        <mat-select>
+                            <mat-option>None</mat-option>
+                            <mat-option value="option1">Option 1</mat-option>
+                            <mat-option value="option2">Option 2</mat-option>
+                            <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Moneda</mat-label>
+                                <mat-select>
+                                    <mat-option>None</mat-option>
+                                    <mat-option value="option1">Option 1</mat-option>
+                                    <mat-option value="option2">Option 2</mat-option>
+                                    <mat-option value="option3">Option 3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Deducible</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Coaseguro (%)</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Doc. pago</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Num. Doc. Pago</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Forma de pago</mat-label>
+                                <mat-select>
+                                    <mat-option>None</mat-option>
+                                    <mat-option value="option1">Option 1</mat-option>
+                                    <mat-option value="option2">Option 2</mat-option>
+                                    <mat-option value="option3">Option 3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Datos médicos</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Especialidad</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Programación</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Médico</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Fecha Atención</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-5">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Hora Atención</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Datos de domicilio</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Departamento</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Provincia</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <textarea matInput placeholder="Referencia..." style="resize: none"></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Telf. casa</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Telf. oficina</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Anexo</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Celular</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title>Buscar</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Código</mat-label>
+                                        <input matInput>
+                                    </mat-form-field>
+                                    <button mat-stroked-button color="primary">Buscar</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-radio-group>
+                                        <mat-radio-button value="1">Atención</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="col-md-6">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title>Seguimiento del servicio</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-radio-group class="row">
+                                <mat-radio-button value="10">Post-servicio</mat-radio-button>
+                                <br>
+                                <mat-radio-button value="12">Adversos/Centinela</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <mat-card class="example-card">
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-checkbox class="example-margin">Observaciones: </mat-checkbox>
+                            <mat-radio-button value="reg">Registros</mat-radio-button>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-3">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Estado:</mat-label>
+                                <mat-select>
+                                    <mat-option>None</mat-option>
+                                    <mat-option value="option1">Option 1</mat-option>
+                                    <mat-option value="option2">Option 2</mat-option>
+                                    <mat-option value="option3">Option 3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-5">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Descripción:</mat-label>
+                                <mat-select>
+                                    <mat-option>None</mat-option>
+                                    <mat-option value="option1">Option 1</mat-option>
+                                    <mat-option value="option2">Option 2</mat-option>
+                                    <mat-option value="option3">Option 3</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-checkbox class="example-margin">Administrativo</mat-checkbox><br>
+                            <mat-checkbox class="example-margin">Acto médico</mat-checkbox><br>
+                            <mat-checkbox class="example-margin">PostServicio</mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <textarea matInput placeholder="Comentarios..." style="resize: none"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <button mat-stroked-button color="primary" style="width: 100%;">Guardar</button>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;" matSort>
+                        <table mat-table [dataSource]="dataSource">
+
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by number">
+                                    No.
+                                </th>
+                                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by name">
+                                    Name
+                                </th>
+                                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="weight">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by weight">
+                                    Weight
+                                </th>
+                                <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="symbol">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by symbol">
+                                    Symbol
+                                </th>
+                                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Aseguradora</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Paciente</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</mat-dialog-content>

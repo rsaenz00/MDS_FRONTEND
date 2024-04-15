@@ -34,7 +34,7 @@ export class MantblogComponent implements OnInit {
   ngOnInit(): void {
     this.blogForm.patchValue(this.data);
   }
-  
+
   onNoClick(): void {
     this._dialogRef.close();
   }
@@ -50,14 +50,14 @@ export class MantblogComponent implements OnInit {
     if (this.blogForm.valid) {
       if (this.data) {
         this._blogService.updateBlog(this.blogForm.value).subscribe({
-            next: (val: any) => {
-              this.openSnackBar('Blog updated successfully');
-              this._dialogRef.close(true);
-            },
-            error: (err: any) => {
-              console.error(err);
-            },
-          });
+          next: (val: any) => {
+            this.openSnackBar('Blog updated successfully');
+            this._dialogRef.close(true);
+          },
+          error: (err: any) => {
+            console.error(err);
+          },
+        });
       } else {
         this._blogService.addBlog(this.blogForm.value).subscribe({
           next: (val: any) => {
