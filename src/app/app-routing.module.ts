@@ -5,6 +5,7 @@ import { BlankComponent } from './views/layout/blank/blank.component';
 import { BandejaComponent } from './views/layout/bandeja/bandeja.component';
 import { MadBandejaComponent } from './views/layout/mad-bandeja/mad-bandeja.component';
 import { MadNuevatencionComponent } from './views/layout/mad-nuevatencion/mad-nuevatencion.component';
+import { SctrBandejaComponent } from './views/layout/sctr-bandeja/sctr-bandeja.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,13 @@ const routes: Routes = [
         component: MadNuevatencionComponent,
         data: {
           title: 'Nueva atención médica a domicilio (MAD)'
+        },
+      },
+      {
+        path: 'bandejasctr',
+        component: SctrBandejaComponent,
+        data: {
+          title: 'Bandeja de atenciones SCTR'
         },
       },
     ],

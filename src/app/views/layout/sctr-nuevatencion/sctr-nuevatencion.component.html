@@ -1,0 +1,271 @@
+<div mat-dialog-title>
+    Creación de atención SCTR
+</div>
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-md-9">
+            <label id="example-radio-group-label">Tipo de atención</label>
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+                <mat-radio-button class="example-radio-button">1° atención</mat-radio-button>
+                <mat-radio-button class="example-radio-button">2° atención</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-md-3">
+            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                <mat-label>N° de atención</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title style="margin-bottom: 10px;">Datos de la clínica</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Clínica</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <button mat-flat-button color="accent">...</button>
+                        </div>
+                    </div>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <mat-form-field class="example-full-width" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Teléfono</mat-label>
+                                        <input matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Anexo</mat-label>
+                                        <input matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button mat-flat-button color="accent">Registrar clínica</button>
+                        </div>
+                    </div>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Persona que reporta</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <div class="row">
+        <div class="col-md-6">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title style="margin-bottom: 10px;">Datos del asegurado</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Apellido paterno</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Apellido materno</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Nombres</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Tipo documento</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-8">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Número documento</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Celular</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-5">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Fecha nacimiento</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Sexo</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title style="margin-bottom: 10px;">Aseguradora</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>RUC</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Empresa</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <button mat-flat-button color="accent">Registrar</button>
+                        </div>
+                    </div>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Aseguradora</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-md-6">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title style="margin-bottom: 10px;">Datos del accidente</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Inicio de labores</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Término de labores</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Lugar de accidente</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <button mat-flat-button color="accent">...</button>
+                        </div>
+                    </div>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Puesto / cargo</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Relato de accidente</mat-label>
+                        <textarea matInput placeholder="Motivo de llamada" style="resize: none"></textarea>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Fecha de accidente</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Hora de accidente</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label id="example-radio-group-label">Lleva hoja de atención</label>
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+                            <mat-radio-button class="example-radio-button">Si</mat-radio-button>
+                            <mat-radio-button class="example-radio-button">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Medio de validación</mat-label>
+                        <mat-select>
+                            <mat-option>None</mat-option>
+                            <mat-option value="option1">Option 1</mat-option>
+                            <mat-option value="option2">Option 2</mat-option>
+                            <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Plan</mat-label>
+                        <mat-select>
+                            <mat-option>None</mat-option>
+                            <mat-option value="option1">Option 1</mat-option>
+                            <mat-option value="option2">Option 2</mat-option>
+                            <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title style="margin-bottom: 10px;">Datos de la atención</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <label id="example-radio-group-label">Pase de atención</label>
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+                            <mat-radio-button class="example-radio-button">Si</mat-radio-button>
+                            <mat-radio-button class="example-radio-button">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Motivo</mat-label>
+                        <mat-select>
+                            <mat-option>None</mat-option>
+                            <mat-option value="option1">Option 1</mat-option>
+                            <mat-option value="option2">Option 2</mat-option>
+                            <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                        <mat-label>Observación</mat-label>
+                        <textarea matInput placeholder="Motivo de llamada" style="resize: none"></textarea>
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Clínica primera atención</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <button mat-flat-button color="accent">...</button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</mat-dialog-content>

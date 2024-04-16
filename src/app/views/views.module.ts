@@ -21,6 +21,14 @@ import { MadDatospacienteComponent } from './layout/mad-datospaciente/mad-datosp
 import { MadSitedsComponent } from './layout/mad-siteds/mad-siteds.component';
 import { MadDireccionesComponent } from './layout/mad-direcciones/mad-direcciones.component';
 import { MadNuevatencionComponent } from './layout/mad-nuevatencion/mad-nuevatencion.component';
+import { SctrBandejaComponent } from './layout/sctr-bandeja/sctr-bandeja.component';
+import { SctrSeguimientoComponent } from './layout/sctr-seguimiento/sctr-seguimiento.component';
+import { SctrVerdatosComponent } from './layout/sctr-verdatos/sctr-verdatos.component';
+import { SctrSoporteComponent } from './layout/sctr-soporte/sctr-soporte.component';
+import { SctrTiposervicioComponent } from './layout/sctr-tiposervicio/sctr-tiposervicio.component';
+import { SctrNuevatencionComponent } from './layout/sctr-nuevatencion/sctr-nuevatencion.component';
+import { SctrRegistramotivoComponent } from './layout/sctr-registramotivo/sctr-registramotivo.component';
+import { SctrMantenimientoclinicaComponent } from './layout/sctr-mantenimientoclinica/sctr-mantenimientoclinica.component';
 
 @NgModule({
   declarations: [],
@@ -45,7 +53,15 @@ import { MadNuevatencionComponent } from './layout/mad-nuevatencion/mad-nuevaten
     MadDatospacienteComponent,
     MadSitedsComponent,
     MadDireccionesComponent,
-    MadNuevatencionComponent
+    MadNuevatencionComponent,
+    SctrBandejaComponent,
+    SctrSeguimientoComponent,
+    SctrVerdatosComponent,
+    SctrSoporteComponent,
+    SctrTiposervicioComponent,
+    SctrNuevatencionComponent,
+    SctrRegistramotivoComponent,
+    SctrMantenimientoclinicaComponent
   ]
 })
 export class ViewsModule { }
