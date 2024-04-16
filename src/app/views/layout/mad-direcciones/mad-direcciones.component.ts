@@ -26,7 +26,7 @@ export interface PeriodicElement {
   standalone: true,
   imports: [MatTableModule, MatSortModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatDialogModule, MatButtonModule]
 })
-export class MadNuevatencionComponent implements AfterViewInit {
+export class MadDireccionesComponent implements AfterViewInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 

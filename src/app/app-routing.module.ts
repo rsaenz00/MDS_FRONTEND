@@ -39,7 +39,7 @@ const routes: Routes = [
         path: 'nuevatencionmad',
         component: MadNuevatencionComponent,
         data: {
-          title: 'Nueva atención médico a domicilio (MAD)'
+          title: 'Nueva atención médica a domicilio (MAD)'
         },
       },
     ],

@@ -18,8 +18,8 @@ import { MadDatoscomprobantepagoComponent } from './layout/mad-datoscomprobantep
 import { MadHistorialencuestaComponent } from './layout/mad-historialencuesta/mad-historialencuesta.component';
 import { MadEditarservicioComponent } from './layout/mad-editarservicio/mad-editarservicio.component';
 import { MadDatospacienteComponent } from './layout/mad-datospaciente/mad-datospaciente.component';
-//import { MadSitedsComponent } from './layout/mad-siteds/mad-siteds.component';
-//import { MadDireccionesComponent } from './layout/mad-direcciones/mad-direcciones.component';
+import { MadSitedsComponent } from './layout/mad-siteds/mad-siteds.component';
+import { MadDireccionesComponent } from './layout/mad-direcciones/mad-direcciones.component';
 import { MadNuevatencionComponent } from './layout/mad-nuevatencion/mad-nuevatencion.component';
 
 @NgModule({
@@ -43,8 +43,8 @@ import { MadNuevatencionComponent } from './layout/mad-nuevatencion/mad-nuevaten
     MadHistorialencuestaComponent,
     MadEditarservicioComponent,
     MadDatospacienteComponent,
-    //MadSitedsComponent,
-    //MadDireccionesComponent,
+    MadSitedsComponent,
+    MadDireccionesComponent,
     MadNuevatencionComponent
   ]
 })

@@ -3,7 +3,7 @@
         <div class="col-md-4">
             <mat-card class="example-card">
                 <mat-card-header>
-                    <mat-card-title>Datos del paciente</mat-card-title>
+                    <mat-card-title style="margin-bottom: 10px;">Datos del paciente</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
@@ -31,6 +31,11 @@
                         <mat-label>Nombres</mat-label>
                         <input matInput>
                     </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-12 text-right" style="padding-bottom: 20px;">
+                            <button mat-flat-button color="accent" (click)="openDatosSitedsDialog()">Datos SITEDS</button>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-5">
                             <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
@@ -123,7 +128,7 @@
             </mat-card>
             <mat-card class="example-card">
                 <mat-card-header>
-                    <mat-card-title>Datos de la aseguradora</mat-card-title>
+                    <mat-card-title style="margin-bottom: 10px;">Datos de la aseguradora</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <div class="row">
@@ -186,7 +191,7 @@
         <div class="col-md-8">
             <mat-card class="example-card">
                 <mat-card-header>
-                    <mat-card-title>Datos del domicilio</mat-card-title>
+                    <mat-card-title style="margin-bottom: 10px;">Datos del domicilio</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <div class="row">
@@ -257,10 +262,17 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
-                        <mat-label>Contacto pac.</mat-label>
-                        <input matInput>
-                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                <mat-label>Contacto pac.</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <a mat-flat-button color="accent" style="width: 100%;" (click)="openDireccionesDialog()">Gestionar Direcciones</a>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-4">
                             <mat-form-field style="width: 100%;" appearance="outline">
@@ -287,7 +299,7 @@
                 <div class="col-md-6">
                     <mat-card class="example-card">
                         <mat-card-header>
-                            <mat-card-title>Datos de la atención</mat-card-title>
+                            <mat-card-title style="margin-bottom: 10px;">Datos de la atención</mat-card-title>
                         </mat-card-header>
                         <mat-card-content>
                             <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
@@ -328,7 +340,7 @@
                 <div class="col-md-6">
                     <mat-card class="example-card">
                         <mat-card-header>
-                            <mat-card-title>Vía de solicitud de atención</mat-card-title>
+                            <mat-card-title style="margin-bottom: 10px;">Vía de solicitud de atención</mat-card-title>
                         </mat-card-header>
                         <mat-card-content>
                             <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
@@ -339,7 +351,7 @@
                     </mat-card>
                     <mat-card class="example-card">
                         <mat-card-header>
-                            <mat-card-title>Datos del pago</mat-card-title>
+                            <mat-card-title style="margin-bottom: 10px;">Datos del pago</mat-card-title>
                         </mat-card-header>
                         <mat-card-content>
                             <div class="row">
@@ -379,7 +391,7 @@
                     </mat-card>
                     <mat-card class="example-card">
                         <mat-card-header>
-                            <mat-card-title>Vía de conocimiento del servicio</mat-card-title>
+                            <mat-card-title style="margin-bottom: 10px;">Vía de conocimiento del servicio</mat-card-title>
                         </mat-card-header>
                         <mat-card-content>
                             <div class="row">

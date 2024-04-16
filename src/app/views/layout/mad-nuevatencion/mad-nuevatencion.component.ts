@@ -6,8 +6,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MadSitedsComponent } from '../mad-siteds/mad-siteds.component';
+import { MadDireccionesComponent } from '../mad-direcciones/mad-direcciones.component';
 
 @Component({
   selector: 'app-mad-nuevatencion',
@@ -18,5 +20,15 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class MadNuevatencionComponent {
+  constructor(private _dialog: MatDialog) {
+  }
+
+  openDatosSitedsDialog() {
+    this._dialog.open(MadSitedsComponent);
+  }
+
+  openDireccionesDialog() {
+    this._dialog.open(MadDireccionesComponent);
+  }
 
 }

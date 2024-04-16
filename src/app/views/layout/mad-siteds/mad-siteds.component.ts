@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatTabsModule } from '@angular/material/tabs';
 
 export interface PeriodicElement {
   name: string;
@@ -24,9 +25,9 @@ export interface PeriodicElement {
   templateUrl: './mad-siteds.component.html',
   styleUrl: './mad-siteds.component.scss',
   standalone: true,
-  imports: [MatTableModule, MatSortModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatDialogModule, MatButtonModule]
+  imports: [MatTabsModule, MatTableModule, MatSortModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatDialogModule, MatButtonModule]
 })
-export class MadNuevatencionComponent implements AfterViewInit {
+export class MadSitedsComponent implements AfterViewInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
