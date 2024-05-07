@@ -1,0 +1,105 @@
+<div mat-dialog-title>
+    Clinicas
+</div>
+<mat-dialog-content>
+    <mat-card class="example-card">
+        <mat-card-content>
+            <form class="row" [formGroup]="formularioClinicas" style="margin-bottom: 10px;">
+                <div class="col-md-2">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>IPRESS</mat-label>
+                        <input matInput (keyup)="filtrarClinica($event)"
+                            placeholder="IPRESS" formControlName="txtClinica">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput (keyup)="filtrarDireccion($event)"
+                            placeholder="Direccion" formControlName="txtDireccion">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput (keyup)="filtrarTelefono($event)"
+                            placeholder="telefono" formControlName="txtTelefono">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Distrito</mat-label>
+                        <input matInput (keyup)="filtrarDistrito($event)"
+                            placeholder="Distrito" formControlName="txtDistrito">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Provincia</mat-label>
+                        <input matInput (keyup)="filtrarProvincia($event)" placeholder="Provincia" formControlName="txtProvincia">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Departamento</mat-label>
+                        <input matInput (keyup)="filtrarDepartamento($event)" placeholder="Departamento" formControlName="txtDepartamento">
+                    </mat-form-field>
+                </div>
+            </form>
+            <div class="row">
+                <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+
+                    <ng-container matColumnDef="clinica">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por clinica">
+                            IPRESS
+                        </th>
+                        <td mat-cell *matCellDef="let row"> {{row.clinica}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="direccion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por direccion">
+                            Dirección
+                        </th>
+                        <td mat-cell *matCellDef="let row"> {{row.direccion}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="telefono">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por telefono">
+                            Teléfono
+                        </th>
+                        <td mat-cell *matCellDef="let row"> {{row.telefono}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="distrito">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por distrito">
+                            Distrito
+                        </th>
+                        <td mat-cell *matCellDef="let row"> {{row.distrito}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="provincia">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por provincia">
+                            Provincia
+                        </th>
+                        <td mat-cell *matCellDef="let row"> {{row.provincia}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="departamento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            sortActionDescription="Ordenar por departamento">
+                            Departamento
+                        </th>
+                        <td mat-cell *matCellDef="let row"> {{row.departamento}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row (click)="filaSeleccionada(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                    aria-label="Seleccione página">
+                </mat-paginator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>

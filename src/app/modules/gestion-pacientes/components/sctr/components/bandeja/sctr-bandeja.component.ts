@@ -13,20 +13,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { Blog } from 'src/app/models/blog.model';
-import { SctrTiposervicioComponent } from './components/tiposervicio/sctr-tiposervicio.component';
-import { SctrVerdatosComponent } from './components/verdatos/sctr-verdatos.component';
-import { SctrSeguimientoComponent } from './components/seguimiento/sctr-seguimiento.component';
-import { SctrSoporteComponent } from './components/soporte/sctr-soporte.component';
+import { SctrTiposervicioComponent } from '../tiposervicio/sctr-tiposervicio.component';
+import { SctrVerdatosComponent } from '../verdatos/sctr-verdatos.component';
+import { SctrSeguimientoComponent } from '../seguimiento/sctr-seguimiento.component';
+import { SctrSoporteComponent } from '../soporte/sctr-soporte.component';
 import { AtencionService } from 'src/app/services/atencion.service';
 
 @Component({
-  selector: 'app-sctr',
-  templateUrl: './sctr.component.html',
-  styleUrl: './sctr.component.scss',
+  selector: 'app-sctr-bandeja',
+  templateUrl: './sctr-bandeja.component.html',
+  styleUrl: './sctr-bandeja.component.scss',
   standalone: true,
   imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatNativeDateModule]
 })
-export class SctrComponent implements OnInit {
+
+export class SctrBandejaComponent implements OnInit {
   displayedColumns: string[] = ['cod_atencion', 'tipo_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill', 'accion'];
   dataSource!: MatTableDataSource<Blog>;
 

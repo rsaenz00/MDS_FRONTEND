@@ -1,38 +1,37 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-//import { MantblogComponent } from 'src/app/views/layout/mantblog/mantblog.component';
-import { MaterialModule } from 'src/app/material.module';
+//import { MantblogComponent } from '../mantblog/mantblog.component';
+import { MaterialModule } from '../../../material.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
-import { Blog } from 'src/app/models/blog.model';
-import { SctrTiposervicioComponent } from './components/tiposervicio/sctr-tiposervicio.component';
-import { SctrVerdatosComponent } from './components/verdatos/sctr-verdatos.component';
-import { SctrSeguimientoComponent } from './components/seguimiento/sctr-seguimiento.component';
-import { SctrSoporteComponent } from './components/soporte/sctr-soporte.component';
-import { AtencionService } from 'src/app/services/atencion.service';
+import { BlogService } from '../../../services/blog.service';
+import { Blog } from '../../../models/blog.model';
+//import { SoporteComponent } from '../soporte/soporte.component';
 
 @Component({
-  selector: 'app-sctr',
-  templateUrl: './sctr.component.html',
-  styleUrl: './sctr.component.scss',
+  selector: 'app-bandeja',
+  templateUrl: './bandeja.component.html',
+  styleUrl: './bandeja.component.scss',
   standalone: true,
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatNativeDateModule]
+  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatNativeDateModule],
 })
-export class SctrComponent implements OnInit {
-  displayedColumns: string[] = ['cod_atencion', 'tipo_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill', 'accion'];
+
+export class BandejaComponent implements /*AfterViewInit,*/ OnInit {
+  displayedColumns: string[] = ['id', 'url', 'accion'];
+  //dataSource = new MatTableDataSource(ELEMENT_DATA);
   dataSource!: MatTableDataSource<Blog>;
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private _dialog: MatDialog,
-    private _atencionService: AtencionService,
+    private _blogService: BlogService,
     private _snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>) {
     this.dateAdapter.setLocale("es-pe");
@@ -44,6 +43,11 @@ export class SctrComponent implements OnInit {
   ngOnInit(): void {
     this.getBlogList();
   }
+
+  /*ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }*/
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
@@ -61,7 +65,7 @@ export class SctrComponent implements OnInit {
   }
 
   getBlogList() {
-    this._atencionService.GetAtencionesList().subscribe({
+    this._blogService.getBlogList().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;
@@ -71,14 +75,14 @@ export class SctrComponent implements OnInit {
     });
   }
 
-  deleteAccion(data: Blog) {
-    /*this._blogService.deleteBlog(data).subscribe({
+  deleteBlog(data: Blog) {
+    this._blogService.deleteBlog(data).subscribe({
       next: (res) => {
         this.openSnackBar('Blog deleted!', 'done');
         this.getBlogList();
       },
       error: console.log,
-    });*/
+    });
   }
 
   openEditForm(data: Blog) {
@@ -107,22 +111,27 @@ export class SctrComponent implements OnInit {
   }
 
   openSoporteDialog() {
-    this._dialog.open(SctrSoporteComponent);
-  }
-
-  openSeguimientoDialog() {
-    this._dialog.open(SctrSeguimientoComponent);
-  }
-
-  openVerDatosDialog() {
-    this._dialog.open(SctrVerdatosComponent);
-  }
-
-  openTipoServicioDialog() {
-    const dialogRef = this._dialog.open(SctrTiposervicioComponent, {
-      disableClose: true,
-      width: '350px'
-    });
+    //this._dialog.open(SoporteComponent);
   }
 
 }
+
+/*export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}*/
+
+/*const ELEMENT_DATA: PeriodicElement[] = [
+  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+];*/

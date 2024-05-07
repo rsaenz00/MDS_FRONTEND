@@ -12,14 +12,14 @@ import { DrOnlineComponent } from './components/dr-online/dr-online.component';
 @NgModule({
   declarations: [
     AmbulanciaComponent,
-    SctrComponent,
     CronicosComponent,
     MadComponent,
     DrOnlineComponent
   ],
   imports: [
     CommonModule,
-    GestionPacientesRoutingModule
+    GestionPacientesRoutingModule,
+    SctrComponent,
   ]
 })
 export class GestionPacientesModule { }

@@ -1,0 +1,21 @@
+<div mat-dialog-title>
+    Tipo de servicio
+</div>
+<mat-dialog-content>
+    <label id="example-radio-group-label">SKILL AVAYA</label>
+    <br>
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+        <mat-radio-button [value]="1" (change)="getSkill($event)" class="example-radio-button">SKILL SCTR</mat-radio-button>
+        <mat-radio-button [value]="2" (change)="getSkill($event)" class="example-radio-button">SKILL CONSULTAS COBERTURAS</mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field style="width: 100%;" appearance="outline">
+        <mat-label>Motivo</mat-label>
+        <mat-select (selectionChange)="getMotivoCbo($event)">            
+            <mat-option [value]="0">--Seleccione una opción--</mat-option>
+            <mat-option [value]="motivo.id_motivo" *ngFor="let motivo of motivos">{{motivo.descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button color="accent" (click)="nuevoServicioSctr()">Continuar</button>
+</mat-dialog-actions>

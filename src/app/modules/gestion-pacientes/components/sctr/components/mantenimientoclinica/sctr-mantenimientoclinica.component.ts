@@ -1,0 +1,219 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { ListadoubigeosComponent } from '../listadoubigeos/listadoubigeos.component';
+import { ClinicaService } from 'src/app/services/clinica.service';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { Clinica, ClinicasFiltro } from 'src/app/models/clinica.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+@Component({
+  selector: 'app-sctr-mantenimientoclinica',
+  templateUrl: './sctr-mantenimientoclinica.component.html',
+  styleUrl: './sctr-mantenimientoclinica.component.scss',
+  standalone: true,
+  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatDialogModule, MatButtonModule, ReactiveFormsModule]
+})
+
+export class SctrMantenimientoclinicaComponent implements OnInit {
+  displayedColumns: string[] = ['id_clinica', 'clinica'];
+  dataSource!: MatTableDataSource<ClinicasFiltro>;
+
+  codUbigeo: number;
+
+  constructor(private _dialog: MatDialog, private frm: FormBuilder, private _liveAnnouncer: LiveAnnouncer, private _clinicasServices: ClinicaService, public _dialogRef: MatDialogRef<SctrMantenimientoclinicaComponent>, private _snackBar: MatSnackBar) { }
+
+  formularioClinica = this.frm.group({
+    txtCodIpress: [{ value: '', disabled: true }, Validators.required],
+    txtClinica: [{ value: '', disabled: true }, Validators.required],
+    txtDireccion: [{ value: '', disabled: true }, Validators.required],
+    txtTelefono: [{ value: '', disabled: true }, Validators.required],
+    cboEstado: [{ value: '', disabled: true }, Validators.required],
+    cboValidacion: [{ value: '', disabled: true }, Validators.required],
+    txtUbigeo: [{ value: '', disabled: true }, Validators.required],
+    txtAccion: [{ value: '', disabled: false }, Validators.required]
+  });
+
+  clinica: Clinica = {} as Clinica;
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  statusBtnBuscarUbigeo = true;
+  statusBtnNuevaClinica = false;
+  statusBtnGuardarClinica = true;
+  codEstado = -1;
+  codValidacion = -1;
+
+  ngOnInit(): void {
+    this.getClinicasList();
+  }
+
+  getClinicasList() {
+    this._clinicasServices.GetClinicasList().subscribe({
+      next: (res) => {
+        //console.log(res.resultData)
+        this.dataSource = new MatTableDataSource(res.resultData);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      },
+      error: console.log,
+    });
+  }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  openUbigeoDialog() {
+    const dialogRef = this._dialog.open(ListadoubigeosComponent, {
+      disableClose: true,
+      width: '550px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.codUbigeo = result.data.codigo;
+      //console.log(this.codUbigeo)
+      this.formularioClinica.controls['txtUbigeo'].setValue(result.data.departamento + " - " + result.data.provincia + " - " + result.data.distrito);
+    });
+  }
+
+  openSnackBar(message: string, action: string = 'ok') {
+    this._snackBar.open(message, action, {
+      duration: 1000,
+      verticalPosition: 'top',
+    });
+  }
+
+  newClinica() {
+    this.formularioClinica.get("txtAccion")?.setValue("new");
+    this.formularioClinica.controls['cboEstado'].enable();
+    this.formularioClinica.controls['cboValidacion'].enable();
+    this.formularioClinica.controls['txtCodIpress'].enable();
+    this.formularioClinica.controls['txtClinica'].enable();
+    this.formularioClinica.controls['txtDireccion'].enable();
+    this.formularioClinica.controls['txtTelefono'].enable();
+    this.formularioClinica.controls['txtUbigeo'].enable();
+    this.statusBtnNuevaClinica = true;
+    this.statusBtnBuscarUbigeo = false;
+    this.statusBtnGuardarClinica = false;
+  }
+
+  cancelClinica() {
+    this.formularioClinica.reset();
+    this.formularioClinica.controls['cboEstado'].disable();
+    this.formularioClinica.controls['cboValidacion'].disable();
+    this.formularioClinica.controls['txtCodIpress'].disable();
+    this.formularioClinica.controls['txtClinica'].disable();
+    this.formularioClinica.controls['txtDireccion'].disable();
+    this.formularioClinica.controls['txtTelefono'].disable();
+    this.formularioClinica.controls['txtUbigeo'].disable();
+    this.statusBtnNuevaClinica = false;
+    this.statusBtnBuscarUbigeo = true;
+    this.statusBtnGuardarClinica = true;
+  }
+
+  exitClinica() {
+    this.formularioClinica.reset();
+    this._dialogRef.close(true);
+  }
+
+  selectRow(row: Clinica) {
+    //console.log(row)
+    this.formularioClinica.get("txtAccion")?.setValue("edit");
+    this.formularioClinica.controls['cboEstado'].enable();
+    this.formularioClinica.controls['cboValidacion'].enable();
+    this.formularioClinica.controls['txtCodIpress'].enable();
+    this.formularioClinica.controls['txtClinica'].enable();
+    this.formularioClinica.controls['txtDireccion'].enable();
+    this.formularioClinica.controls['txtTelefono'].enable();
+    this.formularioClinica.controls['txtUbigeo'].enable();
+    this.statusBtnNuevaClinica = true;
+    this.statusBtnBuscarUbigeo = false;
+    this.statusBtnGuardarClinica = false;
+
+    this.formularioClinica.get("txtUbigeo")?.setValue(row.departamento + " - " + row.provincia + " - " + row.distrito);
+    this.codUbigeo = parseInt(row.ubigeo);
+    this.formularioClinica.get("txtCodIpress")?.setValue(row.id_clinica);
+    this.formularioClinica.get("txtClinica")?.setValue(row.clinica);
+    this.formularioClinica.get("txtDireccion")?.setValue(row.direccion);
+    this.formularioClinica.get("txtTelefono")?.setValue(row.telefono);
+
+    if (row.afiliado == 1) {
+      this.codValidacion = 1;
+    } else {
+      this.codValidacion = 0;
+    }
+    if (row.estado == 1) {
+      this.codEstado = 1;
+    } else {
+      this.codEstado = 0;
+    }
+
+    this.formularioClinica.get("cboValidacion")?.setValue(this.codValidacion.toString());
+    this.formularioClinica.get("cboEstado")?.setValue(this.codEstado.toString());
+
+  }
+
+  saveClinica() {
+    if (this.formularioClinica.valid) {
+      this.clinica.id_clinica = this.formularioClinica.value["txtCodIpress"] || '';
+      this.clinica.clinica = this.formularioClinica.value["txtClinica"] || '';
+      this.clinica.ubigeo = this.codUbigeo.toString();
+      this.clinica.direccion = this.formularioClinica.value["txtDireccion"] || '';
+      this.clinica.telefono = this.formularioClinica.value["txtTelefono"] || '';
+      if (this.formularioClinica.value["cboValidacion"] == "1") {
+        this.clinica.afiliado = 1;
+      } else {
+        this.clinica.afiliado = 0;
+      }
+      if (this.formularioClinica.value["cboEstado"] == "1") {
+        this.clinica.estado = 1;
+      } else {
+        this.clinica.estado = 0;
+      }
+
+      if (this.formularioClinica.value["txtAccion"] == "new") {
+        this._clinicasServices.addClinica(this.clinica).subscribe({
+          next: (val: any) => {
+            this.getClinicasList();
+            this.openSnackBar('¡Clínica creada satisfactoriamene!');
+            this._dialogRef.close(true);
+          },
+          error: (err: any) => {
+            console.error(err);
+          },
+        });
+      } else {
+        this._clinicasServices.updateClinica(this.clinica).subscribe({
+          next: (val: any) => {
+            this.getClinicasList();
+            this.openSnackBar('¡Clínica actualizada satisfactoriamene!');
+            this._dialogRef.close(true);
+          },
+          error: (err: any) => {
+            console.error(err);
+          },
+        });
+      }
+
+    } else {
+      this.openSnackBar('¡Por favor complete los campos obligatorios!');
+    }
+  }
+
+}
