@@ -1,0 +1,139 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+      <mat-card-title class="m-b-0">Formulario de Registro</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="b-t-1 form-group">
+        <div class="p-16 bg-light-primary rounded">
+            <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
+                <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>
+                Información Personal
+            </h5>
+        </div>
+
+        <div class="row m-t-20">
+            <div class="col-lg-6">
+                <!-- Tipo de Documento -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Tipo de Documento</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2">
+                    <mat-select value="0">
+                        <mat-option value="0">Seleccionar</mat-option>
+                        <mat-option value="1">DNI</mat-option>
+                        <mat-option value="2">Carnet de Extranjeria</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div class="col-lg-6">
+                <!-- Número de documento -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Número de Documento</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- Nombres -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Nombres</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <!-- Apellido Paterno -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Apellido Paterno</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- Apellido Materno -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Apellido Materno</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <!-- Genero -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Genero</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-select value="0">
+                        <mat-option value="0">Seleccionar</mat-option>
+                        <mat-option value="1">Masculino</mat-option>
+                        <mat-option value="2">Femenino</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- Fecha de Nacimiento -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Fecha de Nacimiento</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2">
+                    <input matInput [matDatepicker]="picker" />
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <!-- Email -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Email</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+        </div>
+  
+        <div class="p-16 bg-light-primary rounded m-y-20">
+            <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
+                <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>
+                Información de Usuario
+            </h5>
+        </div>
+
+        <div class="row m-t-20">
+            <div class="col-lg-6">
+                <!-- Nombre de Usuario -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Nombre de Usuario</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+            
+            <div class="col-lg-6">
+                <!-- Contraseña -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Contraseña</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <div class="row m-t-20">
+            <div class="col-lg-6">
+                <!-- Telefono Corporativo -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Email Corporativo</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+            
+            <div class="col-lg-6">
+                <!-- Telefono Corporativo -->
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Teléfono Corporativo</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                    <input matInput type="text" />
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="b-t-1">
+      <button mat-flat-button color="warn">Cancelar</button>
+      <button mat-flat-button color="primary" class="m-l-8">Guardar</button>
+    </mat-card-actions>
+  </mat-card>

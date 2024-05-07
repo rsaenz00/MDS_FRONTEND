@@ -16,7 +16,7 @@ export interface AppSettings {
     theme: 'light',
     sidenavOpened: false,
     sidenavCollapsed: false,
-    boxed: false,
+    boxed: true,
     horizontal: false,
     cardBorder: false,
     activeTheme: 'sanna_theme',

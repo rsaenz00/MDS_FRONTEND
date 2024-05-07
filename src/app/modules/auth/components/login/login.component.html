@@ -1,0 +1,117 @@
+<div class="blank-layout-container justify-content-center align-items-center bg-container">
+    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center" >
+        <div class="col-lg-12 d-flex align-items-center">
+            <!-- <mat-card class="cardWithShadow boxed-auth">
+                <mat-card-content> -->
+                    <div class=" d-md-flex boxed-auth">
+                        <div class="text-wrap p-80">
+                            <div class="align-items-center justify-content-center d-lg-flex">
+                                <img src="./assets/images/logos/auth-logo.png" class="align-middle m-2" alt="logo" style="    height: 200px;
+                                width: 250px;"/>
+                            </div>
+                            <div class="align-items-center justify-content-center d-lg-flex" >
+                                <h1 style="font-size: 40px; color: #026632;">MediSanna</h1>
+                                
+                                <!-- <p></p> -->
+                            </div>   
+                            <span class="align-items-center justify-content-center d-lg-flex">
+                                Nueva solución médica
+                            </span>                         
+                        </div>
+                        <div class="login-wrap p-48">
+                            <div class="col-lg-9 max-width-form">
+                                <h4 class="f-w-700 f-s-24 m-0">Iniciar sesión</h4>
+                                <span class="f-s-14 d-block mat-body-1 m-t-8">
+                                    Ingrese sus credenciales
+                                </span>
+                                <form class="m-t-30" [formGroup]="loginFormGroup" (ngSubmit)="onLoginSubmit()">
+                                    <!-- usuario -->
+                                    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Usuario</mat-label>
+                                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                                            <input matInput formControlName="usuario" />
+                                            <mat-icon matPrefix>
+                                                <i-tabler name="user" class="icon-20 d-flex"></i-tabler>
+                                            </mat-icon>
+                                            <mat-hint *ngIf="formControl['usuario'].touched && formControl['usuario'].invalid" class="m-b-16 error-msg">
+                                                <div class="text-error" *ngIf="formControl['usuario'].errors && formControl['usuario'].errors['required']">
+                                                    Name is required.
+                                                </div>
+                                                <div class="text-error" *ngIf="formControl['usuario'].errors && formControl['usuario'].errors['minlength']">
+                                                    Name should be 6 character.
+                                                </div>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    <!-- password -->
+                                    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
+                                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                                            <input matInput type="password" formControlName="contrasena" />
+                                            <mat-icon matPrefix>
+                                                <i-tabler name="lock" class="icon-20 d-flex"></i-tabler>
+                                              </mat-icon>
+                                            <mat-hint *ngIf="formControl['contrasena'].touched && formControl['contrasena'].invalid" class="m-b-16 error-msg">
+                                                <div class="text-error" *ngIf="formControl['contrasena'].errors && formControl['contrasena'].errors['required']">
+                                                    Password is required.
+                                                </div>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    <!-- remember password -->
+                                    <div class="d-flex align-items-center m-b-12">
+                                        <mat-checkbox color="primary">Recordar Contraseña</mat-checkbox>
+                                        <a [routerLink]="['/authentication/side-forgot-pwd']" class="text-primary f-w-600 text-decoration-none m-l-auto f-s-14">
+                                            Olvidaste Contraseña ?
+                                        </a>
+                                    </div>
+                                    <button mat-flat-button color="primary" class="w-100" [disabled]="!loginFormGroup.valid" style="height: 48px;">
+                                        Iniciar Sesion
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                <!-- </mat-card-content>
+            </mat-card> -->
+            
+            
+                    
+                    
+
+                    <!-- <div class="text-center">
+                        <a [routerLink]="['/dashboards/dashboard1']" *ngIf="options.theme === 'light'">
+                            <img src="./assets/images/logos/dark-logo.svg" class="align-middle m-2" alt="logo" />
+                        </a>
+                        <a [routerLink]="['/dashboards/dashboard1']" *ngIf="options.theme === 'dark'">
+                            <img src="./assets/images/logos/light-logo.svg" class="align-middle m-2" alt="logo" />
+                        </a>
+                    </div> -->
+                    <!-- <div class="row m-t-24 custom-row">
+                        <div class="col-12 col-sm-6">
+                            <button mat-stroked-button class="w-100">
+                                <div class="d-flex align-items-center">
+                                    <img src="/assets/images/svgs/google-icon.svg" alt="google" width="16" class="m-r-8" />
+                                    Sign in with Google
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <button mat-stroked-button class="w-100 d-flex align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img src="/assets/images/svgs/facebook-icon.svg" alt="facebook" width="40" class="m-r-4" />
+                                    Sign in with FB
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="or-border m-t-30">or sign in with</div> -->
+                    
+                    <!-- <span class="d-block f-w-500 d-block m-t-24">
+                        Eres nuevo?
+                        <a (click)="onRegistrationClick()" class="cursor-pointer text-decoration-none text-primary f-w-500 f-s-14">
+                            Crear Cuenta
+                        </a>
+                    </span> -->
+                
+        </div>
+    </div>
+</div>

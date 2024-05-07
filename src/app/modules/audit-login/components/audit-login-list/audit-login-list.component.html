@@ -1,0 +1,88 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content class="p-24">
+        <div class="row justify-content-between form-group">
+            <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <input class="form-control" matInput placeholder="Buscar usuario" #input/>
+                    <mat-icon matSuffix>
+                        <i-tabler name="search" class="icon-20"></i-tabler>
+                    </mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row m-t-20">
+            <div class="col-12">
+                <div class="table">
+                    <div class="table-container table scrollwrapper">
+                        <table mat-table [dataSource]="dataSource" matSort matSortActive="loginTime" matSortDirection="desc">
+                            <ng-container matColumnDef="fecha">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'DATE_TIME'}}
+                                </th>
+                                <td mat-cell *matCellDef="let audit"> {{audit?.fecha}} </td>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="usuario">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'USUARIO'}}
+                                </th>
+                                <td mat-cell *matCellDef="let audit"> {{audit.usuario}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="estado">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'ESTADO'}}
+                                </th>
+                                <td mat-cell *matCellDef="let audit"> {{audit.estado}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="descripcion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'DESCRIPCION'}}
+                                </th>
+                                <td mat-cell *matCellDef="let audit"> {{audit.descripcion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ip">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'IP'}}
+                                </th>
+                                <td mat-cell *matCellDef="let audit"> {{audit.ip}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="latitud">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'LATITUD'}}
+                                </th>
+                                <td mat-cell *matCellDef="let audit"> {{audit.latitud}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="longitud">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'LONGITUD'}}
+                                </th>
+                                <td mat-cell *matCellDef="let audit"> {{audit.longitud}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <ng-container *ngIf="dataSource.count === 0">
+                            <div class="row">
+                                <div class="col-sm-12 ml-4 mt-3">
+                                    <label class="font-weight-bold">{{"NO_DATA_FOUND"}}</label>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <mat-paginator 
+                            [length]="loginAuditResource.totalCount" 
+                            [pageSize]="loginAuditResource.pageSize"
+                            [pageSizeOptions]="[10, 20, 30]">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

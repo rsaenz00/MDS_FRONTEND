@@ -1,0 +1,155 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content class="p-24">
+        <div class="row justify-content-between form-group">
+            <div class="col-lg-10 m-t-6">
+                <div class="legend">
+                    <span class="semaphore-green"></span> Activo
+                </div>
+                <div class="legend">
+                    <span class="semaphore-red"></span> Desactivado
+                </div>
+                <div class="legend">
+                    <span class="semaphore-orange"></span> Bloqueado
+                </div>
+            </div>
+            <div class="col-lg-2 d-flex align-items-center justify-content-end">
+                <button 
+                    mat-flat-button  
+                    color="primary"
+                    
+                    class="btn btn-success btn-sm m-right-10" 
+                    [routerLink]="['/usuario/gestion']">
+                    <i class="fas fa-plus"></i> 
+                    Agregar Usuario
+                </button>
+
+                <!-- <button mat-flat-button  color="primary">
+                  Add Employee
+                </button> -->
+            </div>
+        </div>
+        <div class="row m-t-20 form-group">
+            <div class="col-12">
+                <div class="table-container cardWithShadow">
+                    <table mat-table [dataSource]="dataSource" matSort matSortActive="email">
+                        <ng-container matColumnDef="usuario">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Usuario'}}</th>
+                            <td mat-cell *matCellDef="let user">{{user.usuario}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="nombres">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Nombres'}}</th>
+                            <td mat-cell *matCellDef="let user">{{user.nombres}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Email'}}</th>
+                            <td mat-cell *matCellDef="let user">{{user.email}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="estado">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">
+                                {{'Estado'}}
+                            </th>
+                            <td mat-cell *matCellDef="let user" class="text-center">
+                                <ng-template [ngIf]="user.estado == true">
+                                    <span class="semaphore-green text-white rounded f-w-600 p-6 p-y-4 f-s-12">
+                                        {{'Activo'}}
+                                    </span>
+                                </ng-template>
+                                <ng-template [ngIf]="user.estado == false">
+                                    <span class="semaphore-red text-white rounded f-w-600 p-6 p-y-4 f-s-12">
+                                        {{'Desactivado'}}
+                                    </span>
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="accion">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">
+                              {{'Accion'}}
+                            </th>
+                            <td mat-cell *matCellDef="let user" class="text-center ">
+                              <button class="btn btn-primary btn-sm" [matMenuTriggerFor]="menu" aria-label="Action">
+                                <i class="fas fa-ellipsis-v"></i>
+                              </button>
+                              <mat-menu #menu="matMenu">
+                                <button 
+                                    class="btn btn-light btn-sm m-0" 
+                                    mat-menu-item
+                                    (click)="editUser(user.id)">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    <span class="ml-1">{{'EDIT'}}</span>
+                                </button>
+                                <button 
+                                    class="btn btn-light btn-sm m-0" 
+                                    mat-menu-item
+                                    (click)="deleteUser(user)">
+                                    <i class="fas fa-trash-alt"></i> 
+                                    <span class="ml-1">{{'DELETE'}}</span>
+                                </button>
+                                <button 
+                                    class="btn btn-light btn-sm m-0" 
+                                    mat-menu-item
+                                    (click)="userPermission(user.id)">
+                                    <i class="fas fa-user-friends"></i>
+                                    <span class="ml-1">{{'PERMISSION'}}</span>
+                                </button>
+                                <button 
+                                    class="btn btn-light btn-sm m-0" 
+                                    mat-menu-item
+                                    (click)="resetPassword(user)">
+                                    <i class="fas fa-lock"></i>
+                                    <span class="ml-1">{{'RESET_PASSWORD'}}</span>
+                                </button>
+                              </mat-menu>
+                            </td>
+                          </ng-container>
+                        <ng-container matColumnDef="usuario-search">
+                            <th mat-header-cell *matHeaderCellDef >
+                                <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                    <input matInput type="text" class="form-control" [formControl]="usuarioFilterCtl">
+                                </mat-form-field>
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="nombres-search">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                    <input matInput type="text" class="form-control" [formControl]="nombresFilterCtl">
+                                </mat-form-field>
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="email-search">
+                            <th mat-header-cell *matHeaderCellDef >
+                                <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                    <input matInput type="text" class="form-control" [formControl]="emailFilterCtl">
+                                </mat-form-field>
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="accion-search">
+                            <th mat-header-cell *matHeaderCellDef>
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="footer">
+                            <td mat-footer-cell colspan="5" *matFooterCellDef>
+                                <mat-paginator [length]="usuarioResource.totalCount" [pageSize]="usuarioResource.pageSize"
+                                [pageSizeOptions]="[10, 20, 30]"></mat-paginator>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                        <tr mat-header-row
+                        *matHeaderRowDef="['usuario-search','nombres-search','email-search','accion-search'];sticky: true">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr mat-footer-row *matFooterRowDef="footerToDisplayed;sticky: true"></tr>
+                    </table>
+                    <ng-container *ngIf="dataSource.count === 0">
+                        <div class="row">
+                            <div class="col-sm-12 ml-4 mt-3">
+                                <label class="font-weight-bold"> {{'NO_DATA_FOUND'}}</label>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            
+            
+        </div>
+    </mat-card-content>
+</mat-card>

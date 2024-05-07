@@ -23,6 +23,7 @@
 .cardWithShadow 
 {
     box-shadow: $cardshadow;
+    overflow: hidden; //Added - RSAENZ
 }
   
 .mat-mdc-card-title 

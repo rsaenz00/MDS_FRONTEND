@@ -25,6 +25,12 @@ import { FilterPipe } from './pipe/filter.pipe';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ToastrModule } from 'ngx-toastr';
+import { HttpInterceptorModule } from './http-interceptor.module';
+import { MainblankComponent } from './views/layout/full/components/mainblank/mainblank.component';
+import { MainComponent } from './views/layout/full/components/main/main.component';
+import { WelcomeCardComponent } from './views/layout/full/shared/welcome-card/welcome-card.component';
+// import { BaseComponent } from './base/base.component';
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,7 +40,8 @@ export function HttpLoaderFactory(http: HttpClient): any {
   declarations: [
     AppComponent,
     BlankComponent,
-    FilterPipe
+    FilterPipe,
+    // BaseComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +52,8 @@ export function HttpLoaderFactory(http: HttpClient): any {
     FormsModule,
     ReactiveFormsModule,
     TablerIconsModule.pick(TablerIcons),
-    FullComponent,
+    MainblankComponent,
+    MainComponent,
     NgScrollbarModule,
     TranslateModule.forRoot({
       loader: {
@@ -54,6 +62,8 @@ export function HttpLoaderFactory(http: HttpClient): any {
         deps: [HttpClient],
       },
     }),
+    ToastrModule.forRoot(),
+    HttpInterceptorModule
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent]

@@ -57,6 +57,26 @@ $darksannatheme: mat.define-dark-theme(
   )
 );
 
+.table-container > table > thead > tr:first-child
+{
+  background-color: mat.get-color-from-palette($theme-primary, 500) !important;
+    th
+    {
+      color: mat.get-color-from-palette($theme-primary, 100) !important;
+    }
+}
+
+// .users-table {
+//   table-layout: fixed;
+//   width: 100%;
+//   border-collapse: collapse;
+// }
+// .users-table-cell {
+//   border: 1px solid #dddddd;
+//   text-align: left;
+//   padding: 8px;
+// }
+
 .bg-primary {
   background: mat.get-color-from-palette($theme-primary, 500) !important;
 }
@@ -101,4 +121,13 @@ $darksannatheme: mat.define-dark-theme(
 .routeIcon
 {
   color: mat.get-color-from-palette($theme-primary, 500);
+}
+
+.theme-card.mat-mdc-card 
+{
+    .mat-mdc-card-header 
+    {
+      color: mat.get-color-from-palette($theme-primary, 100) !important;; 
+      background-color:mat.get-color-from-palette($theme-primary, 500) !important;;
+    }
 }
