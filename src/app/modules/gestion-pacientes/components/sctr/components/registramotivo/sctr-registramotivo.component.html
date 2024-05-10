@@ -17,7 +17,7 @@
                         </div>
                         <div class="col-md-2">
                             <button mat-flat-button color="accent" style="width: 100%;"
-                                [disabled]="statusBtnBuscarClinica">...</button>
+                                [disabled]="statusBtnBuscarClinica" (click)="openClinicaDialog()">...</button>
                         </div>
                     </div>
                     <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
@@ -32,14 +32,21 @@
                 <div class="col-md-6">
                     <mat-radio-button value="empresa" (change)="getPersonaReporta($event)">EMPRESA</mat-radio-button>
                     <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
-                        <mat-label>RUC empresa</mat-label>
-                        <input matInput formControlName="txtRucEmpresa">
+                        <mat-label>RUC</mat-label>
+                        <input matInput formControlName="txtRucEmpresa" [matAutocomplete]="auto"
+                            (keyup)="filterClientes($event)">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="verRuc"
+                            (optionSelected)="selectCliente($event.option)">
+                            @for (option of filtradoClientes; track option) {
+                            <mat-option [value]="option">{{option.nombre}}</mat-option>
+                            }
+                        </mat-autocomplete>
                     </mat-form-field>
                     <div class="row">
                         <div class="col-md-9">
                             <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
                                 <mat-label>Nombre empresa</mat-label>
-                                <input matInput formControlName="txtNombreEmpresa">
+                                <input matInput formControlName="txtEmpresa">
                             </mat-form-field>
                         </div>
                         <div class="col-md-3">
@@ -49,7 +56,7 @@
                     </div>
                     <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
                         <mat-label>Paciente que reporta</mat-label>
-                        <input matInput formControlName="txttxtPacienteReportaempresa">
+                        <input matInput formControlName="txtPacienteReportaempresa">
                     </mat-form-field>
                 </div>
             </div>
@@ -77,8 +84,13 @@
             <textarea matInput placeholder="Motivo de llamada" formControlName="txtMotivo"
                 style="resize: none"></textarea>
         </mat-form-field>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <button mat-flat-button color="accent" (click)="saveMotivoSctr()" [disabled]="!formularioRegitraMotivoSctr.valid">Guardar</button>
+            </div>
+            <div class="col-md-6 text-center">
+                <button mat-flat-button color="accent" (click)="exitMotivo()">Salir</button>
+            </div>
+        </div>
     </mat-dialog-content>
-    <mat-dialog-actions>
-        <button mat-flat-button color="accent">Guardar</button>
-    </mat-dialog-actions>
 </form>

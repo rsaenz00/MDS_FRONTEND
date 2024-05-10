@@ -1,39 +1,33 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-//import { MantblogComponent } from 'src/app/views/layout/mantblog/mantblog.component';
-import { MaterialModule } from 'src/app/material.module';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter } from '@angular/material/core';
 import { Blog } from 'src/app/models/blog.model';
 import { SctrTiposervicioComponent } from './components/tiposervicio/sctr-tiposervicio.component';
 import { SctrVerdatosComponent } from './components/verdatos/sctr-verdatos.component';
 import { SctrSeguimientoComponent } from './components/seguimiento/sctr-seguimiento.component';
 import { SctrSoporteComponent } from './components/soporte/sctr-soporte.component';
 import { AtencionService } from 'src/app/services/atencion.service';
+import { Atencion } from 'src/app/models/atencion.model';
 
 @Component({
   selector: 'app-sctr',
   templateUrl: './sctr.component.html',
-  styleUrl: './sctr.component.scss',
-  standalone: true,
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MaterialModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatNativeDateModule]
+  styleUrl: './sctr.component.scss'
 })
+
 export class SctrComponent implements OnInit {
   displayedColumns: string[] = ['cod_atencion', 'tipo_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill', 'accion'];
-  dataSource!: MatTableDataSource<Blog>;
+  dataSource!: MatTableDataSource<Atencion>;
+  footerToDisplayed: string[] = ["footer"];
+  countRows: number = 0;
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private _dialog: MatDialog,
     private _atencionService: AtencionService,
-    private _snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>) {
     this.dateAdapter.setLocale("es-pe");
   }
@@ -42,7 +36,7 @@ export class SctrComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getBlogList();
+    this.getAtencionesList();
   }
 
   announceSortChange(sortState: Sort) {
@@ -53,75 +47,45 @@ export class SctrComponent implements OnInit {
     }
   }
 
-  openSnackBar(message: string, action: string = 'OK') {
-    this._snackBar.open(message, action, {
-      duration: 3000,
-      verticalPosition: 'top',
-    });
-  }
-
-  getBlogList() {
+  getAtencionesList() {
     this._atencionService.GetAtencionesList().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.countRows = this.dataSource.filteredData.length;
       },
       error: console.log,
     });
-  }
-
-  deleteAccion(data: Blog) {
-    /*this._blogService.deleteBlog(data).subscribe({
-      next: (res) => {
-        this.openSnackBar('Blog deleted!', 'done');
-        this.getBlogList();
-      },
-      error: console.log,
-    });*/
-  }
-
-  openEditForm(data: Blog) {
-    /*const dialogRef = this._dialog.open(MantblogComponent, {
-      data,
-    });
-
-    dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
-          this.getBlogList();
-        }
-      },
-    });*/
-  }
-
-  openAddEditBlogForm() {
-    /*const dialogRef = this._dialog.open(MantblogComponent);
-    dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
-          this.getBlogList();
-        }
-      },
-    });*/
   }
 
   openSoporteDialog() {
-    this._dialog.open(SctrSoporteComponent);
+    this._dialog.open(SctrSoporteComponent, {
+      panelClass: 'sanna_theme'
+    });
   }
 
   openSeguimientoDialog() {
-    this._dialog.open(SctrSeguimientoComponent);
+    this._dialog.open(SctrSeguimientoComponent, {
+      panelClass: 'sanna_theme'
+    });
   }
 
   openVerDatosDialog() {
-    this._dialog.open(SctrVerdatosComponent);
+    this._dialog.open(SctrVerdatosComponent, {
+      panelClass: 'sanna_theme'
+    });
   }
 
   openTipoServicioDialog() {
     const dialogRef = this._dialog.open(SctrTiposervicioComponent, {
+      panelClass: 'sanna_theme',
       disableClose: true,
-      width: '350px'
+      width: '430px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getAtencionesList();
     });
   }
 

@@ -1,0 +1,15 @@
+// theme
+.mdc-dialog__title {
+    background: #00a850 !important;
+    color: #f0fdf7 !important;
+    padding: 0 10px 16px 10px !important;
+}
+
+.mdc-dialog__title+.mdc-dialog__content,
+.mdc-dialog__header+.mdc-dialog__content {
+    padding-top: 20px !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 10px;
+}

@@ -38,7 +38,7 @@ const routes: Routes =
   {
     path: 'sctr',
     component: SctrComponent,
-    data: { title:'SCTR' },
+    data: { title:'SCTR - Seguro Complementario de Trabajo de Riesgo' },
     // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
     canActivate: [AuthGuard]
   },

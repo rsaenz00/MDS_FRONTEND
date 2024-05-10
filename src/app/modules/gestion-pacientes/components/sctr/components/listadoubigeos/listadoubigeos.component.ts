@@ -1,31 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule } from '@angular/material/card';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { UbigeoService } from 'src/app/services/ubigeo.service';
 import { Ubigeos } from 'src/app/models/ubigeo.model';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-listadoubigeos',
   templateUrl: './listadoubigeos.component.html',
-  styleUrl: './listadoubigeos.component.scss',
-  standalone: true,
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatDialogModule, MatButtonModule, ReactiveFormsModule]
+  styleUrl: './listadoubigeos.component.scss'
 })
 
 export class ListadoubigeosComponent implements OnInit {
   displayedColumns: string[] = ['distrito', 'provincia', 'departamento'];
   dataSource!: MatTableDataSource<Ubigeos>;
+  countRows: number = 0;
 
   public txtDistrito = '';
   public txtProvincia = '';
@@ -47,7 +39,7 @@ export class ListadoubigeosComponent implements OnInit {
     this.getUbigeosList();
   }
 
-  
+
   getFilterPredicate(tipo: string) {
     return (row: Ubigeos, filters: string) => {
       const txtDistrito = filters;
@@ -82,6 +74,7 @@ export class ListadoubigeosComponent implements OnInit {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.countRows = this.dataSource.filteredData.length;
       },
       error: console.log,
     });
@@ -145,7 +138,9 @@ export class ListadoubigeosComponent implements OnInit {
   }
 
   filaSeleccionada(row: Ubigeos) {
-    this.dialogRef.close({ data: row });
+    this.dialogRef.close({
+      data: row
+    });
   }
 
 }

@@ -35,7 +35,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-md-2">
-                                <button mat-flat-button color="accent" (click)="openClinicaDialog()">...</button>
+                                <button mat-flat-button color="accent" (click)="openClinicaDialog()" style="width: 100%;">...</button>
                             </div>
                         </div>
                         <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
@@ -83,18 +83,6 @@
                         <mat-card-title style="margin-bottom: 10px;">Datos del asegurado</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
-                            <mat-label>Apellido paterno</mat-label>
-                            <input matInput formControlName="txtApePaterno">
-                        </mat-form-field>
-                        <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
-                            <mat-label>Apellido materno</mat-label>
-                            <input matInput formControlName="txtApeMaterno">
-                        </mat-form-field>
-                        <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
-                            <mat-label>Nombres</mat-label>
-                            <input matInput formControlName="txtNombres">
-                        </mat-form-field>
                         <div class="row">
                             <div class="col-md-4">
                                 <mat-form-field style="width: 100%;" appearance="outline">
@@ -110,6 +98,26 @@
                                 <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
                                     <mat-label>Número documento</mat-label>
                                     <input matInput formControlName="txtNroDocumento">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                    <mat-label>Apellido paterno</mat-label>
+                                    <input matInput formControlName="txtApePaterno">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                    <mat-label>Apellido materno</mat-label>
+                                    <input matInput formControlName="txtApeMaterno">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
+                                    <mat-label>Nombres</mat-label>
+                                    <input matInput formControlName="txtNombres">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -141,6 +149,17 @@
                                             *ngFor="let sexo of sexos">{{sexo.descripcion}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button mat-flat-button color="accent" [disabled]="statusBtnFiltrarPaciente" style="width: 100%;" (click)="filtrarPaciente()">Buscar</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button mat-flat-button color="accent" [disabled]="statusBtnNuevoPaciente" style="width: 100%;" (click)="newPaciente()">Nuevo</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button mat-flat-button color="accent" [disabled]="statusBtnGuardarPaciente" style="width: 100%;" (click)="savePaciente()">Guardar</button>
                             </div>
                         </div>
                     </mat-card-content>
@@ -185,7 +204,7 @@
                         <mat-card-title style="margin-bottom: 10px;">Datos del accidente</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div class="row">
+                        <!--<div class="row">
                             <div class="col-md-6">
                                 <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
                                     <mat-label>Inicio de labores</mat-label>
@@ -238,7 +257,7 @@
                                     <input matInput type="time" formControlName="txtHoraAccidente">
                                 </mat-form-field>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="row">
                             <div class="col-md-12">
                                 <label id="example-radio-group-label">Lleva hoja de atención</label>
@@ -313,8 +332,12 @@
                 </mat-card>
             </div>
         </div>
-        <div class="col-md-12 text-center">
-            <button mat-flat-button color="accent" (click)="saveAtencionSctr()">Guardar atención</button>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button mat-flat-button color="warn" (click)="exitAtencion()">Cancelar atención</button>
+                &nbsp;
+                <button mat-flat-button color="accent" (click)="saveAtencionSctr()" [disabled]="!formularioNuevaAtencionSctr.valid">Guardar atención</button>
+            </div>
         </div>
     </form>
 </mat-dialog-content>

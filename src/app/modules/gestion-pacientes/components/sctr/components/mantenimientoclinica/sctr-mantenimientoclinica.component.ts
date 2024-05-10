@@ -1,41 +1,34 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule } from '@angular/material/card';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ListadoubigeosComponent } from '../listadoubigeos/listadoubigeos.component';
 import { ClinicaService } from 'src/app/services/clinica.service';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { Clinica, ClinicasFiltro } from 'src/app/models/clinica.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sctr-mantenimientoclinica',
   templateUrl: './sctr-mantenimientoclinica.component.html',
-  styleUrl: './sctr-mantenimientoclinica.component.scss',
-  standalone: true,
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatDialogModule, MatButtonModule, ReactiveFormsModule]
+  styleUrl: './sctr-mantenimientoclinica.component.scss'
 })
 
 export class SctrMantenimientoclinicaComponent implements OnInit {
   displayedColumns: string[] = ['id_clinica', 'clinica'];
   dataSource!: MatTableDataSource<ClinicasFiltro>;
-
   codUbigeo: number;
+  countRows: number = 0;
 
-  constructor(private _dialog: MatDialog, private frm: FormBuilder, private _liveAnnouncer: LiveAnnouncer, private _clinicasServices: ClinicaService, public _dialogRef: MatDialogRef<SctrMantenimientoclinicaComponent>, private _snackBar: MatSnackBar) { }
+  public txtClinica = '';
+
+  constructor(private _dialog: MatDialog, private frm: FormBuilder, private _liveAnnouncer: LiveAnnouncer, private _clinicasServices: ClinicaService, public _dialogRef: MatDialogRef<SctrMantenimientoclinicaComponent>, private toastrService: ToastrService) { }
 
   formularioClinica = this.frm.group({
     txtCodIpress: [{ value: '', disabled: true }, Validators.required],
-    txtClinica: [{ value: '', disabled: true }, Validators.required],
+    txtClinica: [{ value: '', disabled: false }, Validators.required],
     txtDireccion: [{ value: '', disabled: true }, Validators.required],
     txtTelefono: [{ value: '', disabled: true }, Validators.required],
     cboEstado: [{ value: '', disabled: true }, Validators.required],
@@ -52,6 +45,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
   statusBtnBuscarUbigeo = true;
   statusBtnNuevaClinica = false;
   statusBtnGuardarClinica = true;
+  statusBtnCancelarClinica = true;
   codEstado = -1;
   codValidacion = -1;
 
@@ -66,6 +60,19 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.countRows = this.dataSource.filteredData.length;
+      },
+      error: console.log,
+    });
+  }
+
+  getClinicasFilterList(busqueda: string, condicion: string) {
+    this._clinicasServices.GetClinicasFiltro(busqueda, condicion).subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.resultData);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.countRows = this.dataSource.filteredData.length;
       },
       error: console.log,
     });
@@ -82,6 +89,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
   openUbigeoDialog() {
     const dialogRef = this._dialog.open(ListadoubigeosComponent, {
       disableClose: true,
+      panelClass: 'sanna_theme',
       width: '550px'
     });
 
@@ -92,11 +100,17 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     });
   }
 
-  openSnackBar(message: string, action: string = 'ok') {
-    this._snackBar.open(message, action, {
-      duration: 1000,
-      verticalPosition: 'top',
-    });
+  filtrarClinica(event: Event) {
+    const ds = (event.target as HTMLInputElement).value;
+    if (ds.length >= 3) {
+      this.txtClinica = ds === null ? '' : ds;
+
+      if (this.txtClinica == '') {
+        this.getClinicasFilterList('', '');
+      } else {
+        this.getClinicasFilterList(this.txtClinica, 'Clinica');
+      }
+    }
   }
 
   newClinica() {
@@ -111,6 +125,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.statusBtnNuevaClinica = true;
     this.statusBtnBuscarUbigeo = false;
     this.statusBtnGuardarClinica = false;
+    this.statusBtnCancelarClinica = false;
   }
 
   cancelClinica() {
@@ -125,6 +140,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.statusBtnNuevaClinica = false;
     this.statusBtnBuscarUbigeo = true;
     this.statusBtnGuardarClinica = true;
+    this.statusBtnCancelarClinica = true;
   }
 
   exitClinica() {
@@ -145,6 +161,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.statusBtnNuevaClinica = true;
     this.statusBtnBuscarUbigeo = false;
     this.statusBtnGuardarClinica = false;
+    this.statusBtnCancelarClinica = false;
 
     this.formularioClinica.get("txtUbigeo")?.setValue(row.departamento + " - " + row.provincia + " - " + row.distrito);
     this.codUbigeo = parseInt(row.ubigeo);
@@ -191,7 +208,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
         this._clinicasServices.addClinica(this.clinica).subscribe({
           next: (val: any) => {
             this.getClinicasList();
-            this.openSnackBar('¡Clínica creada satisfactoriamene!');
+            this.toastrService.success('¡Clínica creada satisfactoriamene!');
             this._dialogRef.close(true);
           },
           error: (err: any) => {
@@ -202,7 +219,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
         this._clinicasServices.updateClinica(this.clinica).subscribe({
           next: (val: any) => {
             this.getClinicasList();
-            this.openSnackBar('¡Clínica actualizada satisfactoriamene!');
+            this.toastrService.success('¡Clínica actualizada satisfactoriamene!');
             this._dialogRef.close(true);
           },
           error: (err: any) => {
@@ -212,7 +229,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
       }
 
     } else {
-      this.openSnackBar('¡Por favor complete los campos obligatorios!');
+      this.toastrService.warning('¡Por favor complete los campos obligatorios!');
     }
   }
 

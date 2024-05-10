@@ -9,12 +9,11 @@ import { ClinicasFiltro } from 'src/app/models/clinica.model';
 import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-listadoclinicas',
-  templateUrl: './listadoclinicas.component.html',
-  styleUrl: './listadoclinicas.component.scss'
+  selector: 'app-listadopacientes',
+  templateUrl: './listadopacientes.component.html',
+  styleUrl: './listadopacientes.component.scss'
 })
-
-export class ListadoclinicasComponent implements OnInit {
+export class ListadopacientesComponent implements OnInit {
   displayedColumns: string[] = ['clinica', 'direccion', 'telefono', 'distrito', 'provincia', 'departamento'];
   dataSource!: MatTableDataSource<ClinicasFiltro>;
   countRows: number = 0;
@@ -28,7 +27,7 @@ export class ListadoclinicasComponent implements OnInit {
   public txtDepartamento = '';
 
   constructor(private _liveAnnouncer: LiveAnnouncer, private _clinicasServices: ClinicaService, private frm: FormBuilder,
-    public dialogRef: MatDialogRef<ListadoclinicasComponent>) { }
+    public dialogRef: MatDialogRef<ListadopacientesComponent>) { }
 
   formularioClinicas = this.frm.group({
     txtTodos: [''],

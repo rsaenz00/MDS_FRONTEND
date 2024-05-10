@@ -19,13 +19,14 @@ export class Atencion {
     ubigeo: string;
     skill: number;
     motivo_skill: number;
-    centro_clinico: boolean;
-    empresa: boolean;
-    corredor_seguro: boolean;
-    paciente_asegurado: boolean;
+    centro_clinico: number;
+    empresa: number;
+    corredor_seguro: number;
+    paciente_asegurado: number;
     persona_reporta_clinica: string;
     persona_reporta_empresa: string;
     persona_reporta_seguro: string;
     persona_reporta_asegurado: string;
-    estado: boolean;
+    estado: number;
+    usuario_creacion: string;
 }
