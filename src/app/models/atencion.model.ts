@@ -5,8 +5,6 @@ export class Atencion {
     id_clinica: number;
     id_motivo: string;
     id_plan: string;
-    telefono: string;
-    anexo: string;
     horario_trabajo: string;
     cargo: string;
     relato: string;
@@ -29,4 +27,5 @@ export class Atencion {
     persona_reporta_asegurado: string;
     estado: number;
     usuario_creacion: string;
+    usuario_eliminacion: string;
 }

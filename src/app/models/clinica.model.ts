@@ -7,7 +7,8 @@ export class Clinica {
     distrito: string;
     direccion: string;
     telefono: string;
-    afiliado: number;
+    anexo: string;
+    afiliado: string;
     plan_huerfano_ilimitado: number;
     estado: number;
 }
