@@ -1,6 +1,6 @@
 export class Persona {
     tipo_documento: string;
-    dni: string;
+    numero_documento: string;
     nombres: string;
     apellido_paterno: string;
     apellido_materno: string;

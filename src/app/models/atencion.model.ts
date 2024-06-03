@@ -27,5 +27,6 @@ export class Atencion {
     persona_reporta_asegurado: string;
     estado: number;
     usuario_creacion: string;
+    usuario_modificacion: string;
     usuario_eliminacion: string;
 }

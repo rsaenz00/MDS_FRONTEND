@@ -6,4 +6,5 @@ export class Cliente{
     distrito:string;
     ruc:string;
     estado:boolean;
+    usuario_creacion: string;
 }
