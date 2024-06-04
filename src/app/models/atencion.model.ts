@@ -29,4 +29,5 @@ export class Atencion {
     usuario_creacion: string;
     usuario_modificacion: string;
     usuario_eliminacion: string;
+    id_clinica_primera_atencion: number;
 }

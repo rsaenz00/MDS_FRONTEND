@@ -19,6 +19,10 @@ export class AtencionService {
         return this._http.get('Atenciones/GetAtencionByCodigo?cod_atencion=' + cod_atencion);
     }
 
+    GetAtencionesFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string): Observable<any> {
+        return this._http.get('Atenciones/GetAtencionesFiltro?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&busqueda=' + busqueda + '&condicion=' + condicion);
+    }
+
     addAtencion(data: Atencion): Observable<Atencion> {
         const datos: string = JSON.stringify(data);
         let cabecera = new HttpHeaders();
