@@ -11,40 +11,41 @@ export class AtencionService {
 
     constructor(private _http: HttpClient) { }
 
-    GetAtencionesList(fechaInicio: string, fechaFin: string, condicion: number): Observable<any> {
-        return this._http.get('Atenciones/GetAtencionesBandeja?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&condicion=' + condicion);
+    //SERVICIO SCTR
+    GetAtencionesSctrList(fechaInicio: string, fechaFin: string, condicion: number): Observable<any> {
+        return this._http.get('Atenciones/GetAtencionesSctrBandeja?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&condicion=' + condicion);
     }
 
-    GetAtencionByCodigo(cod_atencion: string): Observable<any> {
-        return this._http.get('Atenciones/GetAtencionByCodigo?cod_atencion=' + cod_atencion);
+    GetAtencionSctrByCodigo(cod_atencion: string): Observable<any> {
+        return this._http.get('Atenciones/GetAtencionSctrByCodigo?cod_atencion=' + cod_atencion);
     }
 
-    GetAtencionesFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string): Observable<any> {
-        return this._http.get('Atenciones/GetAtencionesFiltro?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&busqueda=' + busqueda + '&condicion=' + condicion);
+    GetAtencionesSctrFiltrO(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string): Observable<any> {
+        return this._http.get('Atenciones/GetAtencionesSctrFiltro?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&busqueda=' + busqueda + '&condicion=' + condicion);
     }
 
-    addAtencion(data: Atencion): Observable<Atencion> {
+    addAtencionSctr(data: Atencion): Observable<Atencion> {
         const datos: string = JSON.stringify(data);
         let cabecera = new HttpHeaders();
         cabecera = cabecera.set('Content-Type', 'application/json');
 
-        return this._http.post<Atencion>('Atenciones/AddAtencion', datos, { headers: cabecera });
+        return this._http.post<Atencion>('Atenciones/AddAtencionSctr', datos, { headers: cabecera });
     }
 
-    updateAtencion(data: Atencion): Observable<Atencion> {
+    updateAtencionSctr(data: Atencion): Observable<Atencion> {
         const datos: string = JSON.stringify(data);
         let cabecera = new HttpHeaders();
         cabecera = cabecera.set('Content-Type', 'application/json');
 
-        return this._http.put<Atencion>('Atenciones/UpdateAtencion', datos, { headers: cabecera });
+        return this._http.put<Atencion>('Atenciones/UpdateAtencionSctr', datos, { headers: cabecera });
     }
 
-    deleteAtencion(data: Atencion): Observable<Atencion> {
+    deleteAtencionSctr(data: Atencion): Observable<Atencion> {
         const datos: string = JSON.stringify(data);
         let cabecera = new HttpHeaders();
         cabecera = cabecera.set('Content-Type', 'application/json');
 
-        return this._http.delete<Atencion>('Atenciones/DeleteAtencion', { headers: cabecera, body: datos });
+        return this._http.delete<Atencion>('Atenciones/DeleteAtencionSctr', { headers: cabecera, body: datos });
     }
-
+    //FIN SERVICIO SCTR
 }
