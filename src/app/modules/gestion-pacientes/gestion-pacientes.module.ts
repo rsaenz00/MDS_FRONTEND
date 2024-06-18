@@ -33,6 +33,10 @@ import { SctrRegistramotivoComponent } from './components/sctr/components/regist
 import { SctrSeguimientoComponent } from './components/sctr/components/seguimiento/sctr-seguimiento.component';
 import { SctrSoporteComponent } from './components/sctr/components/soporte/sctr-soporte.component';
 import { SctrVerdatosComponent } from './components/sctr/components/verdatos/sctr-verdatos.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ConfirmaranularatencionComponent } from './components/sctr/components/confirmaranularatencion/confirmaranularatencion.component';
+import { RegistraclienteComponent } from './components/sctr/components/registracliente/registracliente.component';
+import { SctrReporteComponent } from './components/sctr/components/reporte/sctr-reporte.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,10 @@ import { SctrVerdatosComponent } from './components/sctr/components/verdatos/sct
     SctrRegistramotivoComponent,
     SctrSeguimientoComponent,
     SctrSoporteComponent,
-    SctrVerdatosComponent
+    SctrVerdatosComponent,
+    ConfirmaranularatencionComponent,
+    RegistraclienteComponent,
+    SctrReporteComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +76,8 @@ import { SctrVerdatosComponent } from './components/sctr/components/verdatos/sct
     MatProgressSpinnerModule,
     MatDialogModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressBarModule
   ]
 })
 

@@ -6,8 +6,6 @@ import { SctrNuevatencionComponent } from '../nuevatencion/sctr-nuevatencion.com
 import { SctrRegistramotivoComponent } from '../registramotivo/sctr-registramotivo.component';
 import { ToastrService } from 'ngx-toastr';
 
-let rdSkill = 0, cboMotivo = 0;
-
 @Component({
   selector: 'app-sctr-tiposervicio',
   templateUrl: './sctr-tiposervicio.component.html',
@@ -19,6 +17,8 @@ export class SctrTiposervicioComponent {
   constructor(private _motivoService: MotivoService, private toastrService: ToastrService, private _dialog: MatDialog, public _dialogRef: MatDialogRef<SctrTiposervicioComponent>) { }
 
   motivos: Motivo[];
+  rdSkill = 0;
+  cboMotivo = 0;
 
   ngOnInit(): void {
     this.getMotivosList();
@@ -34,11 +34,11 @@ export class SctrTiposervicioComponent {
   }
 
   getSkill(target: any) {
-    rdSkill = target.value;
+    this.rdSkill = target.value;
   }
 
   getMotivoCbo(target: any) {
-    cboMotivo = target.value;
+    this.cboMotivo = target.value;
   }
 
   exitTipoServicio() {
@@ -47,13 +47,13 @@ export class SctrTiposervicioComponent {
 
   nuevoServicioSctr() {
 
-    if (cboMotivo != 0 && rdSkill != 0) {
-      if (cboMotivo == 20) {
+    if (this.cboMotivo != 0 && this.rdSkill != 0) {
+      if (this.cboMotivo == 20) {
 
         const dialogRef = this._dialog.open(SctrNuevatencionComponent, {
           panelClass: 'sanna_theme',
           disableClose: true,
-          data: { 'cboMotivo': cboMotivo, 'rdSkill': rdSkill },
+          data: { 'cboMotivo': this.cboMotivo, 'rdSkill': this.rdSkill },
           width: '1100px'
         });
 
@@ -66,7 +66,7 @@ export class SctrTiposervicioComponent {
         const dialogRef = this._dialog.open(SctrRegistramotivoComponent, {
           panelClass: 'sanna_theme',
           disableClose: true,
-          data: { 'cboMotivo': cboMotivo, 'rdSkill': rdSkill },
+          data: { 'cboMotivo': this.cboMotivo, 'rdSkill': this.rdSkill },
           width: '1100px'
         });
 

@@ -10,8 +10,6 @@ import { MatOption } from '@angular/material/core';
 import { ListadoclinicasComponent } from '../listadoclinicas/listadoclinicas.component';
 import { UsuarioAuth } from 'src/app/models/usuario-auth';
 
-var valIdCliente = 0;
-
 @Component({
   selector: 'app-sctr-registramotivo',
   templateUrl: './sctr-registramotivo.component.html',
@@ -47,6 +45,7 @@ export class SctrRegistramotivoComponent {
   statusBtnRegistrarEmpresa = true;
   filtradoClientes: Cliente[];
   atencion: Atencion = {} as Atencion;
+  valIdCliente = 0;
 
   ngOnInit(): void {
     this.usuarioEnlinea = JSON.parse(localStorage.getItem('authObj') as any);
@@ -80,7 +79,7 @@ export class SctrRegistramotivoComponent {
   }
 
   selectCliente(option: MatOption) {
-    valIdCliente = option.value.id_cliente;
+    this.valIdCliente = option.value.id_cliente;
     this.formularioRegitraMotivoSctr.get("txtEmpresa")?.setValue(option.value.nombre);
   }
 
@@ -103,7 +102,7 @@ export class SctrRegistramotivoComponent {
     this.formularioRegitraMotivoSctr.controls['txtRucEmpresa'].disable();
     this.formularioRegitraMotivoSctr.reset();
     this.pacienteReporta = target.value;
-    valIdCliente = 0;
+    this.valIdCliente = 0;
     this.codClinica = 0;
 
     if (this.pacienteReporta == "clinica") {
@@ -132,7 +131,7 @@ export class SctrRegistramotivoComponent {
       this.atencion.skill = this.rdSkill;
       this.atencion.motivo_skill = this.cboMotivo;
       this.atencion.observacion = this.formularioRegitraMotivoSctr.value['txtMotivo'] || '';
-      this.atencion.estado = 0;
+      this.atencion.estado = 1;
       this.atencion.usuario_creacion = this.usuarioEnlinea.id || '';
 
       if (this.reporta == "clinica") {
@@ -148,7 +147,7 @@ export class SctrRegistramotivoComponent {
         this.atencion.corredor_seguro = 0;
         this.atencion.paciente_asegurado = 0;
         this.atencion.persona_reporta_empresa = this.formularioRegitraMotivoSctr.value['txtPacienteReportaempresa'] || '';
-        this.atencion.id_empresa = valIdCliente;
+        this.atencion.id_empresa = this.valIdCliente;
       } else if (this.reporta == "seguro") {
         this.atencion.corredor_seguro = 1;
         this.atencion.centro_clinico = 0;
@@ -163,9 +162,9 @@ export class SctrRegistramotivoComponent {
         this.atencion.persona_reporta_asegurado = this.formularioRegitraMotivoSctr.value['txtPacienteReportaAsegurado'] || '';
       }
 
-      //console.log(this.atencion)
+      console.log(this.atencion)
 
-      this._atencionServices.addAtencion(this.atencion).subscribe({
+      this._atencionServices.addAtencionSctr(this.atencion).subscribe({
         next: (val: any) => {
           this.toastrService.success('¡Motivo creado satisfactoriamene!');
           this._dialogRef.close(true);

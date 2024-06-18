@@ -1,0 +1,27 @@
+<div mat-dialog-title>
+    Registrar Empresa
+</div>
+<mat-dialog-content>
+    <form [formGroup]="formularioNuevoClienteSctr">
+        <div class="row">
+            <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
+                <mat-label>N° RUC</mat-label>
+                <input matInput formControlName="txtRuc">
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
+                <mat-label>Empresa</mat-label>
+                <input matInput formControlName="txtNombre">
+            </mat-form-field>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <button mat-flat-button color="warn" (click)="exitRegistrarCliente()" style="width: 100%;">Salir</button>
+        </div>
+        <div class="col-md-6 text-center">
+            <button mat-flat-button color="accent" (click)="saveCliente()" style="width: 100%;">Guardar</button>
+        </div>
+    </div>
+</mat-dialog-content>

@@ -20,6 +20,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
   displayedColumns: string[] = ['id_clinica', 'clinica'];
   dataSource!: MatTableDataSource<ClinicasFiltro>;
   codUbigeo: number;
+  codClinica: number;
   countRows: number = 0;
 
   public txtClinica = '';
@@ -27,10 +28,11 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
   constructor(private _dialog: MatDialog, private frm: FormBuilder, private _liveAnnouncer: LiveAnnouncer, private _clinicasServices: ClinicaService, public _dialogRef: MatDialogRef<SctrMantenimientoclinicaComponent>, private toastrService: ToastrService) { }
 
   formularioClinica = this.frm.group({
-    txtCodIpress: [{ value: '', disabled: true }, Validators.required],
+    txtCodIpress: [{ value: '', disabled: true }],
     txtClinica: [{ value: '', disabled: false }, Validators.required],
     txtDireccion: [{ value: '', disabled: true }, Validators.required],
     txtTelefono: [{ value: '', disabled: true }, Validators.required],
+    txtAnexo: [{ value: '', disabled: true }],
     cboEstado: [{ value: '', disabled: true }, Validators.required],
     cboValidacion: [{ value: '', disabled: true }, Validators.required],
     txtUbigeo: [{ value: '', disabled: true }, Validators.required],
@@ -117,11 +119,12 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.formularioClinica.get("txtAccion")?.setValue("new");
     this.formularioClinica.controls['cboEstado'].enable();
     this.formularioClinica.controls['cboValidacion'].enable();
-    this.formularioClinica.controls['txtCodIpress'].enable();
+    //this.formularioClinica.controls['txtCodIpress'].enable();
     this.formularioClinica.controls['txtClinica'].enable();
     this.formularioClinica.controls['txtDireccion'].enable();
     this.formularioClinica.controls['txtTelefono'].enable();
-    this.formularioClinica.controls['txtUbigeo'].enable();
+    this.formularioClinica.controls['txtAnexo'].enable();
+    //this.formularioClinica.controls['txtUbigeo'].enable();
     this.statusBtnNuevaClinica = true;
     this.statusBtnBuscarUbigeo = false;
     this.statusBtnGuardarClinica = false;
@@ -132,11 +135,12 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.formularioClinica.reset();
     this.formularioClinica.controls['cboEstado'].disable();
     this.formularioClinica.controls['cboValidacion'].disable();
-    this.formularioClinica.controls['txtCodIpress'].disable();
+    //this.formularioClinica.controls['txtCodIpress'].disable();
     this.formularioClinica.controls['txtClinica'].disable();
     this.formularioClinica.controls['txtDireccion'].disable();
     this.formularioClinica.controls['txtTelefono'].disable();
-    this.formularioClinica.controls['txtUbigeo'].disable();
+    this.formularioClinica.controls['txtAnexo'].disable();
+    //this.formularioClinica.controls['txtUbigeo'].disable();
     this.statusBtnNuevaClinica = false;
     this.statusBtnBuscarUbigeo = true;
     this.statusBtnGuardarClinica = true;
@@ -153,11 +157,12 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.formularioClinica.get("txtAccion")?.setValue("edit");
     this.formularioClinica.controls['cboEstado'].enable();
     this.formularioClinica.controls['cboValidacion'].enable();
-    this.formularioClinica.controls['txtCodIpress'].enable();
+    //this.formularioClinica.controls['txtCodIpress'].enable();
     this.formularioClinica.controls['txtClinica'].enable();
     this.formularioClinica.controls['txtDireccion'].enable();
     this.formularioClinica.controls['txtTelefono'].enable();
-    this.formularioClinica.controls['txtUbigeo'].enable();
+    this.formularioClinica.controls['txtAnexo'].enable();
+    //this.formularioClinica.controls['txtUbigeo'].enable();
     this.statusBtnNuevaClinica = true;
     this.statusBtnBuscarUbigeo = false;
     this.statusBtnGuardarClinica = false;
@@ -165,12 +170,14 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
 
     this.formularioClinica.get("txtUbigeo")?.setValue(row.departamento + " - " + row.provincia + " - " + row.distrito);
     this.codUbigeo = parseInt(row.ubigeo);
+    this.codClinica = parseInt(row.id_clinica);
     this.formularioClinica.get("txtCodIpress")?.setValue(row.id_clinica);
     this.formularioClinica.get("txtClinica")?.setValue(row.clinica);
     this.formularioClinica.get("txtDireccion")?.setValue(row.direccion);
     this.formularioClinica.get("txtTelefono")?.setValue(row.telefono);
+    this.formularioClinica.get("txtAnexo")?.setValue(row.anexo);
 
-    if (row.afiliado == 1) {
+    if (row.afiliado == "1") {
       this.codValidacion = 1;
     } else {
       this.codValidacion = 0;
@@ -188,15 +195,15 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
 
   saveClinica() {
     if (this.formularioClinica.valid) {
-      this.clinica.id_clinica = this.formularioClinica.value["txtCodIpress"] || '';
       this.clinica.clinica = this.formularioClinica.value["txtClinica"] || '';
       this.clinica.ubigeo = this.codUbigeo.toString();
       this.clinica.direccion = this.formularioClinica.value["txtDireccion"] || '';
       this.clinica.telefono = this.formularioClinica.value["txtTelefono"] || '';
+      this.clinica.anexo = this.formularioClinica.value["txtAnexo"] || '';
       if (this.formularioClinica.value["cboValidacion"] == "1") {
-        this.clinica.afiliado = 1;
+        this.clinica.afiliado = "1";
       } else {
-        this.clinica.afiliado = 0;
+        this.clinica.afiliado = "0";
       }
       if (this.formularioClinica.value["cboEstado"] == "1") {
         this.clinica.estado = 1;
@@ -216,6 +223,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
           },
         });
       } else {
+        this.clinica.id_clinica = this.codClinica.toString();
         this._clinicasServices.updateClinica(this.clinica).subscribe({
           next: (val: any) => {
             this.getClinicasList();

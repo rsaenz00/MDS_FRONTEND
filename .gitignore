@@ -43,3 +43,4 @@ Thumbs.db
 
 # Ignore cache created with the Angular CLI.
 .angular/
+/.vs/MDS_FRONTEND/config/applicationhost.config

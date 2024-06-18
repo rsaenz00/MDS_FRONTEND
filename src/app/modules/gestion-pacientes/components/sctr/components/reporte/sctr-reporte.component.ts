@@ -5,10 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DateAdapter } from '@angular/material/core';
-import { SctrTiposervicioComponent } from './components/tiposervicio/sctr-tiposervicio.component';
-import { SctrVerdatosComponent } from './components/verdatos/sctr-verdatos.component';
-import { SctrSeguimientoComponent } from './components/seguimiento/sctr-seguimiento.component';
-import { SctrSoporteComponent } from './components/soporte/sctr-soporte.component';
+import { SctrTiposervicioComponent } from '../tiposervicio/sctr-tiposervicio.component';
+import { SctrVerdatosComponent } from '../verdatos/sctr-verdatos.component';
+import { SctrSeguimientoComponent } from '../seguimiento/sctr-seguimiento.component';
+import { SctrSoporteComponent } from '../soporte/sctr-soporte.component';
 import { AtencionService } from 'src/app/services/atencion.service';
 import { Atencion } from 'src/app/models/atencion.model';
 import { ToastrService } from 'ngx-toastr';
@@ -16,45 +16,24 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { exportExcelService } from 'src/app/helpers/excel/exportxls.services';
 
 @Component({
-  selector: 'app-sctr',
-  templateUrl: './sctr.component.html',
-  styleUrl: './sctr.component.scss'
+  selector: 'app-sctr-reporte',
+  templateUrl: './sctr-reporte.component.html',
+  styleUrl: './sctr-reporte.component.scss'
 })
 
-export class SctrComponent implements OnInit {
+export class SctrReporteComponent implements OnInit {
   reporte = 0;
   idRow = 0;
   rowSeleccionado: any;
   countRows: number = 0;
-  positionRow: number;
   displayedColumns: string[] = [];
   dataSource!: MatTableDataSource<Atencion>;
   showSpinner = true;
-  rowStyle: string = "";
 
   constructor(private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _atencionService: AtencionService,
     private dateAdapter: DateAdapter<Date>, private toastService: ToastrService, private exportarExcelService: exportExcelService, private frm: FormBuilder) {
     this.dateAdapter.setLocale("es-pe");
   }
-
-  formularioFiltroAtenciones = this.frm.group({
-    txtCodigoAtencion: [''],
-    txtTipoAtencion: [''],
-    txtFechaCreacion: [''],
-    txtEstado: [''],
-    txtHoraCreacion: [''],
-    txtDocumentoIdentidad: [''],
-    txtNumeroDocumento: [''],
-    txtPaciente: [''],
-    txtFechaNacimiento: [''],
-    txtClinica: [''],
-    txtEmpresa: [''],
-    txtEmpresaRuc: [''],
-    txtPlan: [''],
-    txtMotivo: [''],
-    txtUsuarioCreacion: [''],
-    txtSkill: ['']
-  });
 
   formularioFiltroReporteSctr = this.frm.group({
     txtStartDateFilter: [new Date(), Validators.required],
@@ -102,25 +81,9 @@ export class SctrComponent implements OnInit {
     });
   }
 
-  getAtencionesFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string) {
-    this.displayedColumns = ['cod_atencion', 'tipo_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
-
-    this._atencionService.GetAtencionesSctrFiltrO(fechaInicio, fechaFin, busqueda, condicion).subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res.resultData);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.countRows = this.dataSource.filteredData.length;
-        this.showSpinner = false;
-      },
-      error: console.log,
-    });
-  }
-
-  getRowSelected(row: Atencion, position: number) {
-    this.positionRow = position;
-    this.idRow = row["cod_atencion"];
-    this.rowSeleccionado = row;
+  getRowSelected(row: any) {
+    this.idRow = row.value.cod_atencion;
+    this.rowSeleccionado = row.value;
   }
 
   openSoporteDialog() {
@@ -191,26 +154,6 @@ export class SctrComponent implements OnInit {
     } else {
       this.toastService.warning('¡Por favor complete los campos obligatorios!');
     }
-  }
-
-  filtrarAtencion(event: Event, condicion: string) {
-    this.showSpinner = true;
-    let fechaInicio = this.convertDate(this.formularioFiltroReporteSctr.value["txtStartDateFilter"]);
-    let fechaFin = this.convertDate(this.formularioFiltroReporteSctr.value["txtEndDateFilter"]);
-
-    let valueInput;
-
-    const ds = (event.target as HTMLInputElement).value;
-    valueInput = ds === null ? '' : ds;
-
-    if (valueInput == '') {
-      this.getAtencionesFiltro(fechaInicio, fechaFin, '', '');
-    } else {
-      this.getAtencionesFiltro(fechaInicio, fechaFin, valueInput, condicion);
-    }
-
-    this.formularioFiltroAtenciones.reset();
-    this.formularioFiltroAtenciones.controls["txt" + condicion].setValue(valueInput);
   }
 
   convertDate(valueDate) {

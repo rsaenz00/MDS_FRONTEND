@@ -4,82 +4,61 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ClinicaService } from 'src/app/services/clinica.service';
-import { ClinicasFiltro } from 'src/app/models/clinica.model';
 import { MatPaginator } from '@angular/material/paginator';
+import { PacientesFiltro } from 'src/app/models/paciente.model';
+import { PacienteService } from 'src/app/services/paciente.service';
 
 @Component({
   selector: 'app-listadopacientes',
   templateUrl: './listadopacientes.component.html',
   styleUrl: './listadopacientes.component.scss'
 })
+
 export class ListadopacientesComponent implements OnInit {
-  displayedColumns: string[] = ['clinica', 'direccion', 'telefono', 'distrito', 'provincia', 'departamento'];
-  dataSource!: MatTableDataSource<ClinicasFiltro>;
+  displayedColumns: string[] = ['tipo_documento', 'numero_documento', 'nombres', 'apellido_paterno', 'apellido_materno'];
+  dataSource!: MatTableDataSource<PacientesFiltro>;
   countRows: number = 0;
 
-  public txtTodos = '';
-  public txtClinica = '';
-  public txtDireccion = '';
-  public txtTelefono = '';
-  public txtDistrito = '';
-  public txtProvincia = '';
-  public txtDepartamento = '';
+  public txtApePaternoDNI = '';
+  public txtApeMaterno = '';
+  public txtNombres = '';
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private _clinicasServices: ClinicaService, private frm: FormBuilder,
+  constructor(private _liveAnnouncer: LiveAnnouncer, private _pacientesServices: PacienteService, private frm: FormBuilder,
     public dialogRef: MatDialogRef<ListadopacientesComponent>) { }
 
   formularioClinicas = this.frm.group({
-    txtTodos: [''],
-    txtClinica: [''],
-    txtDireccion: [''],
-    txtTelefono: [''],
-    txtDistrito: [''],
-    txtProvincia: [''],
-    txtDepartamento: ['']
+    txtApePaternoDNI: [''],
+    txtApeMaterno: [''],
+    txtNombres: ['']
   });
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getClinicasList('', '');
+    //this.getPacientesList('', '');
   }
 
-  getFilterPredicate(tipo: string) {
-    return (row: ClinicasFiltro, filters: string) => {
+  /*getFilterPredicate(tipo: string) {
+    return (row: PacientesFiltro, filters: string) => {
 
-      const txtTodos = filters;
-      const txtClinica = filters;
-      const txtDireccion = filters;
-      const txtTelefono = filters;
-      const txtDistrito = filters;
-      const txtProvincia = filters;
-      const txtDepartamento = filters;
+      const txtApePaternoDNI = filters;
+      const txtApeMaterno = filters;
+      const txtNombres = filters;
 
-      const columnIpress = row.clinica;
-      const columnDireccion = row.direccion;
-      const columnTelefono = row.telefono;
-      const columnDistrito = row.distrito;
-      const columnProvincia = row.provincia;
-      const columnDepartamento = row.departamento;
+      const columnApePaterno = row.apellido_paterno;
+      const columnDni = row.dni;
+      const columnApeMaterno = row.apellido_materno;
+      const columnNombres = row.nombres;
 
       var customFilter = false;
 
-      if (tipo == 'clinica') {
-        customFilter = columnIpress.toLowerCase().includes(txtClinica);
-      } else if (tipo == 'direccion') {
-        customFilter = columnDireccion.toLowerCase().includes(txtDireccion);
-      } else if (tipo == 'telefono') {
-        customFilter = columnTelefono.toLowerCase().includes(txtTelefono);
-      } else if (tipo == 'distrito') {
-        customFilter = columnDistrito.toLowerCase().includes(txtDistrito);
-      } else if (tipo == 'provincia') {
-        customFilter = columnProvincia.toLowerCase().includes(txtProvincia);
-      } else if (tipo == 'departamento') {
-        customFilter = columnDepartamento.toLowerCase().includes(txtDepartamento);
-      } else if (tipo == 'todos') {
-        customFilter = columnIpress.toLowerCase().includes(txtTodos) || columnDireccion.toLowerCase().includes(txtTodos) || columnTelefono.toLowerCase().includes(txtTodos) || columnDistrito.toLowerCase().includes(txtTodos) || columnProvincia.toLowerCase().includes(txtTodos) || columnDepartamento.toLowerCase().includes(txtTodos);
+      if (tipo == 'nombres') {
+        customFilter = columnNombres.toLowerCase().includes(txtApeMaterno);
+      } else if (tipo == 'ape_materno') {
+        customFilter = columnApeMaterno.toLowerCase().includes(txtNombres);
+      } else if (tipo == 'ape_paterno_dni') {
+        customFilter = columnApePaterno.toLowerCase().includes(txtApePaternoDNI) || columnDni.toLowerCase().includes(txtApePaternoDNI);
       }
 
       const matchFilter: any[] = [];
@@ -87,10 +66,10 @@ export class ListadopacientesComponent implements OnInit {
 
       return matchFilter.every(Boolean);
     };
-  }
+  }*/
 
-  getClinicasList(busqueda: string, condicion: string) {
-    this._clinicasServices.GetClinicasFiltro(busqueda, condicion).subscribe({
+  getPacientesList(busqueda: string, condicion: string) {
+    this._pacientesServices.GetPacientesFiltro(busqueda, condicion).subscribe({
       next: (res) => {
         //console.log(res.resultData)
         this.dataSource = new MatTableDataSource(res.resultData);
@@ -110,133 +89,49 @@ export class ListadopacientesComponent implements OnInit {
     }
   }
 
-  filtrarTodos(event: Event) {
-    this.formularioClinicas.controls['txtClinica'].reset();
-    this.formularioClinicas.controls['txtDepartamento'].reset();
-    this.formularioClinicas.controls['txtProvincia'].reset();
-    this.formularioClinicas.controls['txtDistrito'].reset();
-    this.formularioClinicas.controls['txtDireccion'].reset();
-    this.formularioClinicas.controls['txtTelefono'].reset();
+  filtrarApePaternoDni(event: Event) {
+    this.formularioClinicas.controls['txtApeMaterno'].reset();
+    this.formularioClinicas.controls['txtNombres'].reset();
 
     const ds = (event.target as HTMLInputElement).value;
-    this.txtTodos = ds === null ? '' : ds;
+    this.txtApePaternoDNI = ds === null ? '' : ds;
 
-    if (this.txtTodos == '') {
-      this.getClinicasList('', '');
+    if (this.txtApePaternoDNI == '') {
+      //this.getPacientesList('', '');
     } else {
-      this.getClinicasList(this.txtTodos, 'Todos');
+      this.getPacientesList(this.txtApePaternoDNI, 'ApePaternoDni');
     }
   }
 
-  filtrarClinica(event: Event) {
-    this.formularioClinicas.controls['txtDepartamento'].reset();
-    this.formularioClinicas.controls['txtProvincia'].reset();
-    this.formularioClinicas.controls['txtDistrito'].reset();
-    this.formularioClinicas.controls['txtDireccion'].reset();
-    this.formularioClinicas.controls['txtTelefono'].reset();
-    this.formularioClinicas.controls['txtTodos'].reset();
+  filtrarApeMaternoDni(event: Event) {
+    this.formularioClinicas.controls['txtNombres'].reset();
+    this.formularioClinicas.controls['txtApePaternoDNI'].reset();
 
     const ds = (event.target as HTMLInputElement).value;
-    this.txtClinica = ds === null ? '' : ds;
+    this.txtApeMaterno = ds === null ? '' : ds;
 
-    if (this.txtClinica == '') {
-      this.getClinicasList('', '');
+    if (this.txtApeMaterno == '') {
+      //this.getPacientesList('', '');
     } else {
-      this.getClinicasList(this.txtClinica, 'Clinica');
+      this.getPacientesList(this.txtApeMaterno, 'ApeMaterno');
     }
   }
 
-  filtrarDireccion(event: Event) {
-    this.formularioClinicas.controls['txtDepartamento'].reset();
-    this.formularioClinicas.controls['txtProvincia'].reset();
-    this.formularioClinicas.controls['txtClinica'].reset();
-    this.formularioClinicas.controls['txtDistrito'].reset();
-    this.formularioClinicas.controls['txtTelefono'].reset();
-    this.formularioClinicas.controls['txtTodos'].reset();
+  filtrarNombres(event: Event) {
+    this.formularioClinicas.controls['txtApePaternoDNI'].reset();
+    this.formularioClinicas.controls['txtApePaternoDNI'].reset();
 
     const ds = (event.target as HTMLInputElement).value;
-    this.txtDireccion = ds === null ? '' : ds;
+    this.txtNombres = ds === null ? '' : ds;
 
-    if (this.txtDireccion == '') {
-      this.getClinicasList('', '');
+    if (this.txtNombres == '') {
+      //this.getPacientesList('', '');
     } else {
-      this.getClinicasList(this.txtDireccion, 'Direccion');
+      this.getPacientesList(this.txtNombres, 'Nombres');
     }
   }
 
-  filtrarTelefono(event: Event) {
-    this.formularioClinicas.controls['txtDepartamento'].reset();
-    this.formularioClinicas.controls['txtProvincia'].reset();
-    this.formularioClinicas.controls['txtDistrito'].reset();
-    this.formularioClinicas.controls['txtClinica'].reset();
-    this.formularioClinicas.controls['txtDireccion'].reset();
-    this.formularioClinicas.controls['txtTodos'].reset();
-
-    const ds = (event.target as HTMLInputElement).value;
-    this.txtTelefono = ds === null ? '' : ds;
-
-    if (this.txtTelefono == '') {
-      this.getClinicasList('', '');
-    } else {
-      this.getClinicasList(this.txtTelefono, 'Telefono');
-    }
-  }
-
-  filtrarDistrito(event: Event) {
-    this.formularioClinicas.controls['txtDepartamento'].reset();
-    this.formularioClinicas.controls['txtProvincia'].reset();
-    this.formularioClinicas.controls['txtClinica'].reset();
-    this.formularioClinicas.controls['txtDireccion'].reset();
-    this.formularioClinicas.controls['txtTelefono'].reset();
-    this.formularioClinicas.controls['txtTodos'].reset();
-
-    const ds = (event.target as HTMLInputElement).value;
-    this.txtDistrito = ds === null ? '' : ds;
-
-    if (this.txtDistrito == '') {
-      this.getClinicasList('', '');
-    } else {
-      this.getClinicasList(this.txtDistrito, 'Distrito');
-    }
-  }
-
-  filtrarProvincia(event: Event) {
-    this.formularioClinicas.controls['txtDepartamento'].reset();
-    this.formularioClinicas.controls['txtDistrito'].reset();
-    this.formularioClinicas.controls['txtClinica'].reset();
-    this.formularioClinicas.controls['txtDireccion'].reset();
-    this.formularioClinicas.controls['txtTelefono'].reset();
-    this.formularioClinicas.controls['txtTodos'].reset();
-
-    const ds = (event.target as HTMLInputElement).value;
-    this.txtProvincia = ds === null ? '' : ds;
-
-    if (this.txtProvincia == '') {
-      this.getClinicasList('', '');
-    } else {
-      this.getClinicasList(this.txtProvincia, 'Provincia');
-    }
-  }
-
-  filtrarDepartamento(event: Event) {
-    this.formularioClinicas.controls['txtProvincia'].reset();
-    this.formularioClinicas.controls['txtDistrito'].reset();
-    this.formularioClinicas.controls['txtClinica'].reset();
-    this.formularioClinicas.controls['txtDireccion'].reset();
-    this.formularioClinicas.controls['txtTelefono'].reset();
-    this.formularioClinicas.controls['txtTodos'].reset();
-
-    const ds = (event.target as HTMLInputElement).value;
-    this.txtDepartamento = ds === null ? '' : ds;
-
-    if (this.txtDepartamento == '') {
-      this.getClinicasList('', '');
-    } else {
-      this.getClinicasList(this.txtDepartamento, 'Departamento');
-    }
-  }
-
-  filaSeleccionada(row: ClinicasFiltro) {
+  filaSeleccionada(row: PacientesFiltro) {
     this.dialogRef.close({
       data: row
     });

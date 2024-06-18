@@ -6,21 +6,21 @@
         <mat-card-content>
             <form class="row" [formGroup]="formularioUbigeo" style="margin-bottom: 10px;">
                 <div class="col-md-4">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
                         <mat-label>Distrito</mat-label>
                         <input matInput (keyup)="filtrarDistrito($event)" placeholder="Distrito"
                             formControlName="txtDistrito">
                     </mat-form-field>
                 </div>
                 <div class="col-md-4">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
                         <mat-label>Provincia</mat-label>
                         <input matInput (keyup)="filtrarProvincia($event)" placeholder="Provincia"
                             formControlName="txtProvincia">
                     </mat-form-field>
                 </div>
                 <div class="col-md-4">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
                         <mat-label>Departamento</mat-label>
                         <input matInput (keyup)="filtrarDepartamento($event)" placeholder="Departamento"
                             formControlName="txtDepartamento">
