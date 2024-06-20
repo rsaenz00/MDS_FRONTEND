@@ -37,6 +37,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ConfirmaranularatencionComponent } from './components/sctr/components/confirmaranularatencion/confirmaranularatencion.component';
 import { RegistraclienteComponent } from './components/sctr/components/registracliente/registracliente.component';
 import { SctrReporteComponent } from './components/sctr/components/reporte/sctr-reporte.component';
+import { SitedsComponent } from './components/mad/components/siteds/siteds.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { SctrReporteComponent } from './components/sctr/components/reporte/sctr-
     SctrVerdatosComponent,
     ConfirmaranularatencionComponent,
     RegistraclienteComponent,
-    SctrReporteComponent
+    SctrReporteComponent,
+    SitedsComponent
   ],
   imports: [
     CommonModule,

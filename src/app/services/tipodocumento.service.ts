@@ -14,4 +14,8 @@ export class TipoDocumentoService {
         return this._http.get('TipoDocumentos/GetTipoDocumentos');
     }
 
+    GetTipoDocumentosSusalud(): Observable<any> {
+        return this._http.get('TipoDocumentos/GetTipoDocumentosSusalud');
+    }
+
 }

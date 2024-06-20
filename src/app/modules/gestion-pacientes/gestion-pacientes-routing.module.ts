@@ -5,6 +5,8 @@ import { AuthGuard } from 'src/app/helpers/security/auth.guard';
 import { SctrComponent } from './components/sctr/sctr.component';
 import { DrOnlineComponent } from './components/dr-online/dr-online.component';
 import { SctrReporteComponent } from './components/sctr/components/reporte/sctr-reporte.component';
+import { SitedsComponent } from './components/mad/components/siteds/siteds.component';
+import { MadComponent } from './components/mad/mad.component';
 
 const routes: Routes = 
 [
@@ -31,7 +33,7 @@ const routes: Routes =
   },
   {
     path: 'mad',
-    component: SctrComponent,
+    component: MadComponent,
     data: { title:'Medicos a Domicilio' },
     // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
     canActivate: [AuthGuard]
@@ -40,14 +42,18 @@ const routes: Routes =
     path: 'sctr',
     component: SctrComponent,
     data: { title:'SCTR - Seguro Complementario de Trabajo de Riesgo' },
-    // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
     canActivate: [AuthGuard]
   },
   {
     path: 'sctr-reporte',
     component: SctrReporteComponent,
     data: { title:'Reporte SCTR - Seguro Complementario de Trabajo de Riesgo' },
-    // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'siteds',
+    component: SitedsComponent,
+    data: { title:'SITEDS' },
     canActivate: [AuthGuard]
   },
   
