@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Cliente } from 'src/app/models/cliente.model';
 import { UsuarioAuth } from 'src/app/models/usuario-auth';
 import { ClienteService } from 'src/app/services/cliente.service';
+import { limpiarNumero, soloNumeros } from 'src/app/util/forms.validate';
 
 @Component({
   selector: 'app-registracliente',
@@ -41,11 +42,15 @@ export class RegistraclienteComponent {
       //console.log(this.cliente)
 
       this._clienteService.addClienteSctr(this.cliente).subscribe({
-        next: (val: any) => {
-          this.toastrService.success('Cliente creado satisfactoriamene!');
-          this._dialogRef.close({
-            data: this.cliente
-          });
+        next: (res: any) => {
+          if (res.resultData.id_cliente == -1) {
+            this.toastrService.warning('¡El Cliente con RUC número: ' + this.cliente.ruc + ' ya existe!');
+          } else {
+            this.toastrService.success('Cliente creado satisfactoriamene!');
+            this._dialogRef.close({
+              data: this.cliente
+            });
+          }
         },
         error: (err: any) => {
           console.error(err);
@@ -54,6 +59,14 @@ export class RegistraclienteComponent {
     } else {
       this.toastrService.warning('¡Por favor complete los campos obligatorios!');
     }
+  }
+
+  soloNumeros(event: Event): boolean {
+    return soloNumeros(event);
+  }
+
+  limpiarNumero(event: Event): boolean {
+    return limpiarNumero(event);
   }
 
 }

@@ -1,7 +1,8 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AtencionService } from 'src/app/services/atencion.service';
+import { CoreService } from 'src/app/services/core.service';
+import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
 
 @Component({
   selector: 'app-sctr-verdatos',
@@ -10,10 +11,11 @@ import { AtencionService } from 'src/app/services/atencion.service';
 })
 
 export class SctrVerdatosComponent {
-  id_atencion: any;
+  options = this.settings.getOptions();
+  cod_historia_clinica: any;
 
-  constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: any,private _atencionService: AtencionService,private frm: FormBuilder){
-    this.id_atencion = data.cod_atencion
+  constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _historiaClinicaService: HistoriaClinicaService, private frm: FormBuilder, private settings: CoreService) {
+    this.cod_historia_clinica = data.cod_historia_clinica
   }
 
   formularioVerDatosAtencion = this.frm.group({
@@ -22,6 +24,7 @@ export class SctrVerdatosComponent {
     txtFechaNacimiento: [{ value: '', disabled: true }],
     txtEdad: [{ value: '', disabled: true }],
     txtSexo: [{ value: '', disabled: true }],
+    txtPais: [{ value: '', disabled: true }],
     txtDocIdentidad: [{ value: '', disabled: true }],
     txtNumDocIdentidad: [{ value: '', disabled: true }],
     txtCelular: [{ value: '', disabled: true }],
@@ -44,18 +47,19 @@ export class SctrVerdatosComponent {
   })
 
   ngOnInit(): void {
-    this.getAtencionByCodigo(this.id_atencion);    
+    this.getAtencionByCodigo(this.cod_historia_clinica);
   }
 
-  getAtencionByCodigo(cod_atencion: string) {
-    this._atencionService.GetAtencionSctrByCodigo(cod_atencion).subscribe({
+  getAtencionByCodigo(cod_historia_clinica: string) {
+    this._historiaClinicaService.GetHistoriaClinicaSctrByCodigo(cod_historia_clinica).subscribe({
       next: (res) => {
         //console.log(res.resultData[0]);
-        this.formularioVerDatosAtencion.controls['txtCodigoAtencion'].setValue(res.resultData[0].cod_atencion);
+        this.formularioVerDatosAtencion.controls['txtCodigoAtencion'].setValue(res.resultData[0].cod_historia_clinica);
         this.formularioVerDatosAtencion.controls['txtPaciente'].setValue(res.resultData[0].paciente);
         this.formularioVerDatosAtencion.controls['txtFechaNacimiento'].setValue(res.resultData[0].fecha_nacimiento);
         this.formularioVerDatosAtencion.controls['txtEdad'].setValue(res.resultData[0].edad);
         this.formularioVerDatosAtencion.controls['txtSexo'].setValue(res.resultData[0].sexo);
+        this.formularioVerDatosAtencion.controls['txtPais'].setValue(res.resultData[0].pais);
         this.formularioVerDatosAtencion.controls['txtDocIdentidad'].setValue(res.resultData[0].documento_identidad);
         this.formularioVerDatosAtencion.controls['txtNumDocIdentidad'].setValue(res.resultData[0].numero_documento_id);
         this.formularioVerDatosAtencion.controls['txtCelular'].setValue(res.resultData[0].celular);

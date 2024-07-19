@@ -9,8 +9,8 @@ import { SctrTiposervicioComponent } from './components/tiposervicio/sctr-tipose
 import { SctrVerdatosComponent } from './components/verdatos/sctr-verdatos.component';
 import { SctrSeguimientoComponent } from './components/seguimiento/sctr-seguimiento.component';
 import { SctrSoporteComponent } from './components/soporte/sctr-soporte.component';
-import { AtencionService } from 'src/app/services/atencion.service';
-import { Atencion } from 'src/app/models/atencion.model';
+import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
+import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, Validators } from '@angular/forms';
 import { exportExcelService } from 'src/app/helpers/excel/exportxls.services';
@@ -28,12 +28,11 @@ export class SctrComponent implements OnInit {
   countRows: number = 0;
   positionRow: number;
   displayedColumns: string[] = [];
-  dataSource!: MatTableDataSource<Atencion>;
+  dataSource!: MatTableDataSource<HistoriaClinica>;
   showSpinner = true;
   rowStyle: string = "";
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _atencionService: AtencionService,
-    private dateAdapter: DateAdapter<Date>, private toastService: ToastrService, private exportarExcelService: exportExcelService, private frm: FormBuilder) {
+  constructor(private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _historiaClinicaService: HistoriaClinicaService,private dateAdapter: DateAdapter<Date>, private toastService: ToastrService, private exportarExcelService: exportExcelService, private frm: FormBuilder) {
     this.dateAdapter.setLocale("es-pe");
   }
 
@@ -85,12 +84,12 @@ export class SctrComponent implements OnInit {
     this.rowSeleccionado = null;
 
     if (reporte == 1) {
-      this.displayedColumns = ['cod_atencion', 'tipo_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
+      this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
     } else {
-      this.displayedColumns = ['cod_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'motivo', 'procedencia', 'clinica', 'departamento', 'provincia', 'distrito', 'persona_reporta', 'motivo_de_llamada', 'usuario_creacion', 'skill'];
+      this.displayedColumns = ['cod_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'motivo', 'procedencia', 'clinica', 'departamento', 'provincia', 'distrito', 'persona_reporta', 'motivo_de_llamada', 'usuario_creacion', 'skill'];
     }
 
-    this._atencionService.GetAtencionesSctrList(fechaInicio, fechaFin, reporte).subscribe({
+    this._historiaClinicaService.GetHistoriasClinicasSctrList(fechaInicio, fechaFin, reporte).subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;
@@ -103,9 +102,9 @@ export class SctrComponent implements OnInit {
   }
 
   getAtencionesFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string) {
-    this.displayedColumns = ['cod_atencion', 'tipo_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
+    this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
 
-    this._atencionService.GetAtencionesSctrFiltrO(fechaInicio, fechaFin, busqueda, condicion).subscribe({
+    this._historiaClinicaService.GetHistoriaClinicaSctrFiltrO(fechaInicio, fechaFin, busqueda, condicion).subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;
@@ -117,9 +116,9 @@ export class SctrComponent implements OnInit {
     });
   }
 
-  getRowSelected(row: Atencion, position: number) {
+  getRowSelected(row: HistoriaClinica, position: number) {
     this.positionRow = position;
-    this.idRow = row["cod_atencion"];
+    this.idRow = row["cod_historia_clinica"];
     this.rowSeleccionado = row;
   }
 
@@ -147,7 +146,7 @@ export class SctrComponent implements OnInit {
     if (this.idRow != 0) {
       this._dialog.open(SctrSeguimientoComponent, {
         panelClass: 'sanna_theme',
-        data: { 'cod_atencion': this.idRow },
+        data: { 'cod_historia_clinica': this.idRow },
       });
     } else {
       this.toastService.warning('¡Seleccione un registro!');
@@ -158,7 +157,7 @@ export class SctrComponent implements OnInit {
     if (this.idRow != 0) {
       this._dialog.open(SctrVerdatosComponent, {
         panelClass: 'sanna_theme',
-        data: { 'cod_atencion': this.idRow },
+        data: { 'cod_historia_clinica': this.idRow },
       });
     } else {
       this.toastService.warning('¡Seleccione un registro!');

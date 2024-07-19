@@ -23,24 +23,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                     <mat-label>Dirección</mat-label>
                     <input matInput formControlName="txtDireccion">
                 </mat-form-field>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                     <mat-label>Teléfono</mat-label>
-                    <input matInput formControlName="txtTelefono">
+                    <input matInput formControlName="txtTelefono" (keypress)="soloNumeros($event)"
+                        (change)="limpiarNumero($event)" (keyup)="limpiarNumero($event)">
                 </mat-form-field>
             </div>
-            <div class="col-md-2">
+            <!--<div class="col-md-2">
                 <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                     <mat-label>Anexo</mat-label>
                     <input matInput formControlName="txtAnexo">
                 </mat-form-field>
-            </div>
+            </div>-->
         </div>
         <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
             <mat-label>Nombre clínica</mat-label>
@@ -106,7 +107,8 @@
                     style="width: 100%;">Nuevo</button>
             </div>
             <div class="col-md-3">
-                <button mat-flat-button color="accent" [disabled]="statusBtnCancelarClinica" (click)="cancelClinica()" style="width: 100%;">Cancelar</button>
+                <button mat-flat-button color="accent" [disabled]="statusBtnCancelarClinica" (click)="cancelClinica()"
+                    style="width: 100%;">Cancelar</button>
             </div>
             <div class="col-md-3">
                 <button mat-flat-button color="accent" [disabled]="statusBtnGuardarClinica" (click)="saveClinica()"

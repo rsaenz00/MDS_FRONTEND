@@ -1,226 +1,264 @@
-<div mat-dialog-title>
-    {{tituloFormulario}}
-    <mat-progress-bar mode="query" *ngIf="showSpinner === true"
-        style="top: 20px; width: 100%; left: -1%; z-index: 1;"></mat-progress-bar>
-</div>
-<mat-dialog-content>
-    <form [formGroup]="formularioNuevaAtencionSctr">
-        <div class="row">
-            <div class="col-md-9">
-                <label id="example-radio-group-label">Tipo de atención</label>
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
-                    <mat-radio-button class="example-radio-button" [value]="1" (change)="getTipoAtencion($event)"
-                        [checked]="_1raAtencion">1°
-                        atención</mat-radio-button>
-                    <mat-radio-button class="example-radio-button" [value]="2" (change)="getTipoAtencion($event)"
-                        [checked]="_2daAtencion">2°
-                        atención</mat-radio-button>
-                </mat-radio-group>
-            </div>
-            <div class="col-md-3">
-                <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                    <mat-label>N° de atención</mat-label>
-                    <input matInput formControlName="txtNroAtencion">
-                </mat-form-field>
-            </div>
-        </div>
-        <mat-card class="example-card">
-            <mat-card-header>
-                <mat-card-title style="margin-bottom: 10px;">
-                    Datos de la clínica
+<div [ngClass]=" {
+    orange_theme: options.activeTheme == 'orange_theme',
+    blue_theme: options.activeTheme == 'blue_theme',
+    aqua_theme: options.activeTheme == 'aqua_theme',
+    purple_theme: options.activeTheme == 'purple_theme',
+    green_theme: options.activeTheme == 'green_theme',
+    cyan_theme: options.activeTheme == 'cyan_theme',
+    sanna_theme: options.activeTheme == 'sanna_theme',
+}">
+    <mat-card class="theme-card" style="margin-bottom: 0;">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    {{tituloFormulario}}
                 </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="row">
-                    <div class="col-md-4">
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>Clínica</mat-label>
-                            <input matInput formControlName="txtClinica">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-1">
-                        <button mat-flat-button color="accent" (click)="openClinicaDialog()"
-                            style="width: 100%;">...</button>
-                    </div>
-                    <div class="col-md-3">
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>Teléfono</mat-label>
-                            <input matInput formControlName="txtTelefono">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-2">
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>Anexo</mat-label>
-                            <input matInput formControlName="txtAnexo">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-2">
-                        <button mat-flat-button color="accent" style="width: 100%;"
-                            (click)="openMantClinicaDialog()">Registrar clínica</button>
-                    </div>
-                    <div class="col-md-5">
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>Dirección</mat-label>
-                            <input matInput formControlName="txtDireccion">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-5">
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>Persona que reporta</mat-label>
-                            <input matInput formControlName="txtPersonaReporta">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-2" style="font-weight: bold;">
-                        <div *ngIf="estadoClinica !== ''"
-                            [style]="estadoClinica=='CLINICA AFILIADA' ? 'color:#00a850; background: yellow; padding: 5px 10px;text-align: center;' : estadoClinica=='CLINICA NO AFILIADA' ? 'color:red; background: yellow; padding: 5px 10px; text-align: center;' : ''">
-                            {{estadoClinica}}</div>
-                    </div>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <div fxLayoutAlign="center center">
+                <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+            </div>
+        </mat-card-header>
+        <mat-progress-bar mode="query" *ngIf="showSpinner === true"
+            style="width: 100%; left: -1%; z-index: 1;"></mat-progress-bar>
+    </mat-card>
+    <mat-dialog-content>
+        <form [formGroup]="formularioNuevaAtencionSctr">
+            <div class="row">
+                <div class="col-md-9">
+                    <label id="example-radio-group-label">Tipo de atención</label>
+                    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+                        <mat-radio-button class="example-radio-button" [value]="1" (change)="getTipoAtencion($event)"
+                            [checked]="_1raAtencion">1°
+                            atención</mat-radio-button>
+                        <mat-radio-button class="example-radio-button" [value]="2" (change)="getTipoAtencion($event)"
+                            [checked]="_2daAtencion">2°
+                            atención</mat-radio-button>
+                    </mat-radio-group>
                 </div>
-            </mat-card-content>
-        </mat-card>
-        <div class="row">
-            <div class="col-md-6">
-                <mat-card class="example-card">
-                    <mat-card-header>
-                        <mat-card-title style="margin-bottom: 10px;">Datos del asegurado</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <form [formGroup]="formularioNuevoPacienteSctr">
+                <div class="col-md-3">
+                    <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
+                        <mat-label>N° de atención</mat-label>
+                        <input matInput formControlName="txtNroAtencion">
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title style="margin-bottom: 10px;">
+                        Datos de la clínica
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Clínica</mat-label>
+                                <input matInput formControlName="txtClinica">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <button mat-flat-button color="accent" (click)="openClinicaDialog()"
+                                style="width: 100%;">...</button>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Teléfono</mat-label>
+                                <input matInput formControlName="txtTelefono">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Anexo</mat-label>
+                                <input matInput formControlName="txtAnexo">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <button mat-flat-button color="accent" style="width: 100%;"
+                                (click)="openMantClinicaDialog()">Registrar clínica</button>
+                        </div>
+                        <div class="col-md-5">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Dirección</mat-label>
+                                <input matInput formControlName="txtDireccion">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-5">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Persona que reporta</mat-label>
+                                <input matInput formControlName="txtPersonaReporta" (keyup)="limpiarLetras($event)"
+                                    (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2" style="font-weight: bold;">
+                            <div *ngIf="estadoClinica !== ''"
+                                [style]="estadoClinica=='CLINICA AFILIADA' ? 'color:#00a850; background: yellow; padding: 5px 10px;text-align: center;' : estadoClinica=='CLINICA NO AFILIADA' ? 'color:red; background: yellow; padding: 5px 10px; text-align: center;' : ''">
+                                {{estadoClinica}}</div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Datos del asegurado</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <form [formGroup]="formularioNuevoPacienteSctr">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                                            <mat-label>Tipo Documento</mat-label>
+                                            <mat-select formControlName="cboTipoDocumento" [value]="valTipoDocumento"
+                                                (selectionChange)="getTipoDocumento($event)">
+                                                <mat-option [value]="0">--Seleccione una opcion--</mat-option>
+                                                <mat-option [value]="tipoDocumento.id"
+                                                    *ngFor="let tipoDocumento of tipoDocumentos">{{tipoDocumento.descripcion}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <mat-form-field class="example-full-width" style="width: 100%;"
+                                            appearance="outline" class="dense-2">
+                                            <mat-label>Número documento</mat-label>
+                                            <input matInput formControlName="txtNroDocumento"
+                                                (keyup)="limpiarNumero($event)" (change)="limpiarNumero($event)"
+                                                (blur)="rellenaCaracteres($event)" maxlength="8"
+                                                (keypress)="soloNumeros($event)">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="example-full-width" style="width: 100%;"
+                                            appearance="outline" class="dense-2">
+                                            <mat-label>Apellido paterno</mat-label>
+                                            <input matInput formControlName="txtApePaterno"
+                                                (keyup)="limpiarLetras($event)" (change)="limpiarLetras($event)"
+                                                (keypress)="soloLetras($event)">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-form-field class="example-full-width" style="width: 100%;"
+                                            appearance="outline" class="dense-2">
+                                            <mat-label>Apellido materno</mat-label>
+                                            <input matInput formControlName="txtApeMaterno"
+                                                (keyup)="limpiarLetras($event)" (change)="limpiarLetras($event)"
+                                                (keypress)="soloLetras($event)">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-form-field class="example-full-width" style="width: 100%;"
+                                            appearance="outline" class="dense-2">
+                                            <mat-label>Nombres</mat-label>
+                                            <input matInput formControlName="txtNombres" (keyup)="limpiarLetras($event)"
+                                                (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="example-full-width" style="width: 100%;"
+                                            appearance="outline" class="dense-2">
+                                            <mat-label>Celular</mat-label>
+                                            <input matInput formControlName="txtCelular"
+                                                (keypress)="soloNumeros($event)" (change)="limpiarNumero($event)"
+                                                (keyup)="limpiarNumero($event); primer9($event)" maxlength="9">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                                            <mat-label>Fecha nacimiento</mat-label>
+                                            <input matInput [matDatepicker]="dtpFechaNacimiento"
+                                                formControlName="txtFechaNacimiento" [value]="fechaNacimiento">
+                                            <mat-hint>DD/MM//YYYY</mat-hint>
+                                            <mat-datepicker-toggle matIconSuffix
+                                                [for]="dtpFechaNacimiento"></mat-datepicker-toggle>
+                                            <mat-datepicker #dtpFechaNacimiento startView="year"></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                                            <mat-label>Sexo</mat-label>
+                                            <mat-select formControlName="cboSexo" [value]="valSexo"
+                                                (selectionChange)="getSexo($event)">
+                                                <mat-option [value]="0">--Seleccione una opcion--</mat-option>
+                                                <mat-option [value]="sexo.id"
+                                                    *ngFor="let sexo of sexos">{{sexo.descripcion}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <button mat-flat-button color="accent" [disabled]="statusBtnFiltrarPaciente"
+                                            style="width: 100%;" (click)="filtrarPaciente()">Buscar</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button mat-flat-button color="accent" [disabled]="statusBtnNuevoPaciente"
+                                            style="width: 100%;" (click)="newPaciente()">Nuevo</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button mat-flat-button color="accent" [disabled]="statusBtnGuardarPaciente"
+                                            style="width: 100%;" (click)="savePaciente()">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Aseguradora</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>RUC</mat-label>
+                                <input matInput formControlName="txtRuc" [value]="valRuc" [matAutocomplete]="auto"
+                                    (keyup)="filterClientes($event); limpiarNumero($event)"
+                                    (change)="limpiarNumero($event)" (keypress)="soloNumeros($event)">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="verRuc"
+                                    (optionSelected)="selectCliente($event.option)">
+                                    @for (option of filtradoClientes; track option) {
+                                    <mat-option [value]="option">{{option.nombre}}</mat-option>
+                                    }
+                                </mat-autocomplete>
+                            </mat-form-field>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
-                                        <mat-label>Tipo Documento</mat-label>
-                                        <mat-select formControlName="cboTipoDocumento" [value]="valTipoDocumento"
-                                            (selectionChange)="getTipoDocumento($event)">
-                                            <mat-option [value]="0">--Seleccione una opcion--</mat-option>
-                                            <mat-option [value]="tipoDocumento.id"
-                                                *ngFor="let tipoDocumento of tipoDocumentos">{{tipoDocumento.descripcion}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-md-8">
-                                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline"
-                                        class="dense-2">
-                                        <mat-label>Número documento</mat-label>
-                                        <input matInput formControlName="txtNroDocumento">
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline"
-                                        class="dense-2">
-                                        <mat-label>Apellido paterno</mat-label>
-                                        <input matInput formControlName="txtApePaterno">
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-md-4">
-                                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline"
-                                        class="dense-2">
-                                        <mat-label>Apellido materno</mat-label>
-                                        <input matInput formControlName="txtApeMaterno">
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-md-4">
-                                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline"
-                                        class="dense-2">
-                                        <mat-label>Nombres</mat-label>
-                                        <input matInput formControlName="txtNombres">
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline"
-                                        class="dense-2">
-                                        <mat-label>Celular</mat-label>
-                                        <input matInput formControlName="txtCelular">
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-md-5">
-                                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
-                                        <mat-label>Fecha nacimiento</mat-label>
-                                        <input matInput [matDatepicker]="dtpFechaNacimiento"
-                                            formControlName="txtFechaNacimiento" [value]="fechaNacimiento">
-                                        <mat-hint>DD/MM//YYYY</mat-hint>
-                                        <mat-datepicker-toggle matIconSuffix
-                                            [for]="dtpFechaNacimiento"></mat-datepicker-toggle>
-                                        <mat-datepicker #dtpFechaNacimiento startView="year"></mat-datepicker>
+                                <div class="col-md-9">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Empresa</mat-label>
+                                        <input matInput formControlName="txtEmpresa">
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-3">
-                                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
-                                        <mat-label>Sexo</mat-label>
-                                        <mat-select formControlName="cboSexo" [value]="valSexo"
-                                            (selectionChange)="getSexo($event)">
-                                            <mat-option [value]="0">--Seleccione una opcion--</mat-option>
-                                            <mat-option [value]="sexo.id"
-                                                *ngFor="let sexo of sexos">{{sexo.descripcion}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                    <button mat-flat-button color="accent" style="width: 100%;"
+                                        [disabled]="statusBtnRegistrarAseguradora"
+                                        (click)="openAddClienteDialog()">Registrar</button>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <button mat-flat-button color="accent" [disabled]="statusBtnFiltrarPaciente"
-                                        style="width: 100%;" (click)="filtrarPaciente()">Buscar</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button mat-flat-button color="accent" [disabled]="statusBtnNuevoPaciente"
-                                        style="width: 100%;" (click)="newPaciente()">Nuevo</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button mat-flat-button color="accent" [disabled]="statusBtnGuardarPaciente"
-                                        style="width: 100%;" (click)="savePaciente()">Guardar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </mat-card-content>
-                </mat-card>
-                <mat-card class="example-card">
-                    <mat-card-header>
-                        <mat-card-title style="margin-bottom: 10px;">Aseguradora</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>RUC</mat-label>
-                            <input matInput formControlName="txtRuc" [value]="valRuc" [matAutocomplete]="auto"
-                                (keyup)="filterClientes($event)">
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="verRuc"
-                                (optionSelected)="selectCliente($event.option)">
-                                @for (option of filtradoClientes; track option) {
-                                <mat-option [value]="option">{{option.nombre}}</mat-option>
-                                }
-                            </mat-autocomplete>
-                        </mat-form-field>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <mat-form-field class="example-full-width dense-2" style="width: 100%;"
-                                    appearance="outline">
-                                    <mat-label>Empresa</mat-label>
-                                    <input matInput formControlName="txtEmpresa">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-md-3">
-                                <button mat-flat-button color="accent" style="width: 100%;"
-                                    [disabled]="statusBtnRegistrarAseguradora"
-                                    (click)="openAddClienteDialog()">Registrar</button>
-                            </div>
-                        </div>
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>Aseguradora</mat-label>
-                            <input matInput formControlName="txtAseguradora">
-                        </mat-form-field>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-            <div class="col-md-6">
-                <mat-card class="example-card">
-                    <mat-card-header>
-                        <mat-card-title style="margin-bottom: 10px;">Datos del accidente</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <!--<div class="row">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Aseguradora</mat-label>
+                                <input matInput formControlName="txtAseguradora">
+                            </mat-form-field>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="col-md-6">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Datos del accidente</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <!--<div class="row">
                             <div class="col-md-6">
                                 <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline">
                                     <mat-label>Inicio de labores</mat-label>
@@ -274,92 +312,95 @@
                                 </mat-form-field>
                             </div>
                         </div>-->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label id="example-radio-group-label">Lleva hoja de atención</label>
-                                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-                                    formControlName="rbHojaAtencion">
-                                    <mat-radio-button class="example-radio-button" [value]="1"
-                                        [checked]="_SiHojaAtencion">Si</mat-radio-button>
-                                    <mat-radio-button class="example-radio-button" [value]="0"
-                                        [checked]="_NoHojaAtencion">No</mat-radio-button>
-                                </mat-radio-group>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label id="example-radio-group-label">Lleva hoja de atención</label>
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                        class="example-radio-group" formControlName="rbHojaAtencion">
+                                        <mat-radio-button class="example-radio-button" [value]="1"
+                                            [checked]="_SiHojaAtencion">Si</mat-radio-button>
+                                        <mat-radio-button class="example-radio-button" [value]="0"
+                                            [checked]="_NoHojaAtencion">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
                             </div>
-                        </div>
-                        <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
-                            <mat-label>Medio de validación</mat-label>
-                            <mat-select formControlName="cboMetodoValidacion"
-                                (selectionChange)="getMotivoValidacionCbo($event)" [value]="valMetodoValidacion">
-                                <mat-option [value]="0">--Seleccione una opción--</mat-option>
-                                <mat-option [value]="validacion.id"
-                                    *ngFor="let validacion of validaciones">{{validacion.descripcion}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
-                            <mat-label>Plan</mat-label>
-                            <mat-select formControlName="cboPlan" [value]="valPlan">
-                                <mat-option [value]="0">--Seleccione una opción--</mat-option>
-                                <mat-option [value]="plan.id_plan"
-                                    *ngFor="let plan of planes">{{plan.nombre}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </mat-card-content>
-                </mat-card>
-                <mat-card class="example-card">
-                    <mat-card-header>
-                        <mat-card-title style="margin-bottom: 10px;">Datos de la atención</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label id="example-radio-group-label">Pase de atención</label>
-                                <mat-radio-group formControlName="rbPaseAtencion"
-                                    aria-labelledby="example-radio-group-label" class="example-radio-group">
-                                    <mat-radio-button class="example-radio-button" [value]="1"
-                                        (change)="getPaseAtencion($event)"
-                                        [checked]="_SiPaseAtencion">Si</mat-radio-button>
-                                    <mat-radio-button class="example-radio-button" [value]="2"
-                                        (change)="getPaseAtencion($event)"
-                                        [checked]="_NoPaseAtencion">No</mat-radio-button>
-                                </mat-radio-group>
+                            <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                                <mat-label>Medio de validación</mat-label>
+                                <mat-select formControlName="cboMetodoValidacion"
+                                    (selectionChange)="getMotivoValidacionCbo($event)" [value]="valMetodoValidacion">
+                                    <mat-option [value]="0">--Seleccione una opción--</mat-option>
+                                    <mat-option [value]="validacion.id"
+                                        *ngFor="let validacion of validaciones">{{validacion.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                                <mat-label>Plan</mat-label>
+                                <mat-select formControlName="cboPlan" [value]="valPlan">
+                                    <mat-option [value]="0">--Seleccione una opción--</mat-option>
+                                    <mat-option [value]="plan.id_plan"
+                                        *ngFor="let plan of planes">{{plan.nombre}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Datos de la atención</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label id="example-radio-group-label">Pase de atención</label>
+                                    <mat-radio-group formControlName="rbPaseAtencion"
+                                        aria-labelledby="example-radio-group-label" class="example-radio-group">
+                                        <mat-radio-button class="example-radio-button" [value]="1"
+                                            (change)="getPaseAtencion($event)"
+                                            [checked]="_SiPaseAtencion">Si</mat-radio-button>
+                                        <mat-radio-button class="example-radio-button" [value]="2"
+                                            (change)="getPaseAtencion($event)"
+                                            [checked]="_NoPaseAtencion">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
                             </div>
-                        </div>
-                        <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
-                            <mat-label>Motivo</mat-label>
-                            <mat-select formControlName="cboMotivo" [value]="valMotivo">
-                                <mat-option [value]="motivo.id_motivo"
-                                    *ngFor="let motivo of motivos">{{motivo.descripcion}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
-                            <mat-label>Observación</mat-label>
-                            <textarea formControlName="txtObservacion" matInput placeholder="Motivo de llamada"
-                                style="resize: none"></textarea>
-                        </mat-form-field>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <mat-form-field class="example-full-width dense-2" style="width: 100%;"
-                                    appearance="outline">
-                                    <mat-label>Clínica primera atención</mat-label>
-                                    <input matInput formControlName="txtClinicaPrimeraAtencion">
-                                </mat-form-field>
+                            <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                                <mat-label>Motivo</mat-label>
+                                <mat-select formControlName="cboMotivo" [value]="valMotivo">
+                                    <mat-option [value]="motivo.id_motivo"
+                                        *ngFor="let motivo of motivos">{{motivo.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Observación</mat-label>
+                                <textarea formControlName="txtObservacion" matInput placeholder="Motivo de llamada"
+                                    style="resize: none"></textarea>
+                            </mat-form-field>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Clínica primera atención</mat-label>
+                                        <input matInput formControlName="txtClinicaPrimeraAtencion">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <button mat-flat-button color="accent" style="width: 100%;"
+                                        [disabled]="statusBtnClinicaPrimAtencion"
+                                        (click)="openClinicaPrimeraAtencionDialog()">...</button>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <button mat-flat-button color="accent" style="width: 100%;"
-                                    [disabled]="statusBtnClinicaPrimAtencion" (click)="openClinicaPrimeraAtencionDialog()">...</button>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <button mat-flat-button color="warn" (click)="exitAtencion()">Cancelar atención</button>
-                &nbsp;
-                <button mat-flat-button color="accent" (click)="saveAtencionSctr()"
-                    [disabled]="!formularioNuevaAtencionSctr.valid">Guardar atención</button>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button mat-flat-button color="warn" (click)="exitAtencion()">Cancelar atención</button>
+                    &nbsp;
+                    <button mat-flat-button color="accent" (click)="saveAtencionSctr()"
+                        [disabled]="!formularioNuevaAtencionSctr.valid">Guardar atención</button>
+                </div>
             </div>
-        </div>
-    </form>
-</mat-dialog-content>
+        </form>
+    </mat-dialog-content>
+</div>

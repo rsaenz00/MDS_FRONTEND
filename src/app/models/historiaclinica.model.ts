@@ -1,5 +1,5 @@
-export class Atencion {
-    id_atencion: number;
+export class HistoriaClinica {
+    cod_historia_clinica: number;
     id_persona: number;
     id_empresa: number;
     id_clinica: number;

@@ -11,8 +11,8 @@ export class SeguimientoService {
 
     constructor(private _http: HttpClient) { }
 
-    GetSeguimientoByAtencion(cod_atencion: string): Observable<any> {
-        return this._http.get('Seguimientos/GetSeguimientoByAtencion?cod_atencion=' + cod_atencion);
+    GetSeguimientoByAtencion(codHistoriaClinica: string): Observable<any> {
+        return this._http.get('Seguimientos/GetSeguimientoByHistoriaClinica?codHistoriaClinica=' + codHistoriaClinica);
     }
 
     AddSeguimientoSctr(data: Seguimiento): Observable<Seguimiento> {

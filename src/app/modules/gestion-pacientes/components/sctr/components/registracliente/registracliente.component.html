@@ -6,7 +6,8 @@
         <div class="row">
             <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                 <mat-label>N° RUC</mat-label>
-                <input matInput formControlName="txtRuc">
+                <input matInput formControlName="txtRuc" (keypress)="soloNumeros($event)"
+                    (change)="limpiarNumero($event)" (keyup)="limpiarNumero($event)">
             </mat-form-field>
         </div>
         <div class="row">

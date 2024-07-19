@@ -1,9 +1,9 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Atencion } from 'src/app/models/atencion.model';
+import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
 import { UsuarioAuth } from 'src/app/models/usuario-auth';
-import { AtencionService } from 'src/app/services/atencion.service';
+import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
 
 @Component({
   selector: 'app-confirmaranularatencion',
@@ -12,12 +12,12 @@ import { AtencionService } from 'src/app/services/atencion.service';
 })
 
 export class ConfirmaranularatencionComponent {
-  id_atencion: any;
-  atencion: Atencion = {} as Atencion;
+  cod_historia_clinica: any;
+  historiaClinica: HistoriaClinica = {} as HistoriaClinica;
   usuarioEnlinea: UsuarioAuth;
 
-  constructor(public _dialogRef: MatDialogRef<ConfirmaranularatencionComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _atencionServices: AtencionService, private toastrService: ToastrService) {
-    this.id_atencion = data.id_atencion
+  constructor(public _dialogRef: MatDialogRef<ConfirmaranularatencionComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _historiaClinicaServices: HistoriaClinicaService, private toastrService: ToastrService) {
+    this.cod_historia_clinica = data.cod_historia_clinica
   }
   ngOnInit(): void {
     this.usuarioEnlinea = JSON.parse(localStorage.getItem('authObj') as any);
@@ -28,9 +28,9 @@ export class ConfirmaranularatencionComponent {
   }
 
   anularAtencion() {
-    this.atencion.id_atencion = this.id_atencion;
-    this.atencion.usuario_eliminacion = this.usuarioEnlinea.id || '';
-    this._atencionServices.deleteAtencionSctr(this.atencion).subscribe({
+    this.historiaClinica.cod_historia_clinica = this.cod_historia_clinica;
+    this.historiaClinica.usuario_eliminacion = this.usuarioEnlinea.id || '';
+    this._historiaClinicaServices.deleteHistoriaClinicaSctr(this.historiaClinica).subscribe({
       next: (val: any) => {
         this.toastrService.success('¡Atención anulada satisfactoriamene!');
         this._dialogRef.close(true);

@@ -37,22 +37,22 @@
                         <table mat-table #table class="tbl_sctr dense-3" [dataSource]="dataSource" matSort
                             (matSortChange)="announceSortChange($event)">
                             <!--CABECERAS-->
-                            <ng-container matColumnDef="cod_atencion">
+                            <ng-container matColumnDef="cod_historia_clinica">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Ordenar por cod_atencion">
+                                    sortActionDescription="Ordenar por cod_historia_clinica">
                                     COD_ATENCION
                                 </th>
                                 <td mat-cell *matCellDef="let row">
-                                    {{row.cod_atencion}}
+                                    {{row.cod_historia_clinica}}
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="tipo_atencion" *ngIf="reporte === 1">
+                            <ng-container matColumnDef="tipo_historia_clinica" *ngIf="reporte === 1">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Ordenar por tipo_atencion">
+                                    sortActionDescription="Ordenar por tipo_historia_clinica">
                                     TIPO_ATENCION
                                 </th>
-                                <td mat-cell *matCellDef="let row"> {{row.tipo_atencion}} </td>
+                                <td mat-cell *matCellDef="let row"> {{row.tipo_historia_clinica}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="estado">

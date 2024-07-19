@@ -9,6 +9,7 @@ import { ClinicaService } from 'src/app/services/clinica.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { Clinica, ClinicasFiltro } from 'src/app/models/clinica.model';
 import { ToastrService } from 'ngx-toastr';
+import { limpiarNumero, soloNumeros } from 'src/app/util/forms.validate';
 
 @Component({
   selector: 'app-sctr-mantenimientoclinica',
@@ -32,7 +33,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     txtClinica: [{ value: '', disabled: false }, Validators.required],
     txtDireccion: [{ value: '', disabled: true }, Validators.required],
     txtTelefono: [{ value: '', disabled: true }, Validators.required],
-    txtAnexo: [{ value: '', disabled: true }],
+    //txtAnexo: [{ value: '', disabled: true }],
     cboEstado: [{ value: '', disabled: true }, Validators.required],
     cboValidacion: [{ value: '', disabled: true }, Validators.required],
     txtUbigeo: [{ value: '', disabled: true }, Validators.required],
@@ -123,7 +124,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.formularioClinica.controls['txtClinica'].enable();
     this.formularioClinica.controls['txtDireccion'].enable();
     this.formularioClinica.controls['txtTelefono'].enable();
-    this.formularioClinica.controls['txtAnexo'].enable();
+    //this.formularioClinica.controls['txtAnexo'].enable();
     //this.formularioClinica.controls['txtUbigeo'].enable();
     this.statusBtnNuevaClinica = true;
     this.statusBtnBuscarUbigeo = false;
@@ -139,7 +140,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.formularioClinica.controls['txtClinica'].disable();
     this.formularioClinica.controls['txtDireccion'].disable();
     this.formularioClinica.controls['txtTelefono'].disable();
-    this.formularioClinica.controls['txtAnexo'].disable();
+    //this.formularioClinica.controls['txtAnexo'].disable();
     //this.formularioClinica.controls['txtUbigeo'].disable();
     this.statusBtnNuevaClinica = false;
     this.statusBtnBuscarUbigeo = true;
@@ -161,7 +162,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.formularioClinica.controls['txtClinica'].enable();
     this.formularioClinica.controls['txtDireccion'].enable();
     this.formularioClinica.controls['txtTelefono'].enable();
-    this.formularioClinica.controls['txtAnexo'].enable();
+    //this.formularioClinica.controls['txtAnexo'].enable();
     //this.formularioClinica.controls['txtUbigeo'].enable();
     this.statusBtnNuevaClinica = true;
     this.statusBtnBuscarUbigeo = false;
@@ -175,7 +176,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     this.formularioClinica.get("txtClinica")?.setValue(row.clinica);
     this.formularioClinica.get("txtDireccion")?.setValue(row.direccion);
     this.formularioClinica.get("txtTelefono")?.setValue(row.telefono);
-    this.formularioClinica.get("txtAnexo")?.setValue(row.anexo);
+    //this.formularioClinica.get("txtAnexo")?.setValue(row.anexo);
 
     if (row.afiliado == "1") {
       this.codValidacion = 1;
@@ -199,7 +200,7 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
       this.clinica.ubigeo = this.codUbigeo.toString();
       this.clinica.direccion = this.formularioClinica.value["txtDireccion"] || '';
       this.clinica.telefono = this.formularioClinica.value["txtTelefono"] || '';
-      this.clinica.anexo = this.formularioClinica.value["txtAnexo"] || '';
+      //this.clinica.anexo = this.formularioClinica.value["txtAnexo"] || '';
       if (this.formularioClinica.value["cboValidacion"] == "1") {
         this.clinica.afiliado = "1";
       } else {
@@ -239,6 +240,14 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
     } else {
       this.toastrService.warning('¡Por favor complete los campos obligatorios!');
     }
+  }
+
+  soloNumeros(event: Event): boolean {
+    return soloNumeros(event);
+  }
+
+  limpiarNumero(event: Event): boolean {
+    return limpiarNumero(event);
   }
 
 }

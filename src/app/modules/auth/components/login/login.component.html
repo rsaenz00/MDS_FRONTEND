@@ -1,3 +1,4 @@
+<mat-progress-bar mode="query" *ngIf="isLoading === true"></mat-progress-bar>
 <div class="blank-layout-container justify-content-center align-items-center bg-container">
     <div class="position-relative row w-100 h-100 bg-gredient justify-content-center" >
         <div class="col-lg-12 d-flex align-items-center">
@@ -61,8 +62,8 @@
                                             Olvidaste Contraseña ?
                                         </a>
                                     </div>
-                                    <button mat-flat-button color="primary" class="w-100" [disabled]="!loginFormGroup.valid" style="height: 48px;">
-                                        Iniciar Sesion
+                                    <button mat-flat-button color="primary" class="w-100" [disabled]="!loginFormGroup.valid || statusBtnIniciarSesion" style="height: 48px;">
+                                        {{lblBtnIniciarSesion}}
                                     </button>
                                 </form>
                             </div>

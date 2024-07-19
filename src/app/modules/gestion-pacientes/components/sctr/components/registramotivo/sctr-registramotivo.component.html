@@ -10,7 +10,8 @@
                         CLÍNICO</mat-radio-button>
                     <div class="row">
                         <div class="col-md-10">
-                            <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
                                 <mat-label>Nombre clínica / centro clínico</mat-label>
                                 <input matInput formControlName="txtNombreClinica">
                             </mat-form-field>
@@ -26,7 +27,8 @@
                     </mat-form-field>
                     <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                         <mat-label>Paciente que reporta</mat-label>
-                        <input matInput formControlName="txtPacienteReportaClinica">
+                        <input matInput formControlName="txtPacienteReportaClinica" (keyup)="limpiarLetras($event)"
+                            (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
                     </mat-form-field>
                 </div>
                 <div class="col-md-6">
@@ -34,7 +36,8 @@
                     <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                         <mat-label>RUC</mat-label>
                         <input matInput formControlName="txtRucEmpresa" [matAutocomplete]="auto"
-                            (keyup)="filterClientes($event)">
+                            (keyup)="filterClientes($event); limpiarNumero($event)" (change)="limpiarNumero($event)"
+                            (keypress)="soloNumeros($event)">
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="verRuc"
                             (optionSelected)="selectCliente($event.option)">
                             @for (option of filtradoClientes; track option) {
@@ -44,7 +47,8 @@
                     </mat-form-field>
                     <div class="row">
                         <div class="col-md-9">
-                            <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
                                 <mat-label>Nombre empresa</mat-label>
                                 <input matInput formControlName="txtEmpresa">
                             </mat-form-field>
@@ -56,7 +60,8 @@
                     </div>
                     <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                         <mat-label>Paciente que reporta</mat-label>
-                        <input matInput formControlName="txtPacienteReportaempresa">
+                        <input matInput formControlName="txtPacienteReportaempresa" (keyup)="limpiarLetras($event)"
+                            (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
                     </mat-form-field>
                 </div>
             </div>
@@ -66,7 +71,8 @@
                         SEGURO</mat-radio-button>
                     <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                         <mat-label>Paciente que reporta</mat-label>
-                        <input matInput formControlName="txtPacienteReportaSeguro">
+                        <input matInput formControlName="txtPacienteReportaSeguro" (keyup)="limpiarLetras($event)"
+                            (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
                     </mat-form-field>
                 </div>
                 <div class="col-md-6">
@@ -74,7 +80,8 @@
                         ASEGURADO</mat-radio-button>
                     <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                         <mat-label>Paciente que reporta</mat-label>
-                        <input matInput formControlName="txtPacienteReportaAsegurado">
+                        <input matInput formControlName="txtPacienteReportaAsegurado" (keyup)="limpiarLetras($event)"
+                            (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
                     </mat-form-field>
                 </div>
             </div>
@@ -86,7 +93,8 @@
         </mat-form-field>
         <div class="row">
             <div class="col-md-6 text-center">
-                <button mat-flat-button color="accent" (click)="saveMotivoSctr()" [disabled]="!formularioRegitraMotivoSctr.valid">Guardar</button>
+                <button mat-flat-button color="accent" (click)="saveMotivoSctr()"
+                    [disabled]="!formularioRegitraMotivoSctr.valid">Guardar</button>
             </div>
             <div class="col-md-6 text-center">
                 <button mat-flat-button color="warn" (click)="exitMotivo()">Salir</button>

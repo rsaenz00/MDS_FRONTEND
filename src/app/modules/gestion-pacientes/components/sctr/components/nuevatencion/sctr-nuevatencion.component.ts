@@ -13,9 +13,7 @@ import { TipoDocumento } from 'src/app/models/tipodocumento.model';
 import { ListadoclinicasComponent } from '../listadoclinicas/listadoclinicas.component';
 import { Cliente } from 'src/app/models/cliente.model';
 import { ClienteService } from 'src/app/services/cliente.service';
-import { AtencionService } from 'src/app/services/atencion.service';
 import { ToastrService } from 'ngx-toastr';
-import { Atencion } from 'src/app/models/atencion.model';
 import { MatOption } from '@angular/material/core';
 import { ListadopacientesComponent } from '../listadopacientes/listadopacientes.component';
 import { UsuarioAuth } from 'src/app/models/usuario-auth';
@@ -24,6 +22,10 @@ import { PersonaService } from 'src/app/services/persona.service';
 import { RegistraclienteComponent } from '../registracliente/registracliente.component';
 import { PacienteService } from 'src/app/services/paciente.service';
 import { ClinicaService } from 'src/app/services/clinica.service';
+import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
+import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
+import { CoreService } from 'src/app/services/core.service';
+import { limpiarLetras, limpiarNumero, primer9, rellenaCaracteres, soloLetras, soloNumeros } from 'src/app/util/forms.validate';
 
 var cboMotivoValidacion = 0, paseAtencion = 0, codCliente = 0;
 
@@ -34,6 +36,7 @@ var cboMotivoValidacion = 0, paseAtencion = 0, codCliente = 0;
 })
 
 export class SctrNuevatencionComponent {
+  options = this.settings.getOptions();
   usuarioEnlinea: UsuarioAuth;
   cboMotivo: any;
   rdSkill: any;
@@ -58,7 +61,7 @@ export class SctrNuevatencionComponent {
   _NoHojaAtencion: boolean = false;
   showSpinner = true;
 
-  constructor(private _dialog: MatDialog, private _motivoService: MotivoService, private _parametroService: ParametroService, private _planServices: PlanService, private _atencionServices: AtencionService, private _personaServices: PersonaService, private _clienteService: ClienteService, private frm: FormBuilder, private toastrService: ToastrService, private _tipoDocumentoService: TipoDocumentoService, public _dialogRef: MatDialogRef<SctrNuevatencionComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _pacientesServices: PacienteService, private _clinicasServices: ClinicaService) {
+  constructor(private _dialog: MatDialog, private _motivoService: MotivoService, private _parametroService: ParametroService, private _planServices: PlanService, private _historiaClinicaServices: HistoriaClinicaService, private _personaServices: PersonaService, private _clienteService: ClienteService, private frm: FormBuilder, private toastrService: ToastrService, private _tipoDocumentoService: TipoDocumentoService, public _dialogRef: MatDialogRef<SctrNuevatencionComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _pacientesServices: PacienteService, private _clinicasServices: ClinicaService, private settings: CoreService) {
     this.cboMotivo = data.cboMotivo;
     this.rdSkill = data.rdSkill;
     this.codAtencionEditar = data.codAtencionEditar;
@@ -80,10 +83,10 @@ export class SctrNuevatencionComponent {
     txtClinica: [{ value: '', disabled: true }, Validators.required],
     txtDireccion: [{ value: '', disabled: true }, Validators.required],
     txtTelefono: [{ value: '', disabled: true }, Validators.required],
-    txtAnexo: [{ value: '', disabled: true }, Validators.required],
+    txtAnexo: [{ value: '', disabled: true }],
     txtPersonaReporta: ['', Validators.required],
-    txtRuc: ['', Validators.required],
-    txtEmpresa: ['', Validators.required],
+    txtRuc: [''],//, Validators.required
+    txtEmpresa: [''],//, Validators.required
     txtAseguradora: [{ value: "PACIFICO S.A. ENT. PRESTADORA DE SALUD", disabled: true }],
     /*txtLugarAccidente: [{ value: '', disabled: true }],
     txtPuestoCargo: [{ value: '', disabled: true }],
@@ -92,9 +95,9 @@ export class SctrNuevatencionComponent {
     txtFechaAccidente: [{ value: '', disabled: true }],
     txtHoraAccidente: [{ value: '', disabled: true }],
     txtRelatoAccidente: [{ value: '', disabled: true }],*/
-    rbHojaAtencion: ['', Validators.required],
-    cboMetodoValidacion: ['', Validators.required],
-    cboPlan: [{ value: '', disabled: true }, Validators.required],
+    rbHojaAtencion: [''],//, Validators.required
+    cboMetodoValidacion: [''],//, Validators.required
+    cboPlan: [{ value: '', disabled: true }],//, Validators.required
     rbPaseAtencion: ['', Validators.required],
     cboMotivo: [{ value: '', disabled: true }],
     txtObservacion: [''],
@@ -107,7 +110,7 @@ export class SctrNuevatencionComponent {
   sexos: Parametro[];
   tipoDocumentos: TipoDocumento[];
   filtradoClientes: Cliente[];
-  atencion: Atencion = {} as Atencion;
+  historiaClinica: HistoriaClinica = {} as HistoriaClinica;
   persona: Persona = {} as Persona;
   fechaNacimiento: any;
   statusBtnClinicaPrimAtencion = false;
@@ -119,7 +122,6 @@ export class SctrNuevatencionComponent {
 
   ngOnInit(): void {
     this.usuarioEnlinea = JSON.parse(localStorage.getItem('authObj') as any);
-    //console.log(this.cboMotivo + " - " + this.rdSkill);
     this.getMetodosValidacionList();
     this.getPlanesList();
     this.getSexosList();
@@ -135,14 +137,12 @@ export class SctrNuevatencionComponent {
   }
 
   precargarPaciente(codAtencion: number) {
-    this._atencionServices.GetAtencionSctrByCodigo(codAtencion.toString()).subscribe({
+    this._historiaClinicaServices.GetHistoriaClinicaSctrByCodigo(codAtencion.toString()).subscribe({
       next: (resAtencion) => {
-        console.log(resAtencion.resultData[0]);
 
         //CLINICA
         this._clinicasServices.GetClinicasFiltro(resAtencion.resultData[0].id_clinica, 'Codigo').subscribe({
           next: (resClinica) => {
-            //console.log(resClinica.resultData);
             this.codClinica = resClinica.resultData[0].id_clinica;
             this.formularioNuevaAtencionSctr.controls['txtClinica'].setValue(resClinica.resultData[0].clinica);
             this.formularioNuevaAtencionSctr.controls['txtDireccion'].setValue(resClinica.resultData[0].direccion);
@@ -173,7 +173,6 @@ export class SctrNuevatencionComponent {
         //PACIENTE         
         this._pacientesServices.GetPacientesFiltro(resAtencion.resultData[0].numero_documento_id, 'ApePaternoDni').subscribe({
           next: (resPaciente) => {
-            //console.log(resPaciente.resultData[0])
             this.codPaciente = resPaciente.resultData[0].id_paciente;
             this.formularioNuevoPacienteSctr.controls['txtNroDocumento'].setValue(resPaciente.resultData[0].numero_documento);
             this.formularioNuevoPacienteSctr.controls['txtApePaterno'].setValue(resPaciente.resultData[0].apellido_paterno);
@@ -210,7 +209,7 @@ export class SctrNuevatencionComponent {
 
         //ATENCION
         if (resAtencion.resultData.length == 1) {
-          this.formularioNuevaAtencionSctr.controls['txtNroAtencion'].setValue(resAtencion.resultData[0].cod_atencion);
+          this.formularioNuevaAtencionSctr.controls['txtNroAtencion'].setValue(resAtencion.resultData[0].cod_historia_clinica);
           this.formularioNuevaAtencionSctr.controls['txtPersonaReporta'].setValue(resAtencion.resultData[0].persona_reporta);
           this.formularioNuevaAtencionSctr.controls['txtObservacion'].setValue(resAtencion.resultData[0].observacion);
           this.formularioNuevaAtencionSctr.controls['txtClinicaPrimeraAtencion'].setValue(resAtencion.resultData[0].ipress_primera_ate);
@@ -365,7 +364,6 @@ export class SctrNuevatencionComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //console.log(result.data)
       this.codPaciente = result.data.id_paciente;
       this.formularioNuevoPacienteSctr.controls['txtNroDocumento'].setValue(result.data.numero_documento);
       this.formularioNuevoPacienteSctr.controls['txtApePaterno'].setValue(result.data.apellido_paterno);
@@ -393,6 +391,8 @@ export class SctrNuevatencionComponent {
         },
         error: console.log,
       });
+    } else {
+      this.filtradoClientes = [];
     }
   }
 
@@ -462,7 +462,11 @@ export class SctrNuevatencionComponent {
     if ((this.tipoAtencion == 1 && paseAtencion == 0) || (this.tipoAtencion == 2 && paseAtencion == 0) || (this.tipoAtencion == 1 && paseAtencion == 1)) {
       this.formularioNuevaAtencionSctr.controls['cboMotivo'].disable();
     } else {
-      this.getMotivoList(this.tipoAtencion, paseAtencion);
+      if (this.tipoAtencion == null || paseAtencion == 0) {
+        this.toastrService.warning('¡Por favor seleccione el Tipo y pase de atención!');
+      } else {
+        this.getMotivoList(this.tipoAtencion, paseAtencion);
+      }
     }
   }
 
@@ -576,47 +580,47 @@ export class SctrNuevatencionComponent {
   savePaciente() {
     if (this.formularioNuevoPacienteSctr.valid) {
       this.showSpinner = true;
-      this.formularioNuevoPacienteSctr.controls['cboTipoDocumento'].disable();
-      this.formularioNuevoPacienteSctr.controls['txtNroDocumento'].disable();
-      this.formularioNuevoPacienteSctr.controls['txtApePaterno'].disable();
-      this.formularioNuevoPacienteSctr.controls['txtApeMaterno'].disable();
-      this.formularioNuevoPacienteSctr.controls['txtNombres'].disable();
-      this.formularioNuevoPacienteSctr.controls['txtCelular'].disable();
-      this.formularioNuevoPacienteSctr.controls['txtFechaNacimiento'].disable();
-      this.formularioNuevoPacienteSctr.controls['cboSexo'].disable();
-      this.statusBtnGuardarPaciente = true;
-      this.statusBtnNuevoPaciente = false;
 
       this.persona.tipo_documento = this.valTipoDocumento.toString();
       this.persona.numero_documento = this.formularioNuevoPacienteSctr.value["txtNroDocumento"]?.toString() || '';
       this.persona.apellido_materno = this.formularioNuevoPacienteSctr.value["txtApeMaterno"]?.toString() || '';
       this.persona.apellido_paterno = this.formularioNuevoPacienteSctr.value["txtApePaterno"]?.toString() || '';
       this.persona.nombres = this.formularioNuevoPacienteSctr.value["txtNombres"]?.toString() || '';
-      //this.persona.sexo = this.valSexo.toString();
-      if (this.valSexo.toString() == "1") {
-        this.persona.sexo = "M";
-      } else {
-        this.persona.sexo = "F";
-      }
+      this.persona.sexo = this.valSexo.toString();
       this.fechaNacimiento = this.formularioNuevoPacienteSctr.value["txtFechaNacimiento"]?.toString();
       this.persona.fecha_nacimiento = new Date(this.fechaNacimiento);
       this.persona.celular = this.formularioNuevoPacienteSctr.value["txtCelular"]?.toString() || '';
       this.persona.usuario_creacion = this.usuarioEnlinea.id || '';
-      console.log(this.persona)
 
       this._personaServices.addPersonaSctr(this.persona).subscribe({
-        next: (val: any) => {
-          this._pacientesServices.GetPacientesFiltro(this.persona.numero_documento, 'ApePaternoDni').subscribe({
-            next: (res) => {
-              for (let option_ of res.resultData) {
-                this.codPaciente = parseInt(option_.id_paciente);
-                this.showSpinner = false;
-              }
-            },
-            error: console.log,
-          });
+        next: (res: any) => {
+          if (res.resultData.id_persona == -1) {
+            this.showSpinner = false;
+            this.toastrService.warning('¡El Paciente con número de documento: ' + this.persona.numero_documento + ' ya existe!');
+          } else {
+            this._pacientesServices.GetPacientesFiltro(this.persona.numero_documento, 'ApePaternoDni').subscribe({
+              next: (res) => {
+                this.formularioNuevoPacienteSctr.controls['cboTipoDocumento'].disable();
+                this.formularioNuevoPacienteSctr.controls['txtNroDocumento'].disable();
+                this.formularioNuevoPacienteSctr.controls['txtApePaterno'].disable();
+                this.formularioNuevoPacienteSctr.controls['txtApeMaterno'].disable();
+                this.formularioNuevoPacienteSctr.controls['txtNombres'].disable();
+                this.formularioNuevoPacienteSctr.controls['txtCelular'].disable();
+                this.formularioNuevoPacienteSctr.controls['txtFechaNacimiento'].disable();
+                this.formularioNuevoPacienteSctr.controls['cboSexo'].disable();
+                this.statusBtnGuardarPaciente = true;
+                this.statusBtnNuevoPaciente = false;
 
-          this.toastrService.success('¡Paciente creado satisfactoriamene!');
+                for (let option_ of res.resultData) {
+                  this.codPaciente = parseInt(option_.id_paciente);
+                  this.showSpinner = false;
+                }
+              },
+              error: console.log,
+            });
+
+            this.toastrService.success('¡Paciente creado satisfactoriamene!');
+          }
         },
         error: (err: any) => {
           this.showSpinner = false;
@@ -630,32 +634,31 @@ export class SctrNuevatencionComponent {
 
   saveAtencionSctr() {
     this.showSpinner = true;
-    if (this.formularioNuevaAtencionSctr.valid && this.codPaciente != null && codCliente != 0 && this.codClinica != null) {
-      this.atencion.id_persona = this.codPaciente;
-      this.atencion.id_empresa = codCliente;
-      this.atencion.id_clinica = this.codClinica;
-      this.atencion.id_clinica_primera_atencion = this.codClinicaPrimeraAtencion;
-      this.atencion.id_motivo = this.formularioNuevaAtencionSctr.value["cboMotivo"] || '0';
-      this.atencion.id_plan = this.formularioNuevaAtencionSctr.value["cboPlan"] || '0';
-      //this.atencion.horario_trabajo = this.formularioNuevaAtencionSctr.value["txtInicioLabores"] + " " + this.formularioNuevaAtencionSctr.value["txtTerminoLabores"];
-      //this.atencion.cargo = this.formularioNuevaAtencionSctr.value["txtPuestoCargo"] || '';
-      //this.atencion.relato = this.formularioNuevaAtencionSctr.value["txtRelatoAccidente"] || '';
-      //this.atencion.fecha_accidente = this.formularioNuevaAtencionSctr.value["txtFechaAccidente"] || '';
-      //this.atencion.hora_accidente = this.formularioNuevaAtencionSctr.value["txtHoraAccidente"] || '';
-      this.atencion.observacion = this.formularioNuevaAtencionSctr.value["txtObservacion"] || '';
-      this.atencion.hoja_atencion = this.formularioNuevaAtencionSctr.value["rbHojaAtencion"]?.toString() || '';
-      this.atencion.skill = this.rdSkill;
-      this.atencion.motivo_skill = this.cboMotivo;
-      this.atencion.metodo_validacion = cboMotivoValidacion.toString();
-      this.atencion.primera_atencion = this.tipoAtencion.toString();
-      this.atencion.persona_reporta_clinica = this.formularioNuevaAtencionSctr.value["txtPersonaReporta"] || '';
-      this.atencion.estado = 1;
-
-      //console.log(this.atencion)
+    //&& codCliente != 0
+    if (this.formularioNuevaAtencionSctr.valid && this.codPaciente != null && this.codClinica != null) {
+      this.historiaClinica.id_persona = this.codPaciente;
+      this.historiaClinica.id_empresa = codCliente;
+      this.historiaClinica.id_clinica = this.codClinica;
+      this.historiaClinica.id_clinica_primera_atencion = this.codClinicaPrimeraAtencion;
+      this.historiaClinica.id_motivo = this.formularioNuevaAtencionSctr.value["cboMotivo"] || '0';
+      this.historiaClinica.id_plan = this.formularioNuevaAtencionSctr.value["cboPlan"] || '0';
+      //this.historiaClinica.horario_trabajo = this.formularioNuevaAtencionSctr.value["txtInicioLabores"] + " " + this.formularioNuevaAtencionSctr.value["txtTerminoLabores"];
+      //this.historiaClinica.cargo = this.formularioNuevaAtencionSctr.value["txtPuestoCargo"] || '';
+      //this.historiaClinica.relato = this.formularioNuevaAtencionSctr.value["txtRelatoAccidente"] || '';
+      //this.historiaClinica.fecha_accidente = this.formularioNuevaAtencionSctr.value["txtFechaAccidente"] || '';
+      //this.historiaClinica.hora_accidente = this.formularioNuevaAtencionSctr.value["txtHoraAccidente"] || '';
+      this.historiaClinica.observacion = this.formularioNuevaAtencionSctr.value["txtObservacion"] || '';
+      this.historiaClinica.hoja_atencion = this.formularioNuevaAtencionSctr.value["rbHojaAtencion"]?.toString() || '';
+      this.historiaClinica.skill = this.rdSkill;
+      this.historiaClinica.motivo_skill = this.cboMotivo;
+      this.historiaClinica.metodo_validacion = cboMotivoValidacion.toString();
+      this.historiaClinica.primera_atencion = this.tipoAtencion.toString();
+      this.historiaClinica.persona_reporta_clinica = this.formularioNuevaAtencionSctr.value["txtPersonaReporta"] || '';
+      this.historiaClinica.estado = 1;
 
       if (this.codAtencionEditar == null) {
-        this.atencion.usuario_creacion = this.usuarioEnlinea.id || '';
-        this._atencionServices.addAtencionSctr(this.atencion).subscribe({
+        this.historiaClinica.usuario_creacion = this.usuarioEnlinea.id || '';
+        this._historiaClinicaServices.addHistoriaClinicaSctr(this.historiaClinica).subscribe({
           next: (val: any) => {
             this.showSpinner = false;
             this.toastrService.success('¡Atención creada satisfactoriamene!');
@@ -669,9 +672,9 @@ export class SctrNuevatencionComponent {
           },
         });
       } else {
-        this.atencion.usuario_modificacion = this.usuarioEnlinea.id || '';
-        this.atencion.id_atencion = this.codAtencionEditar;
-        this._atencionServices.updateAtencionSctr(this.atencion).subscribe({
+        this.historiaClinica.usuario_modificacion = this.usuarioEnlinea.id || '';
+        this.historiaClinica.cod_historia_clinica = this.codAtencionEditar;
+        this._historiaClinicaServices.updateHistoriaClinicaSctr(this.historiaClinica).subscribe({
           next: (val: any) => {
             this.showSpinner = false;
             this.toastrService.success('¡Atención actualizada satisfactoriamene!');
@@ -688,7 +691,32 @@ export class SctrNuevatencionComponent {
 
     } else {
       this.toastrService.warning('¡Por favor complete los campos obligatorios!');
+      this.showSpinner = false;
     }
+  }
+
+  soloNumeros(event: Event): boolean {
+    return soloNumeros(event);
+  }
+
+  soloLetras(event: Event): boolean {
+    return soloLetras(event);
+  }
+
+  limpiarNumero(event: Event): boolean {
+    return limpiarNumero(event);
+  }
+
+  limpiarLetras(event: Event): boolean {
+    return limpiarLetras(event);
+  }
+
+  rellenaCaracteres(event: Event): boolean {
+    return rellenaCaracteres(event);
+  }
+
+  primer9(event: Event): boolean {
+    return primer9(event);
   }
 
 }

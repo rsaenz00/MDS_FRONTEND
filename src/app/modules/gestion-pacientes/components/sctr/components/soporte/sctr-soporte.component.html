@@ -3,10 +3,10 @@
 </div>
 <mat-dialog-content>
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
-        <div class="row">
+        <div class="row" *ngIf="estadoAtencion !== 'CANCELADO'">
             <mat-radio-button class="example-radio-button" (change)="getOpcionSoporte($event)" value="ModificarDatos">Modificar datos</mat-radio-button>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="estadoAtencion !== 'CANCELADO'">
             <mat-radio-button class="example-radio-button" (change)="getOpcionSoporte($event)" value="AnularAtencion">Anular atención</mat-radio-button>
         </div>
         <div class="row">

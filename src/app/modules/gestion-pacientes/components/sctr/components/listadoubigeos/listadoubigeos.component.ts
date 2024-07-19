@@ -22,6 +22,7 @@ export class ListadoubigeosComponent implements OnInit {
   public txtDistrito = '';
   public txtProvincia = '';
   public txtDepartamento = '';
+  filterDictionary = new Map<string, string>();
 
   constructor(private _liveAnnouncer: LiveAnnouncer, private _ubigeosService: UbigeoService, private frm: FormBuilder,
     public dialogRef: MatDialogRef<ListadoubigeosComponent>) { }
@@ -39,33 +40,19 @@ export class ListadoubigeosComponent implements OnInit {
     this.getUbigeosList();
   }
 
-
-  getFilterPredicate(tipo: string) {
-    return (row: Ubigeos, filters: string) => {
-      const txtDistrito = filters;
-      const txtProvincia = filters;
-      const txtDepartamento = filters;
-
-      const columnDistrito = row.distrito;
-      const columnProvincia = row.provincia;
-      const columnDepartamento = row.departamento;
-
-      var customFilter = false;
-
-      if (tipo == 'distrito') {
-        customFilter = columnDistrito.toLowerCase().includes(txtDistrito);
-      } else if (tipo == 'provincia') {
-        customFilter = columnProvincia.toLowerCase().includes(txtProvincia);
-      } else if (tipo == 'departamento') {
-        customFilter = columnDepartamento.toLowerCase().includes(txtDepartamento);
+  getFilterPredicate(record: string, filter: string) {
+    this.dataSource.filterPredicate = function (record, filter) {
+      var map = new Map(JSON.parse(filter));
+      let isMatch = false;
+      let val: any;
+      for (let [key, value] of map) {
+        val = value;
+        isMatch = (value == "") || (record[key as keyof Ubigeos].includes(val) === true);
+        if (!isMatch) return false;
       }
+      return isMatch;
 
-      const matchFilter: any[] = [];
-
-      matchFilter.push(customFilter);
-
-      return matchFilter.every(Boolean);
-    };
+    }
   }
 
   getUbigeosList() {
@@ -89,16 +76,15 @@ export class ListadoubigeosComponent implements OnInit {
   }
 
   filtrarDistrito(event: Event) {
-    this.formularioUbigeo.controls['txtDepartamento'].reset();
-    this.formularioUbigeo.controls['txtProvincia'].reset();
-
-    this.dataSource.filterPredicate = this.getFilterPredicate('distrito');
-
     const ds = (event.target as HTMLInputElement).value;
     this.txtDistrito = ds === null ? '' : ds;
+    this.getFilterPredicate('distrito', this.txtDistrito);
 
     const filterValue = this.txtDistrito;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterDictionary.set('distrito', filterValue);
+    var jsonString = JSON.stringify(Array.from(this.filterDictionary.entries()));
+    
+    this.dataSource.filter = jsonString;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -106,15 +92,15 @@ export class ListadoubigeosComponent implements OnInit {
   }
 
   filtrarProvincia(event: Event) {
-    this.formularioUbigeo.controls['txtDepartamento'].reset();
-    this.formularioUbigeo.controls['txtDistrito'].reset();
-
-    this.dataSource.filterPredicate = this.getFilterPredicate('provincia');
     const pr = (event.target as HTMLInputElement).value;
     this.txtProvincia = pr === null ? '' : pr;
+    this.getFilterPredicate('provincia', this.txtProvincia);
 
     const filterValue = this.txtProvincia;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterDictionary.set('provincia', filterValue);
+    var jsonString = JSON.stringify(Array.from(this.filterDictionary.entries()));
+    
+    this.dataSource.filter = jsonString;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -122,15 +108,15 @@ export class ListadoubigeosComponent implements OnInit {
   }
 
   filtrarDepartamento(event: Event) {
-    this.formularioUbigeo.controls['txtProvincia'].reset();
-    this.formularioUbigeo.controls['txtDistrito'].reset();
-
-    this.dataSource.filterPredicate = this.getFilterPredicate('departamento');
     const dp = (event.target as HTMLInputElement).value;
     this.txtDepartamento = dp === null ? '' : dp;
+    this.getFilterPredicate('departamento', this.txtDepartamento);
 
     const filterValue = this.txtDepartamento;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterDictionary.set('departamento', filterValue);
+    var jsonString = JSON.stringify(Array.from(this.filterDictionary.entries()));
+
+    this.dataSource.filter = jsonString;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();

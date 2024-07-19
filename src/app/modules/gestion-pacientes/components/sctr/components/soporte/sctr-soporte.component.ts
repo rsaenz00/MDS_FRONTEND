@@ -12,9 +12,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SctrSoporteComponent {
   dataAtencion: any;
+  estadoAtencion: string;
 
   constructor(private _dialog: MatDialog, public _dialogRef: MatDialogRef<SctrSoporteComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private toastrService: ToastrService) {
     this.dataAtencion = data.datos_atencion
+    this.estadoAtencion = this.dataAtencion.estado;
   }
 
   opcionSeleccionada = "";
@@ -33,7 +35,7 @@ export class SctrSoporteComponent {
       const dialogRef = this._dialog.open(SctrNuevatencionComponent, {
         panelClass: 'sanna_theme',
         disableClose: true,
-        data: { 'codAtencionEditar': this.dataAtencion.cod_atencion },
+        data: { 'codAtencionEditar': this.dataAtencion.cod_historia_clinica },
         width: '1100px'
       });
 
@@ -44,7 +46,7 @@ export class SctrSoporteComponent {
     } else if (this.opcionSeleccionada == "AnularAtencion") {
 
       const dialogRef = this._dialog.open(ConfirmaranularatencionComponent, {
-        data: { 'id_atencion': this.dataAtencion.cod_atencion },
+        data: { 'cod_historia_clinica': this.dataAtencion.cod_historia_clinica },
         panelClass: 'sanna_theme',
         disableClose: true,
         width: '430px'

@@ -9,6 +9,7 @@ import { SeguimientoService } from 'src/app/services/seguimiento.servcie';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { UsuarioAuth } from 'src/app/models/usuario-auth';
+import { CoreService } from 'src/app/services/core.service';
 
 @Component({
   selector: 'app-sctr-seguimiento',
@@ -17,15 +18,16 @@ import { UsuarioAuth } from 'src/app/models/usuario-auth';
 })
 
 export class SctrSeguimientoComponent {
-  displayedColumns = ['cod_atencion', 'servicio', 'fecha_creacion', 'hora_creacion', 'observacion', 'usuario'];
+  options = this.settings.getOptions();
+  displayedColumns = ['cod_historia_clinica', 'servicio', 'fecha_creacion', 'hora_creacion', 'observacion', 'usuario'];
   dataSource!: MatTableDataSource<Seguimiento>;
-  id_atencion: any;
+  cod_historia_clinica: any;
   countRows: number = 0;
   seguimiento: Seguimiento = {} as Seguimiento;
   usuarioEnlinea: UsuarioAuth;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private frm: FormBuilder, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _seguimientoService: SeguimientoService, private toastrService: ToastrService) {
-    this.id_atencion = data.cod_atencion
+  constructor(private _liveAnnouncer: LiveAnnouncer, private frm: FormBuilder, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _seguimientoService: SeguimientoService, private toastrService: ToastrService, private settings: CoreService) {
+    this.cod_historia_clinica = data.cod_historia_clinica
   }
 
   frmSeguimientoSctr = this.frm.group({
@@ -39,8 +41,8 @@ export class SctrSeguimientoComponent {
 
   ngOnInit(): void {
     this.usuarioEnlinea = JSON.parse(localStorage.getItem('authObj') as any);
-    this.frmSeguimientoSctr.get("txtCodigo")?.setValue(this.id_atencion);
-    this.getSeguimientoList(this.id_atencion);
+    this.frmSeguimientoSctr.get("txtCodigo")?.setValue(this.cod_historia_clinica);
+    this.getSeguimientoList(this.cod_historia_clinica);
   }
 
   announceSortChange(sortState: Sort) {
@@ -73,14 +75,14 @@ export class SctrSeguimientoComponent {
 
   saveSeguimiento() {
     if (this.frmSeguimientoSctr.valid) {
-      this.seguimiento.cod_atencion = this.id_atencion.toString();
+      this.seguimiento.cod_historia_clinica = this.cod_historia_clinica.toString();
       this.seguimiento.observacion = this.frmSeguimientoSctr.value["txtObservacion"] || '';
       this.seguimiento.usuario = this.usuarioEnlinea.id?.toString() || '';
 
       this._seguimientoService.AddSeguimientoSctr(this.seguimiento).subscribe({
         next: (val: any) => {
           this.toastrService.success('¡Seguimiento creado satisfactoriamene!');
-          this.getSeguimientoList(this.id_atencion);
+          this.getSeguimientoList(this.cod_historia_clinica);
           this.frmSeguimientoSctr.controls['txtObservacion'].reset();
         },
         error: (err: any) => {

@@ -9,8 +9,8 @@ import { SctrTiposervicioComponent } from '../tiposervicio/sctr-tiposervicio.com
 import { SctrVerdatosComponent } from '../verdatos/sctr-verdatos.component';
 import { SctrSeguimientoComponent } from '../seguimiento/sctr-seguimiento.component';
 import { SctrSoporteComponent } from '../soporte/sctr-soporte.component';
-import { AtencionService } from 'src/app/services/atencion.service';
-import { Atencion } from 'src/app/models/atencion.model';
+import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
+import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, Validators } from '@angular/forms';
 import { exportExcelService } from 'src/app/helpers/excel/exportxls.services';
@@ -27,10 +27,10 @@ export class SctrReporteComponent implements OnInit {
   rowSeleccionado: any;
   countRows: number = 0;
   displayedColumns: string[] = [];
-  dataSource!: MatTableDataSource<Atencion>;
+  dataSource!: MatTableDataSource<HistoriaClinica>;
   showSpinner = true;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _atencionService: AtencionService,
+  constructor(private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _historiaClinicaService: HistoriaClinicaService,
     private dateAdapter: DateAdapter<Date>, private toastService: ToastrService, private exportarExcelService: exportExcelService, private frm: FormBuilder) {
     this.dateAdapter.setLocale("es-pe");
   }
@@ -69,7 +69,7 @@ export class SctrReporteComponent implements OnInit {
       this.displayedColumns = ['cod_atencion', 'estado', 'fecha_creacion', 'hora_creacion', 'motivo', 'procedencia', 'clinica', 'departamento', 'provincia', 'distrito', 'persona_reporta', 'motivo_de_llamada', 'usuario_creacion', 'skill'];
     }
 
-    this._atencionService.GetAtencionesSctrList(fechaInicio, fechaFin, reporte).subscribe({
+    this._historiaClinicaService.GetHistoriasClinicasSctrList(fechaInicio, fechaFin, reporte).subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;

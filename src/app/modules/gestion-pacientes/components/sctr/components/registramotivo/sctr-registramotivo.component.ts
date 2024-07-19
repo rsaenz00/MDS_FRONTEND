@@ -2,13 +2,14 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Atencion } from 'src/app/models/atencion.model';
-import { AtencionService } from 'src/app/services/atencion.service';
+import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
+import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { Cliente } from 'src/app/models/cliente.model';
 import { MatOption } from '@angular/material/core';
 import { ListadoclinicasComponent } from '../listadoclinicas/listadoclinicas.component';
 import { UsuarioAuth } from 'src/app/models/usuario-auth';
+import { limpiarLetras, limpiarNumero, soloLetras, soloNumeros } from 'src/app/util/forms.validate';
 
 @Component({
   selector: 'app-sctr-registramotivo',
@@ -24,7 +25,7 @@ export class SctrRegistramotivoComponent {
   reporta: string;
   usuarioEnlinea: UsuarioAuth;
 
-  constructor(private _dialog: MatDialog, private frm: FormBuilder, private toastrService: ToastrService, private _atencionServices: AtencionService, private _clienteService: ClienteService, public _dialogRef: MatDialogRef<SctrRegistramotivoComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private _dialog: MatDialog, private frm: FormBuilder, private toastrService: ToastrService, private _historiaClinicaServices: HistoriaClinicaService, private _clienteService: ClienteService, public _dialogRef: MatDialogRef<SctrRegistramotivoComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     this.cboMotivo = data.cboMotivo;
     this.rdSkill = data.rdSkill;
   }
@@ -44,7 +45,7 @@ export class SctrRegistramotivoComponent {
   statusBtnBuscarClinica = true;
   statusBtnRegistrarEmpresa = true;
   filtradoClientes: Cliente[];
-  atencion: Atencion = {} as Atencion;
+  historiaClinica: HistoriaClinica = {} as HistoriaClinica;
   valIdCliente = 0;
 
   ngOnInit(): void {
@@ -128,43 +129,43 @@ export class SctrRegistramotivoComponent {
 
   saveMotivoSctr() {
     if (this.formularioRegitraMotivoSctr.valid) {
-      this.atencion.skill = this.rdSkill;
-      this.atencion.motivo_skill = this.cboMotivo;
-      this.atencion.observacion = this.formularioRegitraMotivoSctr.value['txtMotivo'] || '';
-      this.atencion.estado = 1;
-      this.atencion.usuario_creacion = this.usuarioEnlinea.id || '';
+      this.historiaClinica.skill = this.rdSkill;
+      this.historiaClinica.motivo_skill = this.cboMotivo;
+      this.historiaClinica.observacion = this.formularioRegitraMotivoSctr.value['txtMotivo'] || '';
+      this.historiaClinica.estado = 1;
+      this.historiaClinica.usuario_creacion = this.usuarioEnlinea.id || '';
 
       if (this.reporta == "clinica") {
-        this.atencion.centro_clinico = 1;
-        this.atencion.empresa = 0;
-        this.atencion.corredor_seguro = 0;
-        this.atencion.paciente_asegurado = 0;
-        this.atencion.persona_reporta_clinica = this.formularioRegitraMotivoSctr.value['txtPacienteReportaClinica'] || '';
-        this.atencion.id_clinica = this.codClinica;
+        this.historiaClinica.centro_clinico = 1;
+        this.historiaClinica.empresa = 0;
+        this.historiaClinica.corredor_seguro = 0;
+        this.historiaClinica.paciente_asegurado = 0;
+        this.historiaClinica.persona_reporta_clinica = this.formularioRegitraMotivoSctr.value['txtPacienteReportaClinica'] || '';
+        this.historiaClinica.id_clinica = this.codClinica;
       } else if (this.reporta == "empresa") {
-        this.atencion.empresa = 1;
-        this.atencion.centro_clinico = 0;
-        this.atencion.corredor_seguro = 0;
-        this.atencion.paciente_asegurado = 0;
-        this.atencion.persona_reporta_empresa = this.formularioRegitraMotivoSctr.value['txtPacienteReportaempresa'] || '';
-        this.atencion.id_empresa = this.valIdCliente;
+        this.historiaClinica.empresa = 1;
+        this.historiaClinica.centro_clinico = 0;
+        this.historiaClinica.corredor_seguro = 0;
+        this.historiaClinica.paciente_asegurado = 0;
+        this.historiaClinica.persona_reporta_empresa = this.formularioRegitraMotivoSctr.value['txtPacienteReportaempresa'] || '';
+        this.historiaClinica.id_empresa = this.valIdCliente;
       } else if (this.reporta == "seguro") {
-        this.atencion.corredor_seguro = 1;
-        this.atencion.centro_clinico = 0;
-        this.atencion.empresa = 0;
-        this.atencion.paciente_asegurado = 0;
-        this.atencion.persona_reporta_seguro = this.formularioRegitraMotivoSctr.value['txtPacienteReportaSeguro'] || '';
+        this.historiaClinica.corredor_seguro = 1;
+        this.historiaClinica.centro_clinico = 0;
+        this.historiaClinica.empresa = 0;
+        this.historiaClinica.paciente_asegurado = 0;
+        this.historiaClinica.persona_reporta_seguro = this.formularioRegitraMotivoSctr.value['txtPacienteReportaSeguro'] || '';
       } else if (this.reporta == "paciente") {
-        this.atencion.paciente_asegurado = 1;
-        this.atencion.corredor_seguro = 0;
-        this.atencion.centro_clinico = 0;
-        this.atencion.empresa = 0;
-        this.atencion.persona_reporta_asegurado = this.formularioRegitraMotivoSctr.value['txtPacienteReportaAsegurado'] || '';
+        this.historiaClinica.paciente_asegurado = 1;
+        this.historiaClinica.corredor_seguro = 0;
+        this.historiaClinica.centro_clinico = 0;
+        this.historiaClinica.empresa = 0;
+        this.historiaClinica.persona_reporta_asegurado = this.formularioRegitraMotivoSctr.value['txtPacienteReportaAsegurado'] || '';
       }
 
-      console.log(this.atencion)
+      //console.log(this.historiaClinica)
 
-      this._atencionServices.addAtencionSctr(this.atencion).subscribe({
+      this._historiaClinicaServices.addHistoriaClinicaSctr(this.historiaClinica).subscribe({
         next: (val: any) => {
           this.toastrService.success('¡Motivo creado satisfactoriamene!');
           this._dialogRef.close(true);
@@ -177,5 +178,21 @@ export class SctrRegistramotivoComponent {
     } else {
       this.toastrService.warning('¡Por favor complete los campos obligatorios!');
     }
+  }
+
+  soloNumeros(event: Event): boolean {
+    return soloNumeros(event);
+  }
+
+  soloLetras(event: Event): boolean {
+    return soloLetras(event);
+  }
+
+  limpiarNumero(event: Event): boolean {
+    return limpiarNumero(event);
+  }
+
+  limpiarLetras(event: Event): boolean {
+    return limpiarLetras(event);
   }
 }

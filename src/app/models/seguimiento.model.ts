@@ -1,5 +1,5 @@
 export class Seguimiento {
-    cod_atencion: string;
+    cod_historia_clinica: string;
     fecha_creacion: string;
     hora_creacion: string;
     observacion: string;
