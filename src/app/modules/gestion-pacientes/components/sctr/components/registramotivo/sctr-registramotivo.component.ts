@@ -10,6 +10,7 @@ import { MatOption } from '@angular/material/core';
 import { ListadoclinicasComponent } from '../listadoclinicas/listadoclinicas.component';
 import { UsuarioAuth } from 'src/app/models/usuario-auth';
 import { limpiarLetras, limpiarNumero, soloLetras, soloNumeros } from 'src/app/util/forms.validate';
+import { RegistraclienteComponent } from '../registracliente/registracliente.component';
 
 @Component({
   selector: 'app-sctr-registramotivo',
@@ -21,8 +22,9 @@ export class SctrRegistramotivoComponent {
   cboMotivo: any;
   rdSkill: any;
   pacienteReporta: string;
-  codClinica: number;
+  valRuc: string;
   reporta: string;
+  codClinica: number;
   usuarioEnlinea: UsuarioAuth;
 
   constructor(private _dialog: MatDialog, private frm: FormBuilder, private toastrService: ToastrService, private _historiaClinicaServices: HistoriaClinicaService, private _clienteService: ClienteService, public _dialogRef: MatDialogRef<SctrRegistramotivoComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -63,6 +65,29 @@ export class SctrRegistramotivoComponent {
       this.codClinica = result.data.id_clinica;
       this.formularioRegitraMotivoSctr.controls['txtNombreClinica'].setValue(result.data.clinica);
       this.formularioRegitraMotivoSctr.controls['txtDireccionClinica'].setValue(result.data.direccion);
+    });
+  }
+
+  openAddClienteDialog() {
+    const dialogRef = this._dialog.open(RegistraclienteComponent, {
+      panelClass: 'sanna_theme',
+      width: '430px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this._clienteService.getClienteListByRuc(result.data.ruc).subscribe({
+        next: (res) => {
+          this.filtradoClientes = res.resultData;
+          this.verRuc(res.resultData);
+          for (let option_ of this.filtradoClientes) {
+            this.valIdCliente = parseInt(option_.id_cliente);
+          }
+          this.formularioRegitraMotivoSctr.get("txtEmpresa")?.setValue(result.data.nombre);
+          this.formularioRegitraMotivoSctr.get("txtRucEmpresa")?.setValue(result.data.nombre);
+          this.valRuc = result.data.ruc;
+        },
+        error: console.log,
+      });
     });
   }
 

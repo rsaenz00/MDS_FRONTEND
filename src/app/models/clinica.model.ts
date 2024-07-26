@@ -9,7 +9,7 @@ export class Clinica {
     telefono: string;
     anexo: string;
     afiliado: string;
-    plan_huerfano_ilimitado: number;
+    plan_huerfano_ilimitado: string;
     estado: number;
 }
 

@@ -20,8 +20,8 @@ export class HistoriaClinicaService {
         return this._http.get('HistoriaClinica/GetHistoriaClinicaSctrByCodigo?cod_historia_clinica=' + codHistoriaClinica);
     }
 
-    GetHistoriaClinicaSctrFiltrO(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string): Observable<any> {
-        return this._http.get('HistoriaClinica/GetHistoriasClinicasSctrFiltro?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&busqueda=' + busqueda + '&condicion=' + condicion);
+    GetHistoriaClinicaSctrFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string, reporte: number): Observable<any> {
+        return this._http.get('HistoriaClinica/GetHistoriasClinicasSctrFiltro?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&busqueda=' + busqueda + '&condicion=' + condicion + '&reporte=' + reporte);
     }
 
     addHistoriaClinicaSctr(data: HistoriaClinica): Observable<HistoriaClinica> {

@@ -1,6 +1,16 @@
-<div mat-dialog-title>
-    Maestro de Ubigeo
-</div>
+<mat-card class="theme-card" style="margin-bottom: 0;">
+    <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>
+                Maestro de Ubigeo
+            </mat-card-title>
+        </mat-card-title-group>
+        <div fxFlex></div>
+        <div fxLayoutAlign="center center">
+            <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+        </div>
+    </mat-card-header>
+</mat-card>
 <mat-dialog-content>
     <mat-card class="example-card">
         <mat-card-content>

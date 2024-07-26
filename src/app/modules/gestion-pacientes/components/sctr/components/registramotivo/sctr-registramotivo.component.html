@@ -1,7 +1,17 @@
 <form [formGroup]="formularioRegitraMotivoSctr">
-    <div mat-dialog-title>
-        Registro de motivo
-    </div>
+    <mat-card class="theme-card" style="margin-bottom: 0;">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    Registro de motivo
+                </mat-card-title>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <div fxLayoutAlign="center center">
+                <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+            </div>
+        </mat-card-header>
+    </mat-card>
     <mat-dialog-content>
         <mat-radio-group aria-label="Select an option">
             <div class="row">
@@ -35,7 +45,7 @@
                     <mat-radio-button value="empresa" (change)="getPersonaReporta($event)">EMPRESA</mat-radio-button>
                     <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
                         <mat-label>RUC</mat-label>
-                        <input matInput formControlName="txtRucEmpresa" [matAutocomplete]="auto"
+                        <input matInput formControlName="txtRucEmpresa" [value]="valRuc" [matAutocomplete]="auto"
                             (keyup)="filterClientes($event); limpiarNumero($event)" (change)="limpiarNumero($event)"
                             (keypress)="soloNumeros($event)">
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="verRuc"
@@ -55,7 +65,8 @@
                         </div>
                         <div class="col-md-3">
                             <button mat-flat-button color="accent" style="width: 100%;"
-                                [disabled]="statusBtnRegistrarEmpresa">Registrar</button>
+                                [disabled]="statusBtnRegistrarEmpresa"
+                                (click)="openAddClienteDialog()">Registrar</button>
                         </div>
                     </div>
                     <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">

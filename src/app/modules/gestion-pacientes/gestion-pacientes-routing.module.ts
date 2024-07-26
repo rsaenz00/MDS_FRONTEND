@@ -7,6 +7,7 @@ import { DrOnlineComponent } from './components/dr-online/dr-online.component';
 import { SctrReporteComponent } from './components/sctr/components/reporte/sctr-reporte.component';
 import { SitedsComponent } from './components/mad/components/siteds/siteds.component';
 import { MadComponent } from './components/mad/mad.component';
+import { CronicosComponent } from './components/cronicos/cronicos.component';
 
 const routes: Routes = 
 [
@@ -19,7 +20,7 @@ const routes: Routes =
   },
   {
     path: 'cronicos',
-    component: SctrComponent,
+    component: CronicosComponent,
     data: { title:'Cronicos' },
     // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
     canActivate: [AuthGuard]

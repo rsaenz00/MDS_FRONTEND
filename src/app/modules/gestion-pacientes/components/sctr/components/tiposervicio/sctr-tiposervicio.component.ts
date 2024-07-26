@@ -5,6 +5,7 @@ import { Motivo } from 'src/app/models/motivo.model';
 import { SctrNuevatencionComponent } from '../nuevatencion/sctr-nuevatencion.component';
 import { SctrRegistramotivoComponent } from '../registramotivo/sctr-registramotivo.component';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sctr-tiposervicio',
@@ -13,12 +14,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class SctrTiposervicioComponent {
+  constructor(private _motivoService: MotivoService, private toastrService: ToastrService, private _dialog: MatDialog, public _dialogRef: MatDialogRef<SctrTiposervicioComponent>, private frm: FormBuilder) { }
 
-  constructor(private _motivoService: MotivoService, private toastrService: ToastrService, private _dialog: MatDialog, public _dialogRef: MatDialogRef<SctrTiposervicioComponent>) { }
+  formTipoServicio = this.frm.group({
+    rbSkillAvaya: [{ value: '1' }, Validators.required],
+    cboMotivo: ['', Validators.required]
+  })
 
   motivos: Motivo[];
-  rdSkill = 0;
-  cboMotivo = 0;
+  rdSkill = 1;
+  valMotivo = 0;
 
   ngOnInit(): void {
     this.getMotivosList();
@@ -28,6 +33,7 @@ export class SctrTiposervicioComponent {
     this._motivoService.GetMotivosList().subscribe({
       next: (res) => {
         this.motivos = res.resultData;
+        this.valMotivo = 20;
       },
       error: console.log,
     });
@@ -38,7 +44,7 @@ export class SctrTiposervicioComponent {
   }
 
   getMotivoCbo(target: any) {
-    this.cboMotivo = target.value;
+    this.valMotivo = target.value;
   }
 
   exitTipoServicio() {
@@ -46,39 +52,42 @@ export class SctrTiposervicioComponent {
   }
 
   nuevoServicioSctr() {
+    if (this.formTipoServicio.valid) {
+      if (this.valMotivo != 0 && this.rdSkill != 0) {
+        if (this.valMotivo == 20) {
 
-    if (this.cboMotivo != 0 && this.rdSkill != 0) {
-      if (this.cboMotivo == 20) {
+          const dialogRef = this._dialog.open(SctrNuevatencionComponent, {
+            panelClass: 'sanna_theme',
+            disableClose: true,
+            data: { 'cboMotivo': this.valMotivo, 'rdSkill': this.rdSkill },
+            width: '1100px'
+          });
 
-        const dialogRef = this._dialog.open(SctrNuevatencionComponent, {
-          panelClass: 'sanna_theme',
-          disableClose: true,
-          data: { 'cboMotivo': this.cboMotivo, 'rdSkill': this.rdSkill },
-          width: '1100px'
-        });
+          dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef.close(true);
+          });
 
-        dialogRef.afterClosed().subscribe(result => {
-          this._dialogRef.close(true);
-        });
+        } else {
 
+          const dialogRef = this._dialog.open(SctrRegistramotivoComponent, {
+            panelClass: 'sanna_theme',
+            disableClose: true,
+            data: { 'cboMotivo': this.valMotivo, 'rdSkill': this.rdSkill },
+            width: '1100px'
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            this._dialogRef.close(true);
+          });
+
+        }
       } else {
-
-        const dialogRef = this._dialog.open(SctrRegistramotivoComponent, {
-          panelClass: 'sanna_theme',
-          disableClose: true,
-          data: { 'cboMotivo': this.cboMotivo, 'rdSkill': this.rdSkill },
-          width: '1100px'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          this._dialogRef.close(true);
-        });
-
+        this.toastrService.warning('¡Seleccione los campos para continuar la atención!')
       }
+
     } else {
       this.toastrService.warning('¡Seleccione los campos para continuar la atención!')
     }
-
   }
 
 }

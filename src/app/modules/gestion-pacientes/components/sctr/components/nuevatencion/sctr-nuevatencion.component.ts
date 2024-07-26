@@ -27,7 +27,7 @@ import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
 import { CoreService } from 'src/app/services/core.service';
 import { limpiarLetras, limpiarNumero, primer9, rellenaCaracteres, soloLetras, soloNumeros } from 'src/app/util/forms.validate';
 
-var cboMotivoValidacion = 0, paseAtencion = 0, codCliente = 0;
+var cboMotivoValidacion = 0, cboPlanValidacion = 0, paseAtencion = 1, codCliente = 0;
 
 @Component({
   selector: 'app-sctr-nuevatencion',
@@ -40,25 +40,28 @@ export class SctrNuevatencionComponent {
   usuarioEnlinea: UsuarioAuth;
   cboMotivo: any;
   rdSkill: any;
-  tipoAtencion: number;
+  tipoAtencion: number = 1;
+  hojaAtencion: number = 0;
   codAtencionEditar: number = 0;
   codClinica: number;
   codClinicaPrimeraAtencion: number;
   codPaciente: number;
+  estadoPlanHuerfanoIlimitado: number;
   valSexo = 0;
   valTipoDocumento = 0;
   valMetodoValidacion = 0;
   valPlan = 0;
   valMotivo = 0;
+  cboMotivoAtencion = 0;
   valRuc: string;
   estadoClinica: string;
   tituloFormulario: string;
-  _1raAtencion: boolean = false;
+  _1raAtencion: boolean = true;
   _2daAtencion: boolean = false;
-  _SiPaseAtencion: boolean = false;
+  _SiPaseAtencion: boolean = true;
   _NoPaseAtencion: boolean = false;
   _SiHojaAtencion: boolean = false;
-  _NoHojaAtencion: boolean = false;
+  _NoHojaAtencion: boolean = true;
   showSpinner = true;
 
   constructor(private _dialog: MatDialog, private _motivoService: MotivoService, private _parametroService: ParametroService, private _planServices: PlanService, private _historiaClinicaServices: HistoriaClinicaService, private _personaServices: PersonaService, private _clienteService: ClienteService, private frm: FormBuilder, private toastrService: ToastrService, private _tipoDocumentoService: TipoDocumentoService, public _dialogRef: MatDialogRef<SctrNuevatencionComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private _pacientesServices: PacienteService, private _clinicasServices: ClinicaService, private settings: CoreService) {
@@ -85,8 +88,8 @@ export class SctrNuevatencionComponent {
     txtTelefono: [{ value: '', disabled: true }, Validators.required],
     txtAnexo: [{ value: '', disabled: true }],
     txtPersonaReporta: ['', Validators.required],
-    txtRuc: [''],//, Validators.required
-    txtEmpresa: [''],//, Validators.required
+    txtRuc: ['', Validators.required],//
+    txtEmpresa: ['', Validators.required],//
     txtAseguradora: [{ value: "PACIFICO S.A. ENT. PRESTADORA DE SALUD", disabled: true }],
     /*txtLugarAccidente: [{ value: '', disabled: true }],
     txtPuestoCargo: [{ value: '', disabled: true }],
@@ -95,10 +98,10 @@ export class SctrNuevatencionComponent {
     txtFechaAccidente: [{ value: '', disabled: true }],
     txtHoraAccidente: [{ value: '', disabled: true }],
     txtRelatoAccidente: [{ value: '', disabled: true }],*/
-    rbHojaAtencion: [''],//, Validators.required
-    cboMetodoValidacion: [''],//, Validators.required
-    cboPlan: [{ value: '', disabled: true }],//, Validators.required
-    rbPaseAtencion: ['', Validators.required],
+    rbHojaAtencion: [{ value: '0' }, Validators.required],//
+    cboMetodoValidacion: ['', Validators.required],//
+    cboPlan: [{ value: '', disabled: true }, Validators.required],//
+    rbPaseAtencion: [{ value: '1' }, Validators.required],
     cboMotivo: [{ value: '', disabled: true }],
     txtObservacion: [''],
     txtClinicaPrimeraAtencion: [{ value: '', disabled: true }]
@@ -113,7 +116,7 @@ export class SctrNuevatencionComponent {
   historiaClinica: HistoriaClinica = {} as HistoriaClinica;
   persona: Persona = {} as Persona;
   fechaNacimiento: any;
-  statusBtnClinicaPrimAtencion = false;
+  statusBtnClinicaPrimAtencion = true;
   statusBtnLugarAccidente = true;
   statusBtnFiltrarPaciente = false;
   statusBtnNuevoPaciente = false;
@@ -233,11 +236,13 @@ export class SctrNuevatencionComponent {
           if (resAtencion.resultData[0].hoja_atencion == true) {
             this._SiHojaAtencion = true;
             this._NoHojaAtencion = false;
-            this.formularioNuevaAtencionSctr.controls['rbHojaAtencion'].setValue("1");
+            this.hojaAtencion = 1;
+            //this.formularioNuevaAtencionSctr.controls['rbHojaAtencion'].setValue("1");
           } else {
             this._NoHojaAtencion = true;
             this._SiHojaAtencion = false;
-            this.formularioNuevaAtencionSctr.controls['rbHojaAtencion'].setValue("0");
+            this.hojaAtencion = 0;
+            //this.formularioNuevaAtencionSctr.controls['rbHojaAtencion'].setValue("0");
           }
 
           if (resAtencion.resultData[0].id_motivo == null) {
@@ -245,12 +250,12 @@ export class SctrNuevatencionComponent {
               this._SiPaseAtencion = true;
               this._NoPaseAtencion = false;
               paseAtencion = 2;
-              this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("2");
+              //this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("2");
             } else {
               this._NoPaseAtencion = true;
               this._SiPaseAtencion = false;
               paseAtencion = 1;
-              this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("1");
+              //this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("1");
               this.getMotivoList(this.tipoAtencion, paseAtencion);
               this.valMotivo = parseInt(resAtencion.resultData[0].id_motivo);
             }
@@ -281,11 +286,11 @@ export class SctrNuevatencionComponent {
             if (paseAtencion == 1) {
               this._SiPaseAtencion = true;
               this._NoPaseAtencion = false;
-              this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("1");
+              //this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("1");
             } else {
               this._NoPaseAtencion = true;
               this._SiPaseAtencion = false;
-              this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("2");
+              //this.formularioNuevaAtencionSctr.controls['rbPaseAtencion'].setValue("2");
             }
 
           }
@@ -442,6 +447,27 @@ export class SctrNuevatencionComponent {
 
   getPaseAtencion(target: any) {
     paseAtencion = target.value;
+    if (cboPlanValidacion == 1 && this.estadoPlanHuerfanoIlimitado == 0) {
+      paseAtencion = 2;
+      this._NoPaseAtencion = true;
+      this._SiPaseAtencion = false;
+      this.formularioNuevaAtencionSctr.controls['cboMotivo'].reset();
+      this.formularioNuevaAtencionSctr.controls['cboMotivo'].disable();
+    }
+    if (this.estadoClinica == "CLINICA NO AFILIADA") {
+      paseAtencion = 2;
+      this._NoPaseAtencion = true;
+      this._SiPaseAtencion = false;
+      this.formularioNuevaAtencionSctr.controls['cboMotivo'].reset();
+      this.formularioNuevaAtencionSctr.controls['cboMotivo'].enable();
+    } else {
+      if (paseAtencion == 1) {
+        this.formularioNuevaAtencionSctr.controls['cboMotivo'].disable();
+        this.formularioNuevaAtencionSctr.controls['cboMotivo'].reset();
+      } else {
+        this.formularioNuevaAtencionSctr.controls['cboMotivo'].enable();
+      }
+    }
     this.getMotivo();
   }
 
@@ -453,6 +479,10 @@ export class SctrNuevatencionComponent {
     } else {
       this.statusBtnClinicaPrimAtencion = false;
     }
+  }
+
+  getHojaAtencion(target: any) {
+    this.hojaAtencion = target.value;
   }
 
   getMotivo() {
@@ -488,6 +518,22 @@ export class SctrNuevatencionComponent {
     } else {
       this.formularioNuevaAtencionSctr.controls['cboPlan'].enable();
     }
+  }
+
+  getPlanValidacionCbo(target: any) {
+    cboPlanValidacion = target.value;
+    if (cboPlanValidacion == 1) {
+      this._NoPaseAtencion = true;
+      this._SiPaseAtencion = false;
+      this.toastrService.info('Indicar que llame al 415-1515, opción 1 y después opción 3.', 'Aviso', { timeOut: 5000 });
+    } else {
+      this._SiPaseAtencion = true;
+      this._NoPaseAtencion = false;
+    }
+  }
+
+  getMotivoCbo(target: any) {
+    this.cboMotivoAtencion = target.value;
   }
 
   openMantClinicaDialog() {
@@ -531,6 +577,7 @@ export class SctrNuevatencionComponent {
       this.formularioNuevaAtencionSctr.controls['txtDireccion'].setValue(result.data.direccion);
       this.formularioNuevaAtencionSctr.controls['txtTelefono'].setValue(result.data.telefono);
       this.formularioNuevaAtencionSctr.controls['txtAnexo'].setValue(result.data.anexo);
+      this.estadoPlanHuerfanoIlimitado = result.data.plan_huerfano_ilimitado;
       if (result.data.afiliado == 1) {
         this.estadoClinica = "CLINICA AFILIADA";
         this.formularioNuevaAtencionSctr.controls['cboMetodoValidacion'].enable();
@@ -539,6 +586,14 @@ export class SctrNuevatencionComponent {
         this.formularioNuevaAtencionSctr.controls['txtEmpresa'].enable();
         this.formularioNuevaAtencionSctr.controls['rbHojaAtencion'].enable();
         this.statusBtnRegistrarAseguradora = false;
+        this._SiHojaAtencion = true;
+        this._NoHojaAtencion = false;
+        if (paseAtencion == 1) {
+          this.formularioNuevaAtencionSctr.controls['cboMotivo'].disable();
+          this.formularioNuevaAtencionSctr.controls['cboMotivo'].reset();
+        } else {
+          this.formularioNuevaAtencionSctr.controls['cboMotivo'].enable();
+        }
       } else {
         this.estadoClinica = "CLINICA NO AFILIADA";
         this.formularioNuevaAtencionSctr.controls['cboMetodoValidacion'].disable();
@@ -547,6 +602,10 @@ export class SctrNuevatencionComponent {
         this.formularioNuevaAtencionSctr.controls['txtEmpresa'].disable();
         this.formularioNuevaAtencionSctr.controls['rbHojaAtencion'].disable();
         this.statusBtnRegistrarAseguradora = true;
+        this._SiHojaAtencion = false;
+        this._NoHojaAtencion = false;
+        this.formularioNuevaAtencionSctr.controls['cboMotivo'].reset();
+        this.formularioNuevaAtencionSctr.controls['cboMotivo'].enable();
       }
     });
   }
@@ -634,8 +693,32 @@ export class SctrNuevatencionComponent {
 
   saveAtencionSctr() {
     this.showSpinner = true;
-    //&& codCliente != 0
-    if (this.formularioNuevaAtencionSctr.valid && this.codPaciente != null && this.codClinica != null) {
+    let valid = 0;
+    if (this.codClinica == null) {
+      this.showSpinner = false;
+      this.toastrService.warning('¡Por favor seleccione la clínica de atención!');
+      valid++;
+    } else if (this.codPaciente == null) {
+      this.showSpinner = false;
+      this.toastrService.warning('¡Por favor seleccione o registre al asegurado!');
+      valid++;
+    } else if (this.estadoClinica == "CLINICA AFILIADA" && codCliente == 0) {
+      this.showSpinner = false;
+      this.toastrService.warning('¡Por favor seleccione o registre al cliente!');
+      valid++;
+    } else if ((this.tipoAtencion == 1 || this.tipoAtencion == 2) && paseAtencion == 2 && this.cboMotivoAtencion == 0) {
+      this.showSpinner = false;
+      this.toastrService.warning('¡Por favor seleccione el motivo de la atención!');
+      valid++;
+    } else if (this.tipoAtencion == 2 && this.codClinicaPrimeraAtencion == null) {
+      this.showSpinner = false;
+      this.toastrService.warning('¡Por favor seleccione la clínica de la primera atención!');
+      valid++;
+    } else if (!this.formularioNuevaAtencionSctr.valid) {
+      this.toastrService.warning('¡Por favor complete los campos obligatorios!');
+      this.showSpinner = false;
+      valid++;
+    } else { //if (this.formularioNuevaAtencionSctr.valid && valid == 0) {
       this.historiaClinica.id_persona = this.codPaciente;
       this.historiaClinica.id_empresa = codCliente;
       this.historiaClinica.id_clinica = this.codClinica;
@@ -648,7 +731,7 @@ export class SctrNuevatencionComponent {
       //this.historiaClinica.fecha_accidente = this.formularioNuevaAtencionSctr.value["txtFechaAccidente"] || '';
       //this.historiaClinica.hora_accidente = this.formularioNuevaAtencionSctr.value["txtHoraAccidente"] || '';
       this.historiaClinica.observacion = this.formularioNuevaAtencionSctr.value["txtObservacion"] || '';
-      this.historiaClinica.hoja_atencion = this.formularioNuevaAtencionSctr.value["rbHojaAtencion"]?.toString() || '';
+      this.historiaClinica.hoja_atencion = this.hojaAtencion;
       this.historiaClinica.skill = this.rdSkill;
       this.historiaClinica.motivo_skill = this.cboMotivo;
       this.historiaClinica.metodo_validacion = cboMotivoValidacion.toString();
@@ -659,13 +742,18 @@ export class SctrNuevatencionComponent {
       if (this.codAtencionEditar == null) {
         this.historiaClinica.usuario_creacion = this.usuarioEnlinea.id || '';
         this._historiaClinicaServices.addHistoriaClinicaSctr(this.historiaClinica).subscribe({
-          next: (val: any) => {
-            this.showSpinner = false;
-            this.toastrService.success('¡Atención creada satisfactoriamene!');
-            this._dialogRef.close(true);
-            cboMotivoValidacion = 0;
-            paseAtencion = 0;
-            codCliente = 0;
+          next: (res: any) => {
+            if (res.resultData.cod_historia_clinica == 0) {
+              this.showSpinner = false;
+              this.toastrService.error('¡No se pudo registrar la atención!', 'Atención', { timeOut: 3000 });
+            } else {
+              this.showSpinner = false;
+              this.toastrService.success('¡Se ha creado la atención N° ' + res.resultData.cod_historia_clinica + ' de forma satisfactoria.', undefined, { timeOut: 5000 });
+              this._dialogRef.close(true);
+              cboMotivoValidacion = 0;
+              paseAtencion = 0;
+              codCliente = 0;
+            }
           },
           error: (err: any) => {
             console.error(err);
@@ -684,14 +772,12 @@ export class SctrNuevatencionComponent {
             codCliente = 0;
           },
           error: (err: any) => {
+            this.showSpinner = false;
             console.error(err);
           },
         });
       }
 
-    } else {
-      this.toastrService.warning('¡Por favor complete los campos obligatorios!');
-      this.showSpinner = false;
     }
   }
 

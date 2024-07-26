@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgLocaleLocalization, PathLocationStrategy } from '@angular/common';
 
 // perfect scrollbar
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -66,6 +67,9 @@ export function HttpLoaderFactory(http: HttpClient): any {
     HttpInterceptorModule
   ],
   exports: [TablerIconsModule],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    { provide: NgLocaleLocalization, useClass: PathLocationStrategy }
+  ]
 })
 export class AppModule { }

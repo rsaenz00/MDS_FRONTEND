@@ -105,12 +105,11 @@ export class SctrMantenimientoclinicaComponent implements OnInit {
 
   filtrarClinica(event: Event) {
     const ds = (event.target as HTMLInputElement).value;
-    if (ds.length >= 3) {
-      this.txtClinica = ds === null ? '' : ds;
-
-      if (this.txtClinica == '') {
-        this.getClinicasFilterList('', '');
-      } else {
+    this.txtClinica = ds === null ? '' : ds;
+    if (this.txtClinica == '') {
+      this.getClinicasFilterList('', '');
+    } else {
+      if (ds.length >= 3) {
         this.getClinicasFilterList(this.txtClinica, 'Clinica');
       }
     }

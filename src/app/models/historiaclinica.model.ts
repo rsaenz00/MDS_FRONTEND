@@ -13,7 +13,7 @@ export class HistoriaClinica {
     observacion: string;
     primera_atencion: string;
     metodo_validacion: string;
-    hoja_atencion: string;
+    hoja_atencion: number;
     ubigeo: string;
     skill: number;
     motivo_skill: number;

@@ -28,11 +28,12 @@ export class SctrComponent implements OnInit {
   countRows: number = 0;
   positionRow: number;
   displayedColumns: string[] = [];
+  headerColumns: string[] = [];
   dataSource!: MatTableDataSource<HistoriaClinica>;
   showSpinner = true;
   rowStyle: string = "";
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _historiaClinicaService: HistoriaClinicaService,private dateAdapter: DateAdapter<Date>, private toastService: ToastrService, private exportarExcelService: exportExcelService, private frm: FormBuilder) {
+  constructor(private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _historiaClinicaService: HistoriaClinicaService, private dateAdapter: DateAdapter<Date>, private toastService: ToastrService, private exportarExcelService: exportExcelService, private frm: FormBuilder) {
     this.dateAdapter.setLocale("es-pe");
   }
 
@@ -46,7 +47,13 @@ export class SctrComponent implements OnInit {
     txtNumeroDocumento: [''],
     txtPaciente: [''],
     txtFechaNacimiento: [''],
+    txtProcedencia: [''],
     txtClinica: [''],
+    txtDepartamento: [''],
+    txtProvincia: [''],
+    txtDistrito: [''],
+    txtReporta: [''],
+    txtMotivoLlamada: [''],
     txtEmpresa: [''],
     txtEmpresaRuc: [''],
     txtPlan: [''],
@@ -85,8 +92,10 @@ export class SctrComponent implements OnInit {
 
     if (reporte == 1) {
       this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
+      this.headerColumns = ['CodigoAtencion-search', 'TipoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'DocumentoIdentidad-search', 'NumeroDocumento-search', 'Paciente-search', 'FechaNacimiento-search', 'Clinica-search', 'Empresa-search', 'EmpresaRuc-search', 'Plan-search', 'Motivo-search', 'UsuarioCreacion-search', 'Skill-search'];
     } else {
       this.displayedColumns = ['cod_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'motivo', 'procedencia', 'clinica', 'departamento', 'provincia', 'distrito', 'persona_reporta', 'motivo_de_llamada', 'usuario_creacion', 'skill'];
+      this.headerColumns = ['CodigoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'Motivo-search', 'Procedencia-search', 'Clinica-search', 'Departamento-search', 'Provincia-search', 'Distrito-search', 'Reporta-search', 'MotivoLlamada-search', 'UsuarioCreacion-search', 'Skill-search'];
     }
 
     this._historiaClinicaService.GetHistoriasClinicasSctrList(fechaInicio, fechaFin, reporte).subscribe({
@@ -101,10 +110,17 @@ export class SctrComponent implements OnInit {
     });
   }
 
-  getAtencionesFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string) {
-    this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
+  getAtencionesFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string, reporte: number) {
 
-    this._historiaClinicaService.GetHistoriaClinicaSctrFiltrO(fechaInicio, fechaFin, busqueda, condicion).subscribe({
+    if (reporte == 1) {
+      this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
+      this.headerColumns = ['CodigoAtencion-search', 'TipoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'DocumentoIdentidad-search', 'NumeroDocumento-search', 'Paciente-search', 'FechaNacimiento-search', 'Clinica-search', 'Empresa-search', 'EmpresaRuc-search', 'Plan-search', 'Motivo-search', 'UsuarioCreacion-search', 'Skill-search'];
+    } else {
+      this.displayedColumns = ['cod_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'motivo', 'procedencia', 'clinica', 'departamento', 'provincia', 'distrito', 'persona_reporta', 'motivo_de_llamada', 'usuario_creacion', 'skill'];
+      this.headerColumns = ['CodigoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'Motivo-search', 'Procedencia-search', 'Clinica-search', 'Departamento-search', 'Provincia-search', 'Distrito-search', 'Reporta-search', 'MotivoLlamada-search', 'UsuarioCreacion-search', 'Skill-search'];
+    }
+
+    this._historiaClinicaService.GetHistoriaClinicaSctrFiltro(fechaInicio, fechaFin, busqueda, condicion, reporte).subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.resultData);
         this.dataSource.sort = this.sort;
@@ -168,7 +184,7 @@ export class SctrComponent implements OnInit {
     const dialogRef = this._dialog.open(SctrTiposervicioComponent, {
       panelClass: 'sanna_theme',
       disableClose: true,
-      width: '430px'
+      width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -193,23 +209,25 @@ export class SctrComponent implements OnInit {
   }
 
   filtrarAtencion(event: Event, condicion: string) {
-    this.showSpinner = true;
-    let fechaInicio = this.convertDate(this.formularioFiltroReporteSctr.value["txtStartDateFilter"]);
-    let fechaFin = this.convertDate(this.formularioFiltroReporteSctr.value["txtEndDateFilter"]);
+    if (this.countRows > 0) {
+      this.showSpinner = true;
+      let fechaInicio = this.convertDate(this.formularioFiltroReporteSctr.value["txtStartDateFilter"]);
+      let fechaFin = this.convertDate(this.formularioFiltroReporteSctr.value["txtEndDateFilter"]);
 
-    let valueInput;
+      let valueInput;
 
-    const ds = (event.target as HTMLInputElement).value;
-    valueInput = ds === null ? '' : ds;
+      const ds = (event.target as HTMLInputElement).value;
+      valueInput = ds === null ? '' : ds;
 
-    if (valueInput == '') {
-      this.getAtencionesFiltro(fechaInicio, fechaFin, '', '');
-    } else {
-      this.getAtencionesFiltro(fechaInicio, fechaFin, valueInput, condicion);
+      if (valueInput == '') {
+        this.getAtencionesFiltro(fechaInicio, fechaFin, '', '', this.reporte);
+      } else {
+        this.getAtencionesFiltro(fechaInicio, fechaFin, valueInput, condicion, this.reporte);
+      }
+
+      this.formularioFiltroAtenciones.reset();
+      this.formularioFiltroAtenciones.controls["txt" + condicion].setValue(valueInput);
     }
-
-    this.formularioFiltroAtenciones.reset();
-    this.formularioFiltroAtenciones.controls["txt" + condicion].setValue(valueInput);
   }
 
   convertDate(valueDate) {
