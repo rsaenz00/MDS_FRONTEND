@@ -191,9 +191,13 @@ export class SctrRegistramotivoComponent {
       //console.log(this.historiaClinica)
 
       this._historiaClinicaServices.addHistoriaClinicaSctr(this.historiaClinica).subscribe({
-        next: (val: any) => {
-          this.toastrService.success('¡Motivo creado satisfactoriamene!');
-          this._dialogRef.close(true);
+        next: (res: any) => {
+          if (res.resultData.cod_historia_clinica == 0) {
+            this.toastrService.error('¡No se pudo registrar la atención!', 'Atención', { timeOut: 3000 });
+          } else {
+            this.toastrService.success('¡Se ha creado la atención N° ' + res.resultData.cod_historia_clinica + ' de forma satisfactoria.', undefined, { timeOut: 5000 });
+            this._dialogRef.close(true);
+          }
         },
         error: (err: any) => {
           console.error(err);

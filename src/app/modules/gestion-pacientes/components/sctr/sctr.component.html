@@ -22,7 +22,7 @@
                     }
                 </mat-form-field>
                 &nbsp;
-                <mat-form-field style="width: 270px;" appearance="outline" class="dense-2">
+                <mat-form-field style="width: 280px;" appearance="outline" class="dense-2">
                     <mat-label>Reporte</mat-label>
                     <mat-select formControlName="cboReporte" appearance="outline" class="dense-2">
                         <mat-option [value]="1">REPORTE DE SCTR</mat-option>
@@ -135,7 +135,7 @@
                                 <td mat-cell *matCellDef="let row"> {{row.clinica}} </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="departamento" *ngIf="reporte === 2">
+                            <ng-container matColumnDef="departamento">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
                                     sortActionDescription="Ordenar por departamento">
                                     DEPARTAMENTO
@@ -143,7 +143,7 @@
                                 <td mat-cell *matCellDef="let row"> {{row.departamento}} </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="provincia" *ngIf="reporte === 2">
+                            <ng-container matColumnDef="provincia">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
                                     sortActionDescription="Ordenar por provincia">
                                     PROVINCIA
@@ -151,7 +151,7 @@
                                 <td mat-cell *matCellDef="let row"> {{row.provincia}} </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="distrito" *ngIf="reporte === 2">
+                            <ng-container matColumnDef="distrito">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
                                     sortActionDescription="Ordenar por distrito">
                                     DISTRITO
@@ -191,6 +191,22 @@
                                 <td mat-cell *matCellDef="let row"> {{row.empresa_ruc}} </td>
                             </ng-container>
 
+                            <ng-container matColumnDef="hoja_atencion" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por hoja_atencion">
+                                    HOJA_ATENCIÓN
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.hoja_atencion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="medio_validacion" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por medio_validacion">
+                                    MEDIO_VALIDACION
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.medio_validacion}} </td>
+                            </ng-container>
+
                             <ng-container matColumnDef="plan" *ngIf="reporte === 1">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
                                     sortActionDescription="Ordenar por plan">
@@ -199,12 +215,28 @@
                                 <td mat-cell *matCellDef="let row"> {{row.plan}} </td>
                             </ng-container>
 
+                            <ng-container matColumnDef="pase_atencion" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por pase_atencion">
+                                    PASE_ATENCIÓN
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.pase_atencion}} </td>
+                            </ng-container>
+
                             <ng-container matColumnDef="motivo">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header
                                     sortActionDescription="Ordenar por motivo">
                                     MOTIVO
                                 </th>
                                 <td mat-cell *matCellDef="let row"> {{row.motivo}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="observacion" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por observacion">
+                                    OBSERVACIÓN
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.observacion}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="usuario_creacion">
@@ -326,27 +358,27 @@
                                     </th>
                                 </ng-container>
 
-                                <ng-container matColumnDef="Departamento-search" *ngIf="reporte === 2" style="width: 75px;">
+                                <ng-container matColumnDef="Departamento-search">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'Departamento')"
                                                 formControlName="txtDepartamento">
                                         </mat-form-field>
                                     </th>
                                 </ng-container>
 
-                                <ng-container matColumnDef="Provincia-search" *ngIf="reporte === 2" style="width: 75px;">
+                                <ng-container matColumnDef="Provincia-search">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'Provincia')"
                                                 formControlName="txtProvincia">
                                         </mat-form-field>
                                     </th>
                                 </ng-container>
 
-                                <ng-container matColumnDef="Distrito-search" *ngIf="reporte === 2" style="width: 75px;">
+                                <ng-container matColumnDef="Distrito-search">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'Distrito')"
                                                 formControlName="txtDistrito">
                                         </mat-form-field>
@@ -389,6 +421,24 @@
                                     </th>
                                 </ng-container>
 
+                                <ng-container matColumnDef="HojaAtencion-search" *ngIf="reporte === 1">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
+                                            <input matInput (keyup)="filtrarAtencion($event,'HojaAtencion')"
+                                                formControlName="txtHojaAtencion">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+
+                                <ng-container matColumnDef="MedioValidacion-search" *ngIf="reporte === 1">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 150px;">
+                                            <input matInput (keyup)="filtrarAtencion($event,'MedioValidacion')"
+                                                formControlName="txtMedioValidacion">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+
                                 <ng-container matColumnDef="Plan-search" *ngIf="reporte === 1">
                                     <th mat-header-cell *matHeaderCellDef>
                                         <mat-form-field appearance="outline" class="m-t-10 dense-2"
@@ -399,12 +449,30 @@
                                     </th>
                                 </ng-container>
 
+                                <ng-container matColumnDef="PaseAtencion-search" *ngIf="reporte === 1">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
+                                            <input matInput (keyup)="filtrarAtencion($event,'PaseAtencion')"
+                                                formControlName="txtPaseAtencion">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+
                                 <ng-container matColumnDef="Motivo-search">
                                     <th mat-header-cell *matHeaderCellDef>
                                         <mat-form-field appearance="outline" class="m-t-10 dense-2"
                                             style="width: 180px">
                                             <input matInput (keyup)="filtrarAtencion($event,'Motivo')"
                                                 formControlName="txtMotivo">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Observacion-search" *ngIf="reporte === 1">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 600px;">
+                                            <input matInput (keyup)="filtrarAtencion($event,'Observacion')"
+                                                formControlName="txtObservacion">
                                         </mat-form-field>
                                     </th>
                                 </ng-container>

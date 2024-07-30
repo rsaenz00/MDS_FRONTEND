@@ -332,9 +332,11 @@
                                     <mat-radio-group aria-labelledby="example-radio-group-label"
                                         class="example-radio-group" formControlName="rbHojaAtencion">
                                         <mat-radio-button class="example-radio-button" [value]="1"
-                                            [checked]="_SiHojaAtencion" (change)="getHojaAtencion($event)">Si</mat-radio-button>
+                                            [checked]="_SiHojaAtencion"
+                                            (change)="getHojaAtencion($event)">Si</mat-radio-button>
                                         <mat-radio-button class="example-radio-button" [value]="0"
-                                            [checked]="_NoHojaAtencion" (change)="getHojaAtencion($event)">No</mat-radio-button>
+                                            [checked]="_NoHojaAtencion"
+                                            (change)="getHojaAtencion($event)">No</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
                             </div>
@@ -416,8 +418,8 @@
                 <div class="col-md-12 text-center">
                     <button mat-flat-button color="warn" (click)="exitAtencion()">Cancelar atención</button>
                     &nbsp;
-                    <!--[disabled]="!formularioNuevaAtencionSctr.valid"-->
-                    <button mat-flat-button color="accent" (click)="saveAtencionSctr()">Guardar atención</button>
+                    <button mat-flat-button color="accent" [disabled]="!formularioNuevaAtencionSctr.valid"
+                        (click)="saveAtencionSctr()">Guardar atención</button>
                 </div>
             </div>
         </form>

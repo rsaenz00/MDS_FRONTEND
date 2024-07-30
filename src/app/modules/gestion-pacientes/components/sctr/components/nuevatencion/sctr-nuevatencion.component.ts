@@ -738,6 +738,7 @@ export class SctrNuevatencionComponent {
       this.historiaClinica.primera_atencion = this.tipoAtencion.toString();
       this.historiaClinica.persona_reporta_clinica = this.formularioNuevaAtencionSctr.value["txtPersonaReporta"] || '';
       this.historiaClinica.estado = 1;
+      this.historiaClinica.pase_atencion = paseAtencion;
 
       if (this.codAtencionEditar == null) {
         this.historiaClinica.usuario_creacion = this.usuarioEnlinea.id || '';

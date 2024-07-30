@@ -15,7 +15,7 @@ export class HistoriaClinicaService {
     GetHistoriasClinicasSctrList(fechaInicio: string, fechaFin: string, condicion: number): Observable<any> {
         return this._http.get('HistoriaClinica/GetHistoriasClinicasSctrBandeja?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin + '&condicion=' + condicion);
     }
-
+    
     GetHistoriaClinicaSctrByCodigo(codHistoriaClinica: string): Observable<any> {
         return this._http.get('HistoriaClinica/GetHistoriaClinicaSctrByCodigo?cod_historia_clinica=' + codHistoriaClinica);
     }

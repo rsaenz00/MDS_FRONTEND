@@ -56,8 +56,12 @@ export class SctrComponent implements OnInit {
     txtMotivoLlamada: [''],
     txtEmpresa: [''],
     txtEmpresaRuc: [''],
+    txtHojaAtencion: [''],
+    txtMedioValidacion: [''],
     txtPlan: [''],
+    txtPaseAtencion: [''],
     txtMotivo: [''],
+    txtObservacion: [''],
     txtUsuarioCreacion: [''],
     txtSkill: ['']
   });
@@ -91,8 +95,8 @@ export class SctrComponent implements OnInit {
     this.rowSeleccionado = null;
 
     if (reporte == 1) {
-      this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
-      this.headerColumns = ['CodigoAtencion-search', 'TipoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'DocumentoIdentidad-search', 'NumeroDocumento-search', 'Paciente-search', 'FechaNacimiento-search', 'Clinica-search', 'Empresa-search', 'EmpresaRuc-search', 'Plan-search', 'Motivo-search', 'UsuarioCreacion-search', 'Skill-search'];
+      this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'departamento', 'provincia', 'distrito', 'empresa', 'empresa_ruc', 'hoja_atencion', 'medio_validacion', 'plan', 'pase_atencion', 'motivo', 'observacion', 'usuario_creacion', 'skill'];
+      this.headerColumns = ['CodigoAtencion-search', 'TipoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'DocumentoIdentidad-search', 'NumeroDocumento-search', 'Paciente-search', 'FechaNacimiento-search', 'Clinica-search', 'Departamento-search', 'Provincia-search', 'Distrito-search', 'Empresa-search', 'EmpresaRuc-search', 'HojaAtencion-search', 'MedioValidacion-search', 'Plan-search', 'PaseAtencion-search', 'Motivo-search', 'Observacion-search', 'UsuarioCreacion-search', 'Skill-search'];
     } else {
       this.displayedColumns = ['cod_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'motivo', 'procedencia', 'clinica', 'departamento', 'provincia', 'distrito', 'persona_reporta', 'motivo_de_llamada', 'usuario_creacion', 'skill'];
       this.headerColumns = ['CodigoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'Motivo-search', 'Procedencia-search', 'Clinica-search', 'Departamento-search', 'Provincia-search', 'Distrito-search', 'Reporta-search', 'MotivoLlamada-search', 'UsuarioCreacion-search', 'Skill-search'];
@@ -113,8 +117,8 @@ export class SctrComponent implements OnInit {
   getAtencionesFiltro(fechaInicio: string, fechaFin: string, busqueda: string, condicion: string, reporte: number) {
 
     if (reporte == 1) {
-      this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'empresa', 'empresa_ruc', 'plan', 'motivo', 'usuario_creacion', 'skill'];
-      this.headerColumns = ['CodigoAtencion-search', 'TipoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'DocumentoIdentidad-search', 'NumeroDocumento-search', 'Paciente-search', 'FechaNacimiento-search', 'Clinica-search', 'Empresa-search', 'EmpresaRuc-search', 'Plan-search', 'Motivo-search', 'UsuarioCreacion-search', 'Skill-search'];
+      this.displayedColumns = ['cod_historia_clinica', 'tipo_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'documento_identidad', 'numero', 'paciente', 'fecha_nacimiento', 'clinica', 'departamento', 'provincia', 'distrito', 'empresa', 'empresa_ruc', 'hoja_atencion', 'medio_validacion', 'plan', 'pase_atencion', 'motivo', 'observacion', 'usuario_creacion', 'skill'];
+      this.headerColumns = ['CodigoAtencion-search', 'TipoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'DocumentoIdentidad-search', 'NumeroDocumento-search', 'Paciente-search', 'FechaNacimiento-search', 'Clinica-search', 'Departamento-search', 'Provincia-search', 'Distrito-search', 'Empresa-search', 'EmpresaRuc-search', 'HojaAtencion-search', 'MedioValidacion-search', 'Plan-search', 'PaseAtencion-search', 'Motivo-search', 'Observacion-search', 'UsuarioCreacion-search', 'Skill-search'];
     } else {
       this.displayedColumns = ['cod_historia_clinica', 'estado', 'fecha_creacion', 'hora_creacion', 'motivo', 'procedencia', 'clinica', 'departamento', 'provincia', 'distrito', 'persona_reporta', 'motivo_de_llamada', 'usuario_creacion', 'skill'];
       this.headerColumns = ['CodigoAtencion-search', 'Estado-search', 'FechaCreacion-search', 'HoraCreacion-search', 'Motivo-search', 'Procedencia-search', 'Clinica-search', 'Departamento-search', 'Provincia-search', 'Distrito-search', 'Reporta-search', 'MotivoLlamada-search', 'UsuarioCreacion-search', 'Skill-search'];
@@ -209,25 +213,23 @@ export class SctrComponent implements OnInit {
   }
 
   filtrarAtencion(event: Event, condicion: string) {
-    if (this.countRows > 0) {
-      this.showSpinner = true;
-      let fechaInicio = this.convertDate(this.formularioFiltroReporteSctr.value["txtStartDateFilter"]);
-      let fechaFin = this.convertDate(this.formularioFiltroReporteSctr.value["txtEndDateFilter"]);
+    this.showSpinner = true;
+    let fechaInicio = this.convertDate(this.formularioFiltroReporteSctr.value["txtStartDateFilter"]);
+    let fechaFin = this.convertDate(this.formularioFiltroReporteSctr.value["txtEndDateFilter"]);
 
-      let valueInput;
+    let valueInput;
 
-      const ds = (event.target as HTMLInputElement).value;
-      valueInput = ds === null ? '' : ds;
+    const ds = (event.target as HTMLInputElement).value;
+    valueInput = ds === null ? '' : ds;
 
-      if (valueInput == '') {
-        this.getAtencionesFiltro(fechaInicio, fechaFin, '', '', this.reporte);
-      } else {
-        this.getAtencionesFiltro(fechaInicio, fechaFin, valueInput, condicion, this.reporte);
-      }
-
-      this.formularioFiltroAtenciones.reset();
-      this.formularioFiltroAtenciones.controls["txt" + condicion].setValue(valueInput);
+    if (valueInput == '') {
+      this.getAtencionesFiltro(fechaInicio, fechaFin, '', '', this.reporte);
+    } else {
+      this.getAtencionesFiltro(fechaInicio, fechaFin, valueInput, condicion, this.reporte);
     }
+
+    this.formularioFiltroAtenciones.reset();
+    this.formularioFiltroAtenciones.controls["txt" + condicion].setValue(valueInput);
   }
 
   convertDate(valueDate) {

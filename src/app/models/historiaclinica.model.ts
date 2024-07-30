@@ -26,6 +26,7 @@ export class HistoriaClinica {
     persona_reporta_seguro: string;
     persona_reporta_asegurado: string;
     estado: number;
+    pase_atencion: number;
     usuario_creacion: string;
     usuario_modificacion: string;
     usuario_eliminacion: string;
