@@ -15,7 +15,7 @@ export class CommonDialogService
   dialogConfig: MatDialogConfig = 
   {
     disableClose: false,
-    width: '',
+    width: '290px',
     height: '',
     position: 
     {

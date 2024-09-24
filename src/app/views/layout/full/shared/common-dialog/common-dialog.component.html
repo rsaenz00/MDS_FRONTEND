@@ -1,28 +1,35 @@
-<!-- <div class="close-btn-modal" (click)="clickHandler(false)">
-    <i class="fa fa-times"></i>
-</div> -->
-
-<!-- <h2 mat-dialog-title>Install Angular</h2> -->
-
-<!-- <div class="container">
-    <span md-dialog-title>{{primaryMessage}}</span>
-    <div mat-dialog-actions class="mt-2">
-        <button class="btn btn-success btn-sm m-right-10" (click)="clickHandler(true)"><i class="fas fa-check"></i>
-          Confirmar</button>
-        <button class="btn btn-danger btn-sm" (click)="clickHandler(false)"><i class="fas fa-times-circle"></i>
-          Cancelar</button>
+<div [ngClass]=" {
+                    orange_theme: options.activeTheme == 'orange_theme',
+                    blue_theme: options.activeTheme == 'blue_theme',
+                    aqua_theme: options.activeTheme == 'aqua_theme',
+                    purple_theme: options.activeTheme == 'purple_theme',
+                    green_theme: options.activeTheme == 'green_theme',
+                    cyan_theme: options.activeTheme == 'cyan_theme',
+                    sanna_theme: options.activeTheme == 'sanna_theme',
+                }">
+  <mat-card class="theme-card m-b-0">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>
+          Aviso
+        </mat-card-title>
+      </mat-card-title-group>
+      <div fxFlex></div>
+      <div fxLayoutAlign="center center">
+        <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
       </div>
-</div> -->
-
-
- <h5 mat-dialog-title class="mat-subtitle-1">Delete file</h5>
- <div mat-dialog-content class="mat-subtitle-2 lh-16">
-   Would you like to delete cat.jpeg?
- </div>
- <div mat-dialog-actions class="p-24 p-t-0">
-   <button mat-stroked-button color="warn" mat-dialog-close>No</button>
-   <button mat-flat-button color="primary" mat-dialog-close cdkFocusInitial>
-     Ok
-   </button>
- </div>
- 
+    </mat-card-header>
+    <mat-dialog-content>
+      <span md-dialog-title>{{primaryMessage}}</span>
+    </mat-dialog-content>
+  </mat-card>
+  <div mat-dialog-actions class="m-b-8" align="center">
+    <button mat-flat-button color="primary" (click)="clickHandler(true)"
+      class="btn btn-success btn-sm m-right-10 m-l-8">
+      Aceptar
+    </button>
+    <button mat-flat-button color="warn" (click)="clickHandler(false)" class="btn btn-success btn-sm m-right-10 m-l-8">
+      Cancelar
+    </button>
+  </div>
+</div>

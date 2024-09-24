@@ -2,13 +2,14 @@ export const validarEmail = (email): boolean => {
     let expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (!expr.test(email.target.value)) {
         email.target.value = '';
+        email.target.focus();
         return true;
-    }else{
+    } else {
         return false;
     }
 }
 
-export const rellenaCaracteres = (ctl): boolean =>  {
+export const rellenaCaracteres = (ctl): boolean => {
     let j = ctl.target.maxLength - ctl.target.value.length;
     if (ctl.target.value.length > 0) {
         let t = '';
@@ -20,7 +21,7 @@ export const rellenaCaracteres = (ctl): boolean =>  {
     return false;
 }
 
-export const primer9 = (e): boolean =>  {
+export const primer9 = (e): boolean => {
     let prim_val = e.target.value.charAt(0);
     if (prim_val >= 0 && prim_val <= 8) {
         e.target.value = "";
@@ -28,22 +29,27 @@ export const primer9 = (e): boolean =>  {
     return false;
 }
 
-export const limpiarNumero = (obj): boolean =>  {
+export const limpiarNumero = (obj): boolean => {
     obj.target.value = obj.target.value.replace(/\D/g, '');
     return false;
 }
 
-export const limpiarLetras = (obj): boolean =>  {
+export const limpiarLetras = (obj): boolean => {
     obj.target.value = obj.target.value.replace(/[0-9]/g, '');
     return false;
 }
 
-export const soloNumeros = (e): boolean =>  {
+export const soloNumeros = (e): boolean => {
     let key = window.Event ? e.which : e.keyCode
     return (key >= 48 && key <= 57)
 }
 
-export const soloLetras = (e): boolean =>  {
+export const soloDecimales = (obj): boolean => {
+    obj.target.value = obj.target.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');
+    return false;
+}
+
+export const soloLetras = (e): boolean => {
     let key = e.keyCode || e.which;
     let tecla = String.fromCharCode(key).toLowerCase();
     let letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";

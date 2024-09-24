@@ -26,4 +26,8 @@ export class UbigeoService {
         return this._http.get('Ubigeos/GetDistritos?SUBI_COD_DPTO=' + codDep + '&SUBI_COD_PROV=' + codPro);
     }
 
+    getUbigeoCodigoList(vDepartamento: string,vProvincia: string,vDistrito: string): Observable<any> {
+        return this._http.get('HistoriaClinica/GetHistoriaClinica_Ubigeo_Codigo?vDepartamento=' + vDepartamento + '&vProvincia=' + vProvincia + '&vDistrito=' + vDistrito);
+    }
+
 }

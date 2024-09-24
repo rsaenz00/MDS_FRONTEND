@@ -1,1 +1,546 @@
-<p>ambulancia en mantenimiento!</p>
+<mat-progress-bar mode="query" *ngIf="dataSource.load === true"></mat-progress-bar>
+<mat-card class="cardWithShadow">
+    <mat-card-content class="p-24">
+        <form [formGroup]="searchFormGroup">
+            <div class="row">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-label class="m-b-8 d-block">Desde</mat-label>
+                            <mat-form-field appearance="outline" class="w-100 dense-2">
+                                <input matInput placeholder="Seleccionar fecha" [matDatepicker]="dtpDesde"
+                                    formControlName="dtpDesde" />
+                                <mat-datepicker-toggle matIconSuffix [for]="dtpDesde"></mat-datepicker-toggle>
+                                <mat-datepicker #dtpDesde></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-label class="m-b-8 d-block">Hasta</mat-label>
+                            <mat-form-field appearance="outline" class="w-100 dense-2">
+                                <input matInput placeholder="Seleccionar fecha" [matDatepicker]="dtpHasta"
+                                    formControlName="dtpHasta" />
+                                <mat-datepicker-toggle matIconSuffix [for]="dtpHasta"></mat-datepicker-toggle>
+                                <mat-datepicker #dtpHasta></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4 mx-auto m-t-30">
+                            <div class="d-grid gap-2">
+                                <button (click)="filtrar()" mat-flat-button color="primary"
+                                    class="btn btn-success btn-sm m-right-10">
+                                    Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 m-t-30">
+                    <mat-checkbox formControlName="chkSincronizacionAutomatica" (change)="activarSincronizacionAutomatica($event)">Sincronización Automática</mat-checkbox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <fieldset>
+                        <legend>Filtros por tipo y estado:</legend>
+                        <mat-checkbox formControlName="chkUrgEmeTras">Urg-Emerg-Traslado</mat-checkbox>
+                        <mat-checkbox formControlName="chkEventos">Eventos</mat-checkbox>
+                        <mat-checkbox formControlName="chkOmedica">O. Médica</mat-checkbox>
+                        <mat-checkbox formControlName="chkCanceladas">Canceladas</mat-checkbox>
+                        <mat-checkbox formControlName="chkFinalizadas">Finalizadas</mat-checkbox>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row m-t-20">
+                <div class="col-12 d-flex align-items-center">
+                    <button mat-flat-button (click)="openNuevoServicio()" color="primary"
+                        class="btn btn-success btn-sm m-right-10">
+                        Nuevo Servicio
+                    </button>
+                    <button mat-flat-button (click)="openAtencionesPasadas()" color="primary"
+                        class="btn btn-success btn-sm m-right-10 m-l-8">
+                        Atenciones pasadas
+                    </button>
+                    <button mat-flat-button (click)="openSeguimiento()" color="primary"
+                        class="btn btn-success btn-sm m-right-10 m-l-8">
+                        Seguimiento
+                    </button>
+                    <button mat-flat-button (click)="openDatosAtencion()" color="primary"
+                        class="btn btn-success btn-sm m-right-10 m-l-8">
+                        Datos de atención
+                    </button>
+                    <button mat-flat-button (click)="openSoporte()" color="primary"
+                        class="btn btn-success btn-sm m-right-10 m-l-8" [disabled]="dataSource.count === 0 || idRow == 0">
+                        Soporte
+                    </button>
+                    <button mat-flat-button (click)="openValidarLlegada()" color="validation-orange"
+                        class="btn btn-validation-orange btn-sm m-right-10 m-l-8">
+                        Validar llegada
+                    </button>
+                    <button mat-flat-button (click)="openNuevaAlerta()"
+                        class="btn btn-alert-yellow btn-sm m-right-10 m-l-8">
+                        Nueva alerta
+                    </button>
+                    <button mat-flat-button (click)="openAlertas()"
+                        class="btn btn-alert-yellow btn-sm m-right-10 m-l-8">
+                        Alertas
+                    </button>
+                    <!-- <button 
+                        mat-flat-button  
+                        class="btn btn-counter-red btn-sm m-right-10 m-l-8" >
+                        2
+                    </button> -->
+                </div>
+            </div>
+            <div class="row justify-content-between form-group m-t-20">
+                <div class="col-lg-12 m-t-6 d-flex align-items-center">
+                    <span class="m-r-10">Leyenda:</span>
+                    <div class="legend">
+                        <span class="semaphore-green" mat-raised-button #tooltip="matTooltip" matTooltipPosition="above"
+                            matTooltip="Atención sin asignar proveedor."></span>
+                    </div>
+                    <div class="legend">
+                        <span class="semaphore-yellow-light" mat-raised-button #tooltip="matTooltip"
+                            matTooltipPosition="above" matTooltip="Atención asignado a un proveedor."></span>
+                    </div>
+                    <div class="legend">
+                        <span class="semaphore-orange" mat-raised-button #tooltip="matTooltip"
+                            matTooltipPosition="above" matTooltip="Atención < 5 min al tiempo programado."></span>
+                    </div>
+                    <div class="legend">
+                        <span class="semaphore-red" mat-raised-button #tooltip="matTooltip" matTooltipPosition="above"
+                            matTooltip="Atención llego después de la fecha y hora programada."></span>
+                    </div>
+                    <div class="legend">
+                        <span class="semaphore-blue" mat-raised-button #tooltip="matTooltip" matTooltipPosition="above"
+                            matTooltip="Atención llego antes de la fecha y hora programada."></span>
+                    </div>
+                    <div class="legend">
+                        <span class="semaphore-white" mat-raised-button #tooltip="matTooltip" matTooltipPosition="above"
+                            matTooltip="Atención finalizada."></span>
+                    </div>
+                    <div class="legend">
+                        <span class="semaphore-grey" mat-raised-button #tooltip="matTooltip" matTooltipPosition="above"
+                            matTooltip="Atención cancelada."></span>
+                    </div>
+                    <div class="legend">
+                        <span class="semaphore-rose" mat-raised-button #tooltip="matTooltip" matTooltipPosition="above"
+                            matTooltip="Atención fuera del tiempo estimado."></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-t-20 form-group">
+                <div class="col-12">
+                    <div class="table cardWithShadow">
+                        <div class="table-container table scrollwrapper">
+                            <table mat-table class="tbl_amb dense-3" [dataSource]="dataSource" matSort>
+                                <!--COLUMNAS-->
+                                <ng-container matColumnDef="cod_historia_clinica">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'COD_ATENCIÓN'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.cod_historia_clinica}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="cod_siteds">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'CODIDO_SITEDS'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.cod_siteds}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="cotizado">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'COTIZADO'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.cotizado}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="estado">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ESTADO'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.estado}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="ambulancia_respiratoria">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'AMB_RESP'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.ambulancia_respiratoria}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="servicio">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'SERVICIO'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.servicio}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="paciente">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'PACIENTE'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.paciente}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="numero_documento_id">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'DNI'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.numero_documento_id}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="empresa">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'CLIENTE'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.empresa}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="especialidad">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ESPECIALIDAD'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.especialidad}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="centro_medico_derivado">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'DESTINO'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.centro_medico_derivado}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="motivo_atencion">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'MOTIVO_ATENCIÓN'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.motivo_atencion}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="usuario_creacion">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'USUARIO_CREACION'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia">{{ambulancia.usuario_creacion}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="fuera_cobertura">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'FUERA_COBERTURA'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia" class="text-center">
+                                        <mat-icon *ngIf="ambulancia.fuera_cobertura == true" aria-hidden="false"
+                                            aria-label="True" fontIcon="check_box"></mat-icon>
+                                        <mat-icon *ngIf="ambulancia.fuera_cobertura == false || ambulancia.fuera_cobertura == null || ambulancia.fuera_cobertura == ''" aria-hidden="false"
+                                            aria-label="False" fontIcon="check_box_outline_blank"></mat-icon>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="contratante_citrix">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'CITRIX'}}</th>
+                                    <td mat-cell *matCellDef="let ambulancia" class="text-center">
+                                        <mat-icon *ngIf="ambulancia.contratante_citrix == true" aria-hidden="false"
+                                            aria-label="True" fontIcon="check_box"></mat-icon>
+                                        <mat-icon *ngIf="ambulancia.contratante_citrix == false || ambulancia.contratante_citrix == null || ambulancia.contratante_citrix == ''" aria-hidden="false"
+                                            aria-label="False" fontIcon="check_box_outline_blank"></mat-icon>
+                                    </td>
+                                </ng-container>
+
+                                <!-- CODIGO ATENCION SEARCH -->
+                                <ng-container matColumnDef="codigoAtencion-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="codigoAtencionFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- CODIGO SITED SEARCH -->
+                                <ng-container matColumnDef="codigoSited-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="codigoSitedFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- COTIZADO SEARCH -->
+                                <ng-container matColumnDef="cotizado-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="cotizadoFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- ESTADO SEARCH -->
+                                <ng-container matColumnDef="estado-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="estadoFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- AMBULANCIA RESPUESTA SEARCH -->
+                                <ng-container matColumnDef="ambulanciaRespuesta-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="ambulanciaRespuestaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- SERVICIO SEARCH -->
+                                <ng-container matColumnDef="servicio-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="servicioFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- PACIENTE SEARCH -->
+                                <ng-container matColumnDef="paciente-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="pacienteFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- NUMERO DOCUMENTO SEARCH -->
+                                <ng-container matColumnDef="numeroDocumento-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="numeroDocumentoFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- DISTRITO SEARCH -->
+                                <ng-container matColumnDef="distrito-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="distritoFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- PROVINCIA SEARCH -->
+                                <ng-container matColumnDef="provincia-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="provinciaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- DEPARTAMENTO SEARCH -->
+                                <ng-container matColumnDef="departamento-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="departamentoFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- DIRECCION SEARCH -->
+                                <ng-container matColumnDef="direccion-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="direccionFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- REFERENCIA SEARCH -->
+                                <ng-container matColumnDef="referencia-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="referenciaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- CLIENTE SEARCH -->
+                                <ng-container matColumnDef="cliente-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="clienteFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- PROVEEDOR SEARCH -->
+                                <ng-container matColumnDef="proveedor-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="proveedorFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- AMBULANCIA SEARCH -->
+                                <ng-container matColumnDef="ambulancia-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="ambulanciaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- TIEMPO SEARCH -->
+                                <ng-container matColumnDef="tiempo-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="tiempoFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- FECHA ESTIMADA SEARCH -->
+                                <ng-container matColumnDef="fechaEstimada-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="fechaEstimadaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- HORA ESTIMADA SEARCH -->
+                                <ng-container matColumnDef="horaEstimada-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="horaEstimadaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- FECHA LLEGADA SEARCH -->
+                                <ng-container matColumnDef="fechaLlegada-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="fechaLlegadaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- HORA LLEGADA SEARCH -->
+                                <ng-container matColumnDef="horaLlegada-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="horaLlegadaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- FECHA FIN ATENCION SEARCH -->
+                                <ng-container matColumnDef="fechaFinAtencion-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="fechaFinAtencionFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- HORA FIN ATENCION SEARCH -->
+                                <ng-container matColumnDef="horaFinAtencion-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="horaFinAtencionFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- TELEFONO CELULAR SEARCH -->
+                                <ng-container matColumnDef="telefonoCelular-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="telefonoCelularFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- USUARIO CREACION SEARCH -->
+                                <ng-container matColumnDef="usuarioCreacion-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="usuarioCreacionFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- MOTIVO SEARCH -->
+                                <ng-container matColumnDef="motivo-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="motivoFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- FLAG FUERA COBERTURA SEARCH -->
+                                <ng-container matColumnDef="flagFueraCobertura-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="flagFueraCoberturaFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- FLAG CITRIX SEARCH -->
+                                <ng-container matColumnDef="flagCitrix-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="flagCitrixFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- ESTADO EXP SEARCH -->
+                                <ng-container matColumnDef="estadoExp-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="estadoExpFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!-- CODIGO PROV -->
+                                <ng-container matColumnDef="codigoProv-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                            <input matInput type="text" class="form-control"
+                                                [formControl]="codigoProvFilterCtl">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                                <!--<tr mat-header-row 
+                                    *matHeaderRowDef = 
+                                    "
+                                    [
+                                        'codigoAtencion-search',
+                                        'codigoSited-search',
+                                        'cotizado-search',
+                                        'estado-search',
+                                        'ambulanciaRespuesta-search',
+                                        'servicio-search',
+                                        'paciente-search',
+                                        'numeroDocumento-search',
+                                        'departamento-search',
+                                        'provincia-search',
+                                        'distrito-search',
+                                        'direccion-search',
+                                        'referencia-search',
+                                        'cliente-search',
+                                        'proveedor-search',
+                                        'ambulancia-search',
+                                        'tiempo-search',
+                                        'fechaEstimada-search',
+                                        'horaEstimada-search',
+                                        'fechaLlegada-search',
+                                        'horaLlegada-search',
+                                        'fechaFinAtencion-search',
+                                        'horaFinAtencion-search',
+                                        'telefonoCelular-search',
+                                        'usuarioCreacion-search',
+                                        'motivo-search',
+                                        'flagFueraCobertura-search',
+                                        'flagCitrix-search',
+                                        'estadoExp-search',
+                                        'codigoProv-search'
+                                    ];sticky: true">
+                                </tr>-->
+                                <tr [ngClass]="getCustomCss(row.estado, row.cod_atencion)" [class.row_selected]="index == positionRow" (click)="getRowSelected(row,index)" mat-row
+                                    *matRowDef="let row; columns: displayedColumns;; let index = index"></tr>
+                                <!-- <tr mat-footer-row *matFooterRowDef="footerToDisplayed;sticky: true"></tr> -->
+                                <!-- <ng-container matColumnDef="footer"> -->
+                                <!-- <td mat-footer-cell colspan="5" *matFooterCellDef>
+                                        <mat-paginator 
+                                            [length]="ambulanciaResource.totalCount" 
+                                            [pageSize]="ambulanciaResource.pageSize"
+                                            [pageSizeOptions]="[10, 20, 30]">
+                                        </mat-paginator>
+                                    </td> -->
+                                <!-- </ng-container> -->
+                            </table>
+                        </div>
+
+                        <ng-container *ngIf="dataSource.count === 0">
+                            <div class="row">
+                                <div class="col-sm-12 ml-4 mt-3">
+                                    <label class="font-weight-bold"> {{'No existen datos'}}</label>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <mat-paginator [length]="ambulanciaResource.totalCount" [pageSize]="ambulanciaResource.pageSize"
+                        [pageSizeOptions]="[10, 20, 30]">
+                    </mat-paginator>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

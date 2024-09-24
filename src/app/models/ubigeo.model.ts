@@ -22,3 +22,7 @@ export class Distrito{
     id: number;
     nombre: string;
 }
+
+export class UbigeoCodigo{
+    codigo_ubigeo: string;
+}

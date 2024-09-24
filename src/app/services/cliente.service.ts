@@ -17,12 +17,20 @@ export class ClienteService {
         return this._http.get('Clientes/GetClienteByRuc?ruc=' + ruc);
     }
 
+    GetClientesAmbulancia(): Observable<any> {
+        return this._http.get('Clientes/GetClientesAmbulancia');
+    }
+
     addClienteSctr(data: Cliente): Observable<Cliente> {
         const datos: string = JSON.stringify(data);
         let cabecera = new HttpHeaders();
         cabecera = cabecera.set('Content-Type', 'application/json');
 
         return this._http.post<Cliente>('Clientes/AddClienteSctr', datos, { headers: cabecera });
+    }
+
+    GetClientesSiteds(): Observable<any> {
+        return this._http.get('Clientes/GetClientesSiteds');
     }
 
 }

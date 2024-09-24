@@ -1,0 +1,51 @@
+<div [ngClass]=" {
+                    orange_theme: options.activeTheme == 'orange_theme',
+                    blue_theme: options.activeTheme == 'blue_theme',
+                    aqua_theme: options.activeTheme == 'aqua_theme',
+                    purple_theme: options.activeTheme == 'purple_theme',
+                    green_theme: options.activeTheme == 'green_theme',
+                    cyan_theme: options.activeTheme == 'cyan_theme',
+                    sanna_theme: options.activeTheme == 'sanna_theme',
+                }">
+    <mat-card class="theme-card">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    Clase de Servicio
+                </mat-card-title>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <div fxLayoutAlign="center center">
+                <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+            </div>
+        </mat-card-header>
+        <mat-dialog-content [formGroup]="form">
+            <mat-radio-group aria-label="Select an option" formControlName="rbServicio">
+                <div class="form-group">
+                    <mat-radio-button value="1" [checked]="valRbServicio">Atención en Emergencia - Urgencia - Traslado</mat-radio-button>
+                </div>
+                <div class="form-group">
+                    <mat-radio-button value="2">Evento</mat-radio-button>
+                </div>
+                <div class="form-group">
+                    <mat-radio-button value="3">Evento Adverso</mat-radio-button>
+                </div>
+                <div class="form-group">
+                    <mat-radio-button value="4">Orientación Médica</mat-radio-button>
+                </div>
+                <!--<div class="form-group">
+                    <mat-radio-button value="5">Liberar ATE bloqueada</mat-radio-button>
+                </div>-->
+            </mat-radio-group>
+        </mat-dialog-content>
+
+        <mat-dialog-actions align="center">
+            <button mat-flat-button color="warn" (click)="close()" class="btn btn-success btn-sm m-right-10 m-l-8">
+                Cancelar
+            </button>
+            <button mat-flat-button color="primary" (click)="continuar()" class="btn btn-success btn-sm m-right-10 m-l-8">
+                Continuar
+            </button>
+        </mat-dialog-actions>
+    </mat-card>
+</div>

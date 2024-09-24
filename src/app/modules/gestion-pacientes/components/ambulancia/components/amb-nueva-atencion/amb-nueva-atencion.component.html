@@ -1,0 +1,650 @@
+<div [ngClass]=" {
+    orange_theme: options.activeTheme == 'orange_theme',
+    blue_theme: options.activeTheme == 'blue_theme',
+    aqua_theme: options.activeTheme == 'aqua_theme',
+    purple_theme: options.activeTheme == 'purple_theme',
+    green_theme: options.activeTheme == 'green_theme',
+    cyan_theme: options.activeTheme == 'cyan_theme',
+    sanna_theme: options.activeTheme == 'sanna_theme',
+}">
+    <mat-card class="theme-card" style="margin-bottom: 0;">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    Creación de la Atención
+                </mat-card-title>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <div fxLayoutAlign="center center">
+                <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+            </div>
+        </mat-card-header>
+        <mat-progress-bar mode="query" *ngIf="showSpinner === true"
+            style="width: 100%; left: -1%; z-index: 1;"></mat-progress-bar>
+    </mat-card>
+    <mat-dialog-content [formGroup]="frmNuevaAtencion">
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card class="example-card" style="margin-bottom: 0;">
+                    <mat-card-content>
+                        <mat-form-field class="example-full-width dense-3" appearance="outline" style="width: 100%;">
+                            <mat-label>Tipo de servicio</mat-label>
+                            <mat-select formControlName="cboTipoServicio" [value]="valTipoServicio"
+                                (selectionChange)="selectTipoServicioCbo($event,null)">
+                                <mat-option [value]="tipoServicio.id"
+                                    *ngFor="let tipoServicio of tiposServicios">{{tipoServicio.nombre}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width dense-2" appearance="outline" style="width: 100%;"
+                            *ngIf="valTipoServicio == '1030'">
+                            <mat-label>Tipo de Ambulancia</mat-label>
+                            <mat-select formControlName="cboTipoAmbulancia" [value]="valTipoAmbulancia"
+                                (selectionChange)="selectTipoAmbulanciaCbo($event)">
+                                <mat-option [value]="tipoAmbulancia.id"
+                                    *ngFor="let tipoAmbulancia of tiposAmbulancia">{{tipoAmbulancia.nombre}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width dense-3" appearance="outline" style="width: 100%;"
+                            *ngIf="valTipoServicio != '1030'">
+                            <mat-label>Prioridad</mat-label>
+                            <mat-select formControlName="cboPrioridad" [value]="valPrioridad">
+                                <mat-option [value]="prioridad.id"
+                                    *ngFor="let prioridad of prioridades">{{prioridad.nombre}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-md-8">
+                <mat-card class="example-card" *ngIf="valTipoServicio == '1030'" style="margin-bottom: 0;">
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-6">
+                                <mat-label>Traslado:</mat-label>
+                                <br>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button" [value]="1" [checked]="rbInmediato"
+                                        (change)="getTraslado($event)">Inmediato</mat-radio-button>
+                                    <mat-radio-button class="example-radio-button" [value]="2" [checked]="rbProgramado"
+                                        (change)="getTraslado($event)">Programado</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-4">
+                                <mat-label>Fecha</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 dense-3">
+                                    <input matInput placeholder="Seleccione" [matDatepicker]="dtpFechaProgramado"
+                                        formControlName="dtpFechaProgramado" />
+                                    <mat-datepicker-toggle matIconSuffix
+                                        [for]="dtpFechaProgramado"></mat-datepicker-toggle>
+                                    <mat-datepicker #dtpFechaProgramado></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-2">
+                                <mat-label>Hora</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 dense-3" color="primary">
+                                    <input matInput formControlName="txtHoraProgramada" type="time" class="dense-2" />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12">
+                                <mat-form-field class="example-full-width dense-3" appearance="outline"
+                                    style="width: 100%;">
+                                    <mat-label>Tipo de traslado</mat-label>
+                                    <input matInput type="text" formControlName="cboTipoTraslado" #cboTipoTraslado
+                                        [matAutocomplete]="autoTipoTraslado" (input)="filterTraslado($event)"
+                                        (focus)="filterTraslado($event)">
+                                    <mat-autocomplete #autoTipoTraslado="matAutocomplete"
+                                        [displayWith]="displayLabelCliente"
+                                        (optionSelected)="selectTipoTraslado($event.option)">
+                                        @for (tipoTraslado of filteredOptionsTraslado; track tipoTraslado) {
+                                        <mat-option [value]="tipoTraslado">{{tipoTraslado.nombre}}</mat-option>
+                                        }
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4 text-right">
+                <mat-checkbox class="example-margin" formControlName="chkAmbulanciaPlaya"
+                    (change)="activarAmbulanciaPlaya($event)">Ambulancia
+                    Playa</mat-checkbox>
+            </div>
+            <div class="col-4 text-right">
+                <mat-checkbox class="example-margin" formControlName="chkFueraCobertura"
+                    (change)="activarFueraCobertura($event)">Fuera de
+                    cobertura</mat-checkbox>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <mat-card class="example-card">
+                    <mat-card-header>
+                        <mat-card-title style="margin-bottom: 10px;">
+                            Datos del paciente
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-12">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                    <mat-label>Cliente</mat-label>
+                                    <mat-select formControlName="cboCliente"
+                                        (selectionChange)="selectClienteCbo($event,valCodClienteSiteds)"
+                                        [value]="valCodClienteSiteds">
+                                        <mat-option [value]="cliente.id_cliente.trim()"
+                                            *ngFor="let cliente of clientes">{{cliente.nombre}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 m-b-8" style="padding: 0;"
+                                *ngIf="valCliente == 44 || valCliente == 106 || valCliente == 178">
+                                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                                    formControlName="rbFuenteDatos">
+                                    <div class="col-4" style="display: inline-block;">
+                                        <mat-radio-button class="example-radio-button" [value]="1"
+                                            (change)="getFuenteDatos($event)"
+                                            *ngIf="valCliente == 44 || valCliente == 106 || valCliente == 178"
+                                            [checked]="rbSiteds">&nbsp;</mat-radio-button>
+                                        <button mat-flat-button color="primary"
+                                            class="btn btn-success btn-sm m-right-20" [disabled]="statusBtnSiteds"
+                                            *ngIf="valCliente == 44 || valCliente == 106 || valCliente == 178">
+                                            SITEDS
+                                        </button>
+                                    </div>
+                                    <div class="col-2" style="display: inline-block; padding-left: 0;">
+                                        <mat-radio-button class="example-radio-button" [value]="2"
+                                            (change)="getFuenteDatos($event)"
+                                            *ngIf="valCliente == 44 || valCliente == 106"
+                                            [checked]="rbCitrix">CITRIX</mat-radio-button>
+                                    </div>
+                                    <div class="col-6" style="display: inline-block; padding-right: 0;">
+                                        <div class="col-2" style="display: inline-block;">
+                                            <mat-radio-button class="example-radio-button" [value]="3"
+                                                (change)="getFuenteDatos($event)" [checked]="rbTipoPoliza"
+                                                *ngIf="valCliente == 106 || valCliente == 178">&nbsp;</mat-radio-button>
+                                        </div>
+                                        <div class="col-10" style="display: inline-block;">
+                                            <mat-form-field class="example-full-width dense-3 w-100"
+                                                appearance="outline" *ngIf="valCliente == 106 || valCliente == 178">
+                                                <mat-label>Tipo Poliza</mat-label>
+                                                <mat-select formControlName="cboTipoPoliza"
+                                                    (selectionChange)="selectPolizaCbo($event)">
+                                                    <mat-option [value]="poliza.id"
+                                                        *ngFor="let poliza of tipoPoliza">{{poliza.nombre}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 m-b-8" *ngIf="valTipoPoliza != 0" style="padding: 0;">
+                                <div class="col-3" style="display: inline-block;">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline"
+                                        *ngIf="valPlaca == true">
+                                        <mat-label># Placa</mat-label>
+                                        <input matInput formControlName="txtNroPlaca" #txtNroPlaca
+                                        (keyup)="limpiarNumero($event)" (change)="limpiarNumero($event)"
+                                        (keypress)="soloNumeros($event)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4" style="display: inline-block;">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline"
+                                        *ngIf="valPoliza == true">
+                                        <mat-label># Poliza</mat-label>
+                                        <input matInput formControlName="txtNroPoliza" #txtNroPoliza
+                                        (keyup)="limpiarNumero($event)" (change)="limpiarNumero($event)"
+                                        (keypress)="soloNumeros($event)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-5" style="display: inline-block;">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline"
+                                        *ngIf="valSiniestro == true">
+                                        <mat-label># Siniestro</mat-label>
+                                        <input matInput formControlName="txtNroSiniestro"
+                                        (keyup)="limpiarNumero($event)" (change)="limpiarNumero($event)"
+                                        (keypress)="soloNumeros($event)">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-12" *ngIf="valCliente == 242">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Autorizado por</mat-label>
+                                    <input matInput formControlName="txtAutorizado" #txtAutorizado>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6">
+                                <mat-form-field class="example-full-width dense-2" appearance="outline"
+                                    style="width: 100%;">
+                                    <mat-label>Ingreso de solicitud</mat-label>
+                                    <mat-select formControlName="cboSolicitud" [value]="valSolicitud">
+                                        <mat-option [value]="solicitud.id"
+                                            *ngFor="let solicitud of solicitudes">{{solicitud.descripcion}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6 m-b-8">
+                                <mat-checkbox (change)="activarPacienteConflictivo($event)" class="example-margin"
+                                    formControlName="chkPacienteConflictivo">Paciente
+                                    Conflictivo</mat-checkbox>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Apellido Paterno</mat-label>
+                                    <input matInput formControlName="txtApellidoPaterno">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Apellido Materno</mat-label>
+                                    <input matInput formControlName="txtApellidoMaterno">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Nombres</mat-label>
+                                    <input matInput formControlName="txtNombres">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Tipo Documento</mat-label>
+                                    <input matInput formControlName="txtTipoDoc">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-5">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Número Documento</mat-label>
+                                    <input matInput formControlName="txtNumDoc">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                                <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                    appearance="outline">
+                                    <mat-label>Edad</mat-label>
+                                    <input matInput formControlName="txtEdad">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Antecedente</mat-label>
+                                    <input matInput formControlName="txtAntecedente">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Alergia médica</mat-label>
+                                    <input matInput formControlName="txtAlergiaMedica">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
+                                    style="width: 100%;">
+                                    <mat-label>Motivo de atención</mat-label>
+                                    <input matInput type="text" formControlName="cboMotivoAtencion" #cboMotivoAtencion
+                                        [matAutocomplete]="autoMotivoAtencion" (input)="filterMotivo($event)">
+                                    <mat-autocomplete #autoMotivoAtencion="matAutocomplete"
+                                        [displayWith]="displayLabelMotivoAtencion"
+                                        (optionSelected)="selectMotivoAmbulancia($event.option)">
+                                        @for (motivoAmbulancia of motivosAtencionAmbulancia; track motivoAmbulancia) {
+                                        <mat-option [value]="motivoAmbulancia">{{motivoAmbulancia.nombre}}</mat-option>
+                                        }
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Observación</mat-label>
+                                    <textarea formControlName="txtObservacion" #txtObservacion matInput
+                                        placeholder="Motivo de llamada" style="resize: none"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-7" *ngIf="valTipoServicio == '1041'">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                    <mat-label>Proveedor evento adverso</mat-label>
+                                    <input matInput type="text" formControlName="cboProveedorEventoAdverso"
+                                        #cboProveedorEventoAdverso [matAutocomplete]="autoProveedor"
+                                        (input)="filterProveedor($event)">
+                                    <mat-autocomplete #autoProveedor="matAutocomplete"
+                                        [displayWith]="displayLabelProveedor"
+                                        (optionSelected)="selectProveedor($event.option)">
+                                        @for (proveedor of proveedores; track proveedor) {
+                                        <mat-option [value]="proveedor">{{proveedor.nombre}}</mat-option>
+                                        }
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-5" *ngIf="valTipoServicio == '1041'">
+                                <mat-form-field appearance="outline" class="w-100 dense-3">
+                                    <mat-label>Fecha evento adverso</mat-label>
+                                    <input matInput placeholder="Seleccione" [matDatepicker]="dtpFechaEventoAdverso"
+                                        formControlName="dtpFechaEventoAdverso" />
+                                    <mat-datepicker-toggle matIconSuffix
+                                        [for]="dtpFechaEventoAdverso"></mat-datepicker-toggle>
+                                    <mat-datepicker #dtpFechaEventoAdverso></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                    <mat-label>Solicitado por</mat-label>
+                    <mat-select formControlName="cboSolicitado" [value]="valSolicitante">
+                        <mat-option [value]="solicitante.id"
+                            *ngFor="let solicitante of solicitantes">{{solicitante.descripcion}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-card class="example-card">
+                    <mat-card-header>
+                        <mat-card-title style="margin-bottom: 10px;">
+                            Formas de pago
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                            <mat-label>Moneda</mat-label>
+                                            <input matInput formControlName="txtMonedaDeducible">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-4">
+                                        <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                            <mat-label>Deducible</mat-label>
+                                            <input matInput formControlName="txtDeducible" (keypress)="soloDecimales($event)">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-5">
+                                        <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                            <mat-label>Coaseguro (%)</mat-label>
+                                            <input matInput formControlName="txtCoaseguro" (keypress)="soloDecimales($event)">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                    <mat-label>Forma pago</mat-label>
+                                    <mat-select formControlName="cboFormaPago"
+                                        (selectionChange)="selectFormaPago($event)">
+                                        <mat-option value="">-Elegir-</mat-option>
+                                        <mat-option value="E">EFECTIVO</mat-option>
+                                        <mat-option value="F">TRANSFERENCIA</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
+                                    *ngIf="formaPago=='E'">
+                                    <mat-label>Moneda</mat-label>
+                                    <mat-select formControlName="cboMonedaEfectivo">
+                                        <mat-option value="soles">S/.</mat-option>
+                                        <mat-option value="dolares">$</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
+                                    *ngIf="formaPago=='E'">
+                                    <mat-label>Deducible</mat-label>
+                                    <input matInput formControlName="txtMontoEfectivo" (keypress)="soloDecimales($event)">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-md-6">
+                <mat-card class="example-card">
+                    <mat-card-header>
+                        <mat-card-title style="margin-bottom: 10px;">
+                            Datos de Dirección
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <fieldset>
+                            <legend>
+                                Datos de origen
+                            </legend>
+                            <div class="row">
+                                <div class="col-12 m-b-8">
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                        class="example-radio-group" *ngIf="this.valTipoServicio == '1030'">
+                                        <mat-radio-button class="example-radio-button" value="DOM"
+                                            [checked]="_rbOrigenDomicilio"
+                                            (change)="getOrigen($event)">Domicilio</mat-radio-button>
+                                        <mat-radio-button class="example-radio-button" value="OTR"
+                                            [checked]="_rbOrigenOtros"
+                                            (change)="getOrigen($event)">Otros</mat-radio-button>
+                                        <mat-radio-button class="example-radio-button" value="CLI"
+                                            [checked]="_rbOrigenClinicaHospital"
+                                            (change)="getOrigen($event)">Clínica/Hospital</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="col-12">
+                                    <button mat-flat-button color="primary" class="btn btn-success btn-sm m-t-6 m-b-12"
+                                        *ngIf="origen=='DOM'" (click)="openDireccionOrigenDialog()">Elegir
+                                        dirección</button>
+                                </div>
+                                <div class="col-9">
+                                    <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
+                                        *ngIf="origen=='CLI'">
+                                        <mat-label>Sede origen traslado</mat-label>
+                                        <input matInput type="text" formControlName="cboClinicaHospitalOrigen"
+                                            #cboClinicaHospitalOrigen [matAutocomplete]="autoOrigen"
+                                            (input)="filterOrigen($event)">
+                                        <mat-autocomplete #autoOrigen="matAutocomplete"
+                                            [displayWith]="displayLabelOrigen"
+                                            (optionSelected)="selectOrigenAmbulancia($event.option)">
+                                            @for (origen of filteredOptionsOrigen; track origen) {
+                                            <mat-option [value]="origen">{{origen.nombre}}</mat-option>
+                                            }
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <button mat-flat-button color="primary" class="btn btn-success btn-sm w-100"
+                                        *ngIf="origen=='CLI'" (click)="openMantSedeDialog()">
+                                        +
+                                    </button>
+                                </div>
+                                <div class="col-9">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Ubigeo</mat-label>
+                                        <input matInput formControlName="txtUbigeoOrigen">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <button mat-flat-button color="primary" class="btn btn-success btn-sm w-100"
+                                        *ngIf="origen=='OTR'" (click)="openUbigeoOrigen()">
+                                        ...
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Direccion</mat-label>
+                                        <input matInput formControlName="txtDireccionOrigen">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-12">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Referencia</mat-label>
+                                        <input matInput formControlName="txtReferenciaOrigen">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-12" *ngIf="origen=='CLI'">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Ubicación dentro de Clínica</mat-label>
+                                        <input matInput formControlName="txtUbiDentroClinicaOrigen">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Telf. Fijo</mat-label>
+                                        <input matInput formControlName="txtTelefonoFijo"
+                                        (keypress)="soloNumeros($event)" (change)="limpiarNumero($event)"
+                                        (keyup)="limpiarNumero($event);" maxlength="9">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Telf. Movil</mat-label>
+                                        <input matInput formControlName="txtTelefonoMovil"
+                                        (keypress)="soloNumeros($event)" (change)="limpiarNumero($event)"
+                                        (keyup)="limpiarNumero($event); primer9($event)" maxlength="9">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="m-t-6" *ngIf="valTipoServicio == '1030'">
+                            <legend>
+                                Datos de destino
+                            </legend>
+                            <div class="row">
+                                <div class="col-12 m-b-8">
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                        class="example-radio-group" *ngIf="this.valTipoServicio == '1030'">
+                                        <mat-radio-button class="example-radio-button" value="DOM"
+                                            [checked]="_rbDestinoDomicilio"
+                                            (change)="getDestino($event)">Domicilio</mat-radio-button>
+                                        <mat-radio-button class="example-radio-button" value="OTR"
+                                            [checked]="_rbDestinoOtros"
+                                            (change)="getDestino($event)">Otros</mat-radio-button>
+                                        <mat-radio-button class="example-radio-button" value="CLI"
+                                            [checked]="_rbDestinoClinicaHospital"
+                                            (change)="getDestino($event)">Clínica/Hospital</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="col-12">
+                                    <button mat-flat-button color="primary" class="btn btn-success btn-sm m-t-6 m-b-12"
+                                        *ngIf="destino=='DOM'" (click)="openDireccionDestinoDialog()">Elegir
+                                        dirección</button>
+                                </div>
+                                <div class="col-9">
+                                    <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
+                                        *ngIf="destino=='CLI'">
+                                        <mat-label>Sede destino traslado</mat-label>
+                                        <input matInput type="text" formControlName="cboClinicaHospitalDestino"
+                                            #cboClinicaHospitalDestino [matAutocomplete]="autoDestino"
+                                            (input)="filterDestino($event)">
+                                        <mat-autocomplete #autoDestino="matAutocomplete"
+                                            [displayWith]="displayLabelDestino"
+                                            (optionSelected)="selectDestinoAmbulancia($event.option)">
+                                            @for (destino of filteredOptionsDestino; track destino) {
+                                            <mat-option [value]="destino">{{destino.nombre}}</mat-option>
+                                            }
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <button mat-flat-button color="primary" class="btn btn-success btn-sm w-100"
+                                        *ngIf="destino=='CLI'" (click)="openMantSedeDialog()">
+                                        +
+                                    </button>
+                                </div>
+                                <div class="col-9">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Ubigeo</mat-label>
+                                        <input matInput formControlName="txtUbigeoDestino">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <button mat-flat-button color="primary" class="btn btn-success btn-sm w-100"
+                                        *ngIf="destino=='OTR'" (click)="openUbigeoDestino()">
+                                        ...
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Direccion</mat-label>
+                                        <input matInput formControlName="txtDireccionDestino">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-12">
+                                    <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                        <mat-label>Referencia</mat-label>
+                                        <input matInput formControlName="txtReferenciaDestino">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="example-card">
+                    <mat-card-header>
+                        <mat-card-title style="margin-bottom: 10px;">
+                            Datos de aseguradora
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-12">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
+                                    *ngIf="valProducto == null">
+                                    <mat-label>Producto</mat-label>
+                                    <input matInput type="text" formControlName="txtProducto" #txtProducto
+                                        [matAutocomplete]="autoProducto" (input)="filterProducto($event)">
+                                    <mat-autocomplete #autoProducto="matAutocomplete"
+                                        [displayWith]="displayLabelProducto"
+                                        (optionSelected)="selectProductoAmbulancia($event.option)">
+                                        @for (producto of productos; track producto) {
+                                        <mat-option [value]="producto">{{producto.nombre}}</mat-option>
+                                        }
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
+                                    *ngIf="valProducto != null">
+                                    <mat-label>Producto</mat-label>
+                                    <input matInput formControlName="txtProductoSiteds">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                    <mat-label>Cod. Autorización</mat-label>
+                                    <input matInput formControlName="txtCodAutorizacion">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                    <mat-label>Contratante</mat-label>
+                                    <input matInput formControlName="txtContratante">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6">
+                                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                                    <mat-label>Poliza</mat-label>
+                                    <input matInput formControlName="txtPoliza">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6">
+                                <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
+                                    <mat-label>Código Asegurado</mat-label>
+                                    <input matInput formControlName="txtCodAsegurado">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="center">
+        <button mat-flat-button color="warn" (click)="salir()" class="btn btn-success btn-sm m-right-10 m-l-8">
+            Cancelar atención
+        </button>
+        <button mat-flat-button color="primary" (click)="guardarAtencion()"
+            class="btn btn-success btn-sm m-right-10 m-l-8" [disabled]="!frmNuevaAtencion.valid">
+            Guardar atención
+        </button>
+    </mat-dialog-actions>
+</div>

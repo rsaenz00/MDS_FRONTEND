@@ -1,0 +1,93 @@
+<div 
+    [ngClass]=" {
+                    orange_theme: options.activeTheme == 'orange_theme',
+                    blue_theme: options.activeTheme == 'blue_theme',
+                    aqua_theme: options.activeTheme == 'aqua_theme',
+                    purple_theme: options.activeTheme == 'purple_theme',
+                    green_theme: options.activeTheme == 'green_theme',
+                    cyan_theme: options.activeTheme == 'cyan_theme',
+                    sanna_theme: options.activeTheme == 'sanna_theme',
+                }"
+>
+    <mat-card class="theme-card">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    Nueva Alerta
+                </mat-card-title>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <div fxLayoutAlign="center center">
+                <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+            </div>
+        </mat-card-header>
+        <mat-dialog-content [formGroup]="form">
+            <fieldset>
+                <legend>Datos de atención</legend>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-label class="m-b-8 d-block">Atención</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                            <input matInput type="text" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-label class="m-b-8 d-block">Tipo</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                            <input matInput type="text" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-label class="m-b-8 d-block">Paciente</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
+                            <input matInput type="text" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Alertas</legend>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-label class="m-b-8 d-block">Tipo de Alerta</mat-label>
+                        <mat-radio-button value="1">Consulta</mat-radio-button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-label class="m-b-8 d-block">Alerta</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 dense-2">
+                            <mat-select value="0">
+                                <mat-option value="0">Seleccionar</mat-option>
+                                <mat-option value="1">DNI</mat-option>
+                                <mat-option value="2">Carnet de Extranjeria</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </fieldset>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end" class="padding-actions">
+            <div class="row" >
+                <div class="col-12" >
+                    <button 
+                        mat-flat-button  
+                        color="primary"
+                        (click)="save()"
+                        class="btn btn-success btn-sm m-right-10 m-l-8" >
+                        Aceptar
+                    </button>
+                    <button 
+                        mat-flat-button  
+                        color="warn"
+                        (click)="close()"
+                        class="btn btn-success btn-sm m-right-10 m-l-8" >
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </mat-dialog-actions>
+    </mat-card>
+</div>

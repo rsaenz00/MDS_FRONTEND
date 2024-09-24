@@ -1,0 +1,230 @@
+<div [ngClass]=" {
+                    orange_theme: options.activeTheme == 'orange_theme',
+                    blue_theme: options.activeTheme == 'blue_theme',
+                    aqua_theme: options.activeTheme == 'aqua_theme',
+                    purple_theme: options.activeTheme == 'purple_theme',
+                    green_theme: options.activeTheme == 'green_theme',
+                    cyan_theme: options.activeTheme == 'cyan_theme',
+                    sanna_theme: options.activeTheme == 'sanna_theme',
+                }">
+    <mat-card class="theme-card" style="margin-bottom: 0;">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    Seguimiento de atención
+                </mat-card-title>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <div fxLayoutAlign="center center">
+                <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+            </div>
+        </mat-card-header>
+    </mat-card>
+    <mat-dialog-content>
+        <form [formGroup]="formularioVerDatosAtencion">
+            <div class="row">
+                <div class="col-md-2">
+                    <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
+                        <mat-label>Código</mat-label>
+                        <input matInput formControlName="txtCodigoAtencion">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-10">
+                    <mat-form-field class="example-full-width dense-2" style="width: 100%;" appearance="outline">
+                        <mat-label>Paciente</mat-label>
+                        <input matInput formControlName="txtPaciente">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Datos del paciente</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Fecha nacimiento</mat-label>
+                                        <input matInput formControlName="txtFechaNacimiento">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Edad</mat-label>
+                                        <input matInput formControlName="txtEdad">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-5">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Sexo</mat-label>
+                                        <input matInput formControlName="txtSexo">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Tipo Doc. Identidad</mat-label>
+                                        <input matInput formControlName="txtDocIdentidad">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>N° documento</mat-label>
+                                        <input matInput formControlName="txtNumDocIdentidad">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Celular</mat-label>
+                                        <input matInput formControlName="txtCelular">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Nacionalidad</mat-label>
+                                        <input matInput formControlName="txtPais">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Aseguradora y clínica</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Aseguradora</mat-label>
+                                <input matInput formControlName="txtAseguradora">
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Empresa</mat-label>
+                                <input matInput formControlName="txtEmpresa">
+                            </mat-form-field>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>RUC</mat-label>
+                                        <input matInput formControlName="txtRuc">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Teléfono</mat-label>
+                                        <input matInput formControlName="txtTelefonoEmpresa">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Anexo</mat-label>
+                                        <input matInput formControlName="txtAnexoEmpresa">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Clínica</mat-label>
+                                <input matInput formControlName="txtClinica">
+                            </mat-form-field>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="col-md-6">
+                    <!--<mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Datos del accidente</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Horario de trabajo</mat-label>
+                                <input matInput formControlName="txtHorarioTrabajo">
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Puesto / Cargo</mat-label>
+                                <input matInput formControlName="txtCargo">
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <textarea matInput formControlName="txtRelato" placeholder="Relato del accidente"
+                                    style="resize: none"></textarea>
+                            </mat-form-field>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Fecha del accidente</mat-label>
+                                        <input matInput formControlName="txtFechaAccidente">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-5">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Hora del accidente</mat-label>
+                                        <input matInput formControlName="txtHoraAccidente">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>-->
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title style="margin-bottom: 10px;">Datos de atención</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Tipo de atención</mat-label>
+                                <input matInput formControlName="txtTipoAtencion">
+                            </mat-form-field>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Pase de atención</mat-label>
+                                        <input matInput formControlName="txtPaseAtencion">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-9">
+                                    <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                        appearance="outline">
+                                        <mat-label>Motivo</mat-label>
+                                        <input matInput formControlName="txtMotivo">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <textarea matInput placeholder="Observación" formControlName="txtObservacion"
+                                    style="resize: none"></textarea>
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width dense-2" style="width: 100%;"
+                                appearance="outline">
+                                <mat-label>Clinica primera atención</mat-label>
+                                <input matInput formControlName="txtClinicaPrimeraCita">
+                            </mat-form-field>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+</div>

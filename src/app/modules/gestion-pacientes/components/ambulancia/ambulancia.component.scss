@@ -1,0 +1,20 @@
+.tbl_amb th,
+.tbl_amb tr {
+    font-size: 10px;
+    /*white-space: nowrap;*/
+}
+
+.tbl_amb th,
+.tbl_amb td {
+    padding: 0 5px;
+}
+
+
+.tbl_amb tr:hover {
+    cursor: pointer;
+    opacity: 0.95;
+}
+
+.row_selected {
+    opacity: 0.9;
+}

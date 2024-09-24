@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ViewsRoutes } from './views-routing.module';
 import { MaterialModule } from '../material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { StarterComponent } from './layout/starter/starter.component';
 import { MainComponent } from './layout/full/components/main/main.component';
 import { MainblankComponent } from './layout/full/components/mainblank/mainblank.component';
@@ -14,6 +14,7 @@ import { ProductsComponent } from './layout/full/shared/products/products.compon
 import { PaymentGatewaysComponent } from './layout/full/shared/payment-gateways/payment-gateways.component';
 import { TopProjectsComponent } from './layout/full/shared/top-projects/top-projects.component';
 import { CommonDialogComponent } from './layout/full/shared/common-dialog/common-dialog.component';
+
 
 @NgModule({
   declarations: [

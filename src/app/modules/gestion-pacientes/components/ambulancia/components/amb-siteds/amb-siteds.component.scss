@@ -1,0 +1,20 @@
+.tbl_sctr th,
+.tbl_sctr tr {
+    font-size: 10px;
+    /*white-space: nowrap;*/
+}
+
+.tbl_sctr th,
+.tbl_sctr td {
+    padding: 0 5px;
+}
+
+
+.tbl_sctr tr:hover {
+    cursor: pointer;
+    background: #EFEFEF;
+}
+
+.row_selected {
+    background: #D3D3D3;
+}

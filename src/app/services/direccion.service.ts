@@ -12,11 +12,11 @@ export class DireccionService {
     constructor(private _http: HttpClient) { }
 
     getDireccionesList(codPer: number): Observable<any> {
-        return this._http.get('Direcciones/GetDireccion?CPER_ID=' + codPer);
+        return this._http.get('Direcciones/GetDirecciones?CPER_ID=' + codPer);
     }
 
     getDireccionList(codPer: number, codDir: number): Observable<any> {
-        return this._http.get('Direcciones/GetDirecciones?CPER_ID=' + codPer + '&CDIR_ID=' + codDir);
+        return this._http.get('Direcciones/GetDireccion?CPER_ID=' + codPer + '&CDIR_ID=' + codDir);
     }
 
     addDireccion(data: Direccion): Observable<Direccion> {
@@ -41,6 +41,10 @@ export class DireccionService {
         cabecera = cabecera.set('Content-Type', 'application/json');
 
         return this._http.delete<Direccion>('Direcciones/DeleteDireccion', { headers: cabecera, body: datos });
+    }
+
+    getDireccionLista(): Observable<any> {
+        return this._http.get('Direcciones/GetListaDirecciones');
     }
 
 }

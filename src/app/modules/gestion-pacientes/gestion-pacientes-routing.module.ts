@@ -4,7 +4,7 @@ import { AmbulanciaComponent } from './components/ambulancia/ambulancia.componen
 import { AuthGuard } from 'src/app/helpers/security/auth.guard';
 import { SctrComponent } from './components/sctr/sctr.component';
 import { DrOnlineComponent } from './components/dr-online/dr-online.component';
-import { SctrReporteComponent } from './components/sctr/components/reporte/sctr-reporte.component';
+import { SctrReporteComponent } from './components/sctr/components/sctr-reporte/sctr-reporte.component';
 import { SitedsComponent } from './components/mad/components/siteds/siteds.component';
 import { MadComponent } from './components/mad/mad.component';
 import { CronicosComponent } from './components/cronicos/cronicos.component';

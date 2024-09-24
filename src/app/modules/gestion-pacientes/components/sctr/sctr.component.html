@@ -3,44 +3,77 @@
     <mat-card-content class="p-24">
         <!--FILTERS-->
         <div class="row" [formGroup]="formularioFiltroReporteSctr">
-            <div class="col-md-12">
-                <mat-form-field appearance="outline" style="width: 250px;" class="dense-2">
-                    <mat-label>Seleccione rango fechas de búsqueda</mat-label>
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate formControlName="txtStartDateFilter" placeholder="Fecha Inicio">
-                        <input matEndDate formControlName="txtEndDateFilter" placeholder="Fecha Fin">
-                    </mat-date-range-input>
-                    <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
+            <div class="col-11">
+                <div class="row">
+                    <div class="col-3">
+                        <mat-label class="m-b-8 d-block">Desde</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 dense-2">
+                            <input matInput placeholder="Seleccionar fecha" [matDatepicker]="txtStartDateFilter"
+                                formControlName="txtStartDateFilter" />
+                            <mat-datepicker-toggle matIconSuffix [for]="txtStartDateFilter"></mat-datepicker-toggle>
+                            <mat-datepicker #txtStartDateFilter></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-label class="m-b-8 d-block">Hasta</mat-label>
+                        <mat-form-field appearance="outline" class="w-100 dense-2">
+                            <input matInput placeholder="Seleccionar fecha" [matDatepicker]="txtEndDateFilter"
+                                formControlName="txtEndDateFilter" />
+                            <mat-datepicker-toggle matIconSuffix [for]="txtEndDateFilter"></mat-datepicker-toggle>
+                            <mat-datepicker #txtEndDateFilter></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-label class="m-b-8 d-block">Reporte</mat-label>
+                        <mat-form-field appearance="outline" class="dense-3 w-100">
+                            <mat-select formControlName="cboReporte" appearance="outline" class="dense-2">
+                                <mat-option [value]="1">REPORTE DE SCTR</mat-option>
+                                <mat-option [value]="2">REPORTE DE OTRAS LLAMADAS</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3 mx-auto m-t-30">
+                        <div class="d-grid gap-2">
+                            <button (click)="filterReporteSctr()" mat-flat-button color="primary"
+                                class="btn btn-success btn-sm m-right-10">
+                                Filtrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    @if (formularioFiltroReporteSctr.controls.txtStartDateFilter.hasError('matStartDateInvalid')) {
-                    <mat-error>Fecha de inicio inválida</mat-error>
-                    }
-                    @if (formularioFiltroReporteSctr.controls.txtEndDateFilter.hasError('matEndDateInvalid')) {
-                    <mat-error>Fecha final inválida</mat-error>
-                    }
-                </mat-form-field>
-                &nbsp;
-                <mat-form-field style="width: 280px;" appearance="outline" class="dense-2">
-                    <mat-label>Reporte</mat-label>
-                    <mat-select formControlName="cboReporte" appearance="outline" class="dense-2">
-                        <mat-option [value]="1">REPORTE DE SCTR</mat-option>
-                        <mat-option [value]="2">REPORTE DE OTRAS LLAMADAS</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                &nbsp;
-                <button mat-fab color="accent" aria-label="Example icon button with a bookmark icon"
-                    (click)="filterReporteSctr()">
-                    <mat-icon>search</mat-icon>
+        <!--BUTTONS HEADER-->
+        <div class="row">
+            <div class="col-12 d-flex align-items-center">
+                <button mat-flat-button color="primary" (click)="openVerDatosDialog()"
+                    [disabled]="countRows === 0 || idRow == 0" class="btn btn-success btn-sm m-right-10">
+                    Ver datos
+                </button>
+                <button mat-flat-button color="primary" (click)="openSeguimientoDialog()"
+                    [disabled]="countRows === 0 || idRow == 0" class="btn btn-success btn-sm m-right-10 m-l-8">
+                    Segumiento
+                </button>
+                <button mat-flat-button color="primary" (click)="openSoporteDialog()"
+                    [disabled]="countRows === 0 || idRow == 0" class="btn btn-success btn-sm m-right-10 m-l-8">
+                    Soporte
+                </button>
+                <button mat-flat-button color="primary" [disabled]="countRows === 0" (click)="exportExcel()"
+                    class="btn btn-success btn-sm m-right-10 m-l-8">
+                    Exportar
+                </button>
+                <button mat-flat-button color="primary" (click)="openTipoServicioDialog()"
+                    class="btn btn-success btn-sm m-right-10 m-l-8">
+                    Nuevo servicio
                 </button>
             </div>
         </div>
 
         <!--DATA TABLE-->
-        <div class="row m-t-20">
+        <div class="row m-t-20 form-group">
             <div class="col-12">
-                <div class="cardWithShadow">
+                <div class="table cardWithShadow">
                     <div class="table-container table scrollwrapper">
                         <table mat-table #table class="tbl_sctr dense-3" [dataSource]="dataSource" matSort
                             (matSortChange)="announceSortChange($event)">
@@ -360,7 +393,8 @@
 
                                 <ng-container matColumnDef="Departamento-search">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2"
+                                            style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'Departamento')"
                                                 formControlName="txtDepartamento">
                                         </mat-form-field>
@@ -369,7 +403,8 @@
 
                                 <ng-container matColumnDef="Provincia-search">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2"
+                                            style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'Provincia')"
                                                 formControlName="txtProvincia">
                                         </mat-form-field>
@@ -378,7 +413,8 @@
 
                                 <ng-container matColumnDef="Distrito-search">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2"
+                                            style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'Distrito')"
                                                 formControlName="txtDistrito">
                                         </mat-form-field>
@@ -423,7 +459,8 @@
 
                                 <ng-container matColumnDef="HojaAtencion-search" *ngIf="reporte === 1">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2"
+                                            style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'HojaAtencion')"
                                                 formControlName="txtHojaAtencion">
                                         </mat-form-field>
@@ -432,7 +469,8 @@
 
                                 <ng-container matColumnDef="MedioValidacion-search" *ngIf="reporte === 1">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 150px;">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2"
+                                            style="width: 150px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'MedioValidacion')"
                                                 formControlName="txtMedioValidacion">
                                         </mat-form-field>
@@ -451,7 +489,8 @@
 
                                 <ng-container matColumnDef="PaseAtencion-search" *ngIf="reporte === 1">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 105px;">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2"
+                                            style="width: 105px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'PaseAtencion')"
                                                 formControlName="txtPaseAtencion">
                                         </mat-form-field>
@@ -470,7 +509,8 @@
 
                                 <ng-container matColumnDef="Observacion-search" *ngIf="reporte === 1">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 600px;">
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2"
+                                            style="width: 600px;">
                                             <input matInput (keyup)="filtrarAtencion($event,'Observacion')"
                                                 formControlName="txtObservacion">
                                         </mat-form-field>
@@ -513,48 +553,10 @@
                         </ng-container>
                     </div>
 
-                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
                         aria-label="Seleccione página de registros">
                     </mat-paginator>
                 </div>
-            </div>
-        </div>
-
-        <!--BUTTONS FOOTER-->
-        <div class="row m-t-20">
-            <div class="col-md-3">
-                <button mat-flat-button color="accent" style="width: 100%;" (click)="openVerDatosDialog()"
-                    [disabled]="countRows === 0 || idRow == 0">
-                    Ver datos
-                </button>
-                <div style="padding: 3px 0;"></div>
-            </div>
-            <div class="col-md-2">
-                <button mat-flat-button color="accent" style="width: 100%;" (click)="openSeguimientoDialog()"
-                    [disabled]="countRows === 0 || idRow == 0">
-                    Segumiento
-                </button>
-                <div style="padding: 3px 0;"></div>
-            </div>
-            <div class="col-md-2">
-                <button mat-flat-button color="accent" style="width: 100%;" (click)="openSoporteDialog()"
-                    [disabled]="countRows === 0 || idRow == 0">
-                    Soporte
-                </button>
-                <div style="padding: 3px 0;"></div>
-            </div>
-            <div class="col-md-2">
-                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0"
-                    (click)="exportExcel()">
-                    Exportar
-                </button>
-                <div style="padding: 3px 0;"></div>
-            </div>
-            <div class="col-md-3">
-                <button mat-flat-button color="accent" style="width: 100%;" (click)="openTipoServicioDialog()">
-                    Nuevo servicio
-                </button>
-                <div style="padding: 3px 0;"></div>
             </div>
         </div>
     </mat-card-content>

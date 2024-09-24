@@ -48,3 +48,36 @@
 {
   flex-direction: column;
 }
+
+.btn-info{
+  background-color: $primary;
+  color: $white;
+}
+
+.btn-validation-orange 
+{
+  background-color: $validation-orange;
+  color: $white;
+}
+
+.btn-alert-yellow 
+{
+  background-color: $alert-yellow;
+  color: $white;
+}
+
+.btn-counter-red
+{
+  background-color: $counter-red;
+  color: $white;
+}
+
+.btn-close
+{
+  height: auto !important;
+  cursor: pointer !important;
+  .mat-icon
+  {
+    height: 20px !important;
+  }
+}

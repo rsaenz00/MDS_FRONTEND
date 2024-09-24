@@ -1,0 +1,27 @@
+<div mat-dialog-title>
+    Seleccione el soporte
+</div>
+<mat-dialog-content>
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+        <div class="row" *ngIf="estadoAtencion !== 'CANCELADO' && reporte === 1">
+            <mat-radio-button class="example-radio-button" (change)="getOpcionSoporte($event)"
+                value="ModificarDatos">Modificar datos</mat-radio-button>
+        </div>
+        <div class="row" *ngIf="estadoAtencion !== 'CANCELADO'">
+            <mat-radio-button class="example-radio-button" (change)="getOpcionSoporte($event)"
+                value="AnularAtencion">Anular atención</mat-radio-button>
+        </div>
+        <div class="row">
+            <mat-radio-button class="example-radio-button" (change)="getOpcionSoporte($event)"
+                value="MantenimientoClinica">Mantenimiento clínica</mat-radio-button>
+        </div>
+    </mat-radio-group>
+    <div class="row" style="margin-top: 15px;">
+        <div class="col-md-6 text-center">
+            <button mat-flat-button color="warn" (click)="onNoClick()" style="width: 100%;">Cancelar</button>
+        </div>
+        <div class="col-md-6 text-center">
+            <button mat-flat-button color="accent" style="width: 100%;" (click)="darSoporte()">Aceptar</button>
+        </div>
+    </div>
+</mat-dialog-content>

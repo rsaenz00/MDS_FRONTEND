@@ -42,6 +42,7 @@ $warning: #ffae1f;
 $error: #fa896b;
 $success: #13deb9;
 $white: #ffffff;
+$black: #2a3547;
 
 $light: #f2f6fa;
 
@@ -54,7 +55,7 @@ $light-error: #fdede8;
 $light-success: #e6fffa;
 
 // layout
-$boxedWidth: 1200px;
+$boxedWidth: 100%;//1200px
 
 $border-radius: 7px;
 
@@ -71,7 +72,11 @@ $semaphore-yellow: #f2e700;
 $semaphore-yellow-light: #ffffe0;
 $semaphore-white: #ffffff;
 $semaphore-rose: #ee82ee;
+$semaphore-blue: #6495ed;
 
+$validation-orange: #ff8c00;
+$alert-yellow: #ffd700;
+$counter-red: #8b0000;
 
 
 

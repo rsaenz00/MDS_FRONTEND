@@ -1,0 +1,29 @@
+<div mat-dialog-title>
+    Anular Servicio
+</div>
+<mat-dialog-content>
+    <form [formGroup]="formAnularServicio">
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom: 10px;">
+                <mat-form-field style="width: 100%; margin-top: 10px;" appearance="outline" class="dense-2">
+                    <mat-label>Motivo</mat-label>
+                    <mat-select (selectionChange)="getMotivoCbo($event)" formControlName="cboMotivo"
+                        [value]="valMotivo">
+                        <mat-option [value]="">--Seleccione una opción--</mat-option>
+                        <mat-option [value]="motivo.id"
+                            *ngFor="let motivo of motivos">{{motivo.descripcion}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <button mat-flat-button color="warn" (click)="onNoClick()" style="width: 100%;">No</button>
+            </div>
+            <div class="col-md-6 text-center">
+                <button mat-flat-button color="accent" (click)="continuar()" style="width: 100%;">Si,
+                    Continuar</button>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

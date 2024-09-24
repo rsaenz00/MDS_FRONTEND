@@ -1,0 +1,92 @@
+<mat-card class="theme-card" style="margin-bottom: 0;">
+    <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>
+                Maestro de Ubigeo
+            </mat-card-title>
+        </mat-card-title-group>
+        <div fxFlex></div>
+        <div fxLayoutAlign="center center">
+            <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+        </div>
+    </mat-card-header>
+</mat-card>
+<mat-dialog-content>
+    <mat-card class="example-card">
+        <mat-card-content>
+            <form class="row" [formGroup]="formularioUbigeo" style="margin-bottom: 10px;">
+                <div class="col-md-4">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                        <mat-label>Distrito</mat-label>
+                        <input matInput (keyup)="filtrarDistrito($event)" placeholder="Distrito"
+                            formControlName="txtDistrito">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                        <mat-label>Provincia</mat-label>
+                        <input matInput (keyup)="filtrarProvincia($event)" placeholder="Provincia"
+                            formControlName="txtProvincia">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                        <mat-label>Departamento</mat-label>
+                        <input matInput (keyup)="filtrarDepartamento($event)" placeholder="Departamento"
+                            formControlName="txtDepartamento">
+                    </mat-form-field>
+                </div>
+            </form>
+            <div class="row m-t-20">
+                <div class="col-12">
+                    <div class="cardWithShadow">
+                        <div class="table-container table scrollwrapper">
+                            <table mat-table [dataSource]="dataSource" matSort
+                                (matSortChange)="announceSortChange($event)" class="tbl">
+
+                                <ng-container matColumnDef="distrito">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Sort by distrito">
+                                        Distrito
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.distrito}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="provincia">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Sort by provincia">
+                                        Provincia
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.provincia}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="departamento">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Sort by departamento">
+                                        Departamento
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.departamento}} </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row (click)="filaSeleccionada(row)"
+                                    *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                            <ng-container *ngIf="countRows === 0">
+                                <div class="row">
+                                    <div class="col-sm-12 ml-4 mt-3">
+                                        <label class="font-weight-bold"> {{'No existen datos'}}</label>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
+                                aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>

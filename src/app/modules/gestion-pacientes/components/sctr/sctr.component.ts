@@ -5,10 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DateAdapter } from '@angular/material/core';
-import { SctrTiposervicioComponent } from './components/tiposervicio/sctr-tiposervicio.component';
-import { SctrVerdatosComponent } from './components/verdatos/sctr-verdatos.component';
-import { SctrSeguimientoComponent } from './components/seguimiento/sctr-seguimiento.component';
-import { SctrSoporteComponent } from './components/soporte/sctr-soporte.component';
+import { SctrTiposervicioComponent } from './components/sctr-tipo-servicio/sctr-tipo-servicio.component';
+import { SctrVerdatosComponent } from './components/sctr-ver-datos/sctr-ver-datos.component';
+import { SctrSeguimientoComponent } from './components/sctr-seguimiento/sctr-seguimiento.component';
+import { SctrSoporteComponent } from './components/sctr-soporte/sctr-soporte.component';
 import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
 import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
 import { ToastrService } from 'ngx-toastr';
@@ -146,7 +146,7 @@ export class SctrComponent implements OnInit {
     if (this.idRow != 0) {
       const dialogRef = this._dialog.open(SctrSoporteComponent, {
         panelClass: 'sanna_theme',
-        data: { 'datos_atencion': this.rowSeleccionado }
+        data: { 'datos_atencion': this.rowSeleccionado, 'reporte': this.reporte }
       });
 
       dialogRef.afterClosed().subscribe(result => {

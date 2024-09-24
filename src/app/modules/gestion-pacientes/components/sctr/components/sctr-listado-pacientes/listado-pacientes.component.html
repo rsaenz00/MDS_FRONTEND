@@ -1,0 +1,131 @@
+<mat-card class="theme-card" style="margin-bottom: 0;">
+    <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>
+                Pacientes
+            </mat-card-title>
+        </mat-card-title-group>
+        <div fxFlex></div>
+        <div fxLayoutAlign="center center">
+            <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+        </div>
+    </mat-card-header>
+    <mat-progress-bar mode="query" *ngIf="showSpinner === true"></mat-progress-bar>
+</mat-card>
+<mat-dialog-content>
+    <mat-card class="example-card">
+        <mat-card-content>
+            <form class="row" [formGroup]="formularioBusquedaPaciente" style="margin-bottom: 10px;">
+                <div class="col-md-9" *ngIf="NombreServicio==='MAD'">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-3">
+                        <mat-label>DNI</mat-label>
+                        <input matInput placeholder="Apellidos Paterno / DNI" formControlName="txtApePaternoDNI"
+                            (keyup)="filtrarApePaternoDni($event); limpiarNumero($event)"
+                            (change)="limpiarNumero($event)" (blur)="rellenaCaracteres($event)" maxlength="8"
+                            (keypress)="soloNumeros($event)">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3" *ngIf="NombreServicio!=='MAD'">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-3">
+                        <mat-label>Apellido Paterno / DNI</mat-label>
+                        <input matInput (keypress.enter)="filtrar()" placeholder="Apellidos Paterno / DNI"
+                            formControlName="txtApePaternoDNI" (keypress)="filtrarApePaternoDni($event)">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3" *ngIf="NombreServicio!=='MAD'">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-3">
+                        <mat-label>Apellido Materno</mat-label>
+                        <input matInput placeholder="Apellido Materno" formControlName="txtApeMaterno"
+                            (keypress.enter)="filtrar()" (keyup)="limpiarLetras($event)"
+                            (change)="limpiarLetras($event)" (keypress)="soloLetras($event); filtrarApeMaterno($event)">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3" *ngIf="NombreServicio!=='MAD'">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-3">
+                        <mat-label>Nombres</mat-label>
+                        <input matInput placeholder="Nombres" formControlName="txtNombres" (keypress.enter)="filtrar()"
+                            (keyup)="limpiarLetras($event)" (change)="limpiarLetras($event)"
+                            (keypress)="soloLetras($event); filtrarNombres($event)">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <button mat-flat-button color="primary" class="btn btn-success btn-sm w-100" (click)="filtrar()"
+                        [disabled]="statusBtnFiltrar">Buscar</button>
+                </div>
+            </form>
+            <div class="row m-t-20">
+                <div class="col-12">
+                    <div class="cardWithShadow">
+                        <div class="table-container table scrollwrapper">
+                            <table class="tbl" mat-table [dataSource]="dataSource" matSort
+                                (matSortChange)="announceSortChange($event)" *ngIf="countRows > 0">
+
+                                <ng-container matColumnDef="tipo_documento">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Ordenar por Tipo documento">
+                                        TIPO DOC.
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.tipo_documento}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="numero_documento">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Ordenar por Numero de documento">
+                                        NUM. DOC.
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.numero_documento}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="nombres">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Ordenar por nombres">
+                                        Nombres
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.nombres}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="apellido_paterno">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Ordenar por apellido paterno">
+                                        Apellido Paterno
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.apellido_paterno}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="apellido_materno">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Ordenar por apellido materno">
+                                        Apellido Materno
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.apellido_materno}} </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row (click)="filaSeleccionada(row)"
+                                    *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                            
+                            <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
+                                aria-label="Seleccione página">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 m-t-20" style="font-size: 12px; margin-bottom: 4px;" *ngIf="countRows > 0">
+                    Para continuar seleccione a la persona de la lista con doble click.
+                </div>
+                <div class="col-md-12 m-t-20" *ngIf="msgBusqueda !=''">
+                    {{msgBusqueda}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button class="m-t-20" *ngIf="NombreServicio!=='SCTR'" mat-flat-button color="accent">Nuevo
+                        paciente</button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>

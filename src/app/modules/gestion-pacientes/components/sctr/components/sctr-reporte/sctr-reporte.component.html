@@ -1,0 +1,260 @@
+<mat-progress-bar mode="query" *ngIf="showSpinner === true"></mat-progress-bar>
+<mat-card class="cardWithShadow">
+    <mat-card-content class="p-24">
+        <!--FILTERS-->
+        <div class="row" [formGroup]="formularioFiltroReporteSctr">
+            <div class="col-md-12">
+                <mat-form-field appearance="outline" class="dense-2" style="width: 250px;">
+                    <mat-label>Seleccione rango fechas de búsqueda</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="txtStartDateFilter" placeholder="Fecha Inicio">
+                        <input matEndDate formControlName="txtEndDateFilter" placeholder="Fecha Fin">
+                    </mat-date-range-input>
+                    <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+
+                    @if (formularioFiltroReporteSctr.controls.txtStartDateFilter.hasError('matStartDateInvalid')) {
+                    <mat-error>Fecha de inicio inválida</mat-error>
+                    }
+                    @if (formularioFiltroReporteSctr.controls.txtEndDateFilter.hasError('matEndDateInvalid')) {
+                    <mat-error>Fecha final inválida</mat-error>
+                    }
+                </mat-form-field>
+                &nbsp;
+                <mat-form-field appearance="outline" class="dense-2" style="width: 280px;">
+                    <mat-label>Reporte</mat-label>
+                    <mat-select formControlName="cboReporte">
+                        <mat-option [value]="1">REPORTE DE SCTR</mat-option>
+                        <mat-option [value]="2">REPORTE DE OTRAS LLAMADAS</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                &nbsp;
+                <button mat-fab color="accent"
+                    (click)="filterReporteSctr()">
+                    <mat-icon>search</mat-icon>
+                </button>
+                &nbsp;
+                <button mat-fab color="accent" [disabled]="countRows === 0"
+                    (click)="exportExcel()">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <!--DATA TABLE-->
+        <div class="row m-t-20">
+            <div class="col-12">
+                <div class="cardWithShadow">
+                    <div class="table-container table scrollwrapper">
+                        <table mat-table #table class="tbl_sctr dense-3" [dataSource]="dataSource" matSort
+                            (matSortChange)="announceSortChange($event)">
+
+                            <ng-container matColumnDef="cod_atencion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por cod_atencion">
+                                    COD_ATENCION
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.cod_atencion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="tipo_atencion" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por tipo_atencion">
+                                    TIPO_ATENCION
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.tipo_atencion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="estado">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por estado">
+                                    ESTADO
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fecha_creacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por fecha_creacion">
+                                    FECHA_CREACIÓN
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.fecha_creacion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="hora_creacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por hora_creacion">
+                                    HORA_CREACIÓN
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.hora_creacion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="documento_identidad" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por documento_identidad">
+                                    DOC_IDENTIDAD
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.documento_identidad}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="numero" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por numero">
+                                    NUM_DOC_IDENTIDAD
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.numero}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paciente" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por paciente">
+                                    PACIENTE
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.paciente}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fecha_nacimiento" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por fecha_nacimiento">
+                                    FECHA_NACIMIENTO
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.fecha_nacimiento}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="procedencia" *ngIf="reporte === 2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por procedencia">
+                                    PROCEDENCIA
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.procedencia}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="clinica">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por clinica">
+                                    CLÍNICA
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.clinica}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="departamento" *ngIf="reporte === 2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por departamento">
+                                    DEPARTAMENTO
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.departamento}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="provincia" *ngIf="reporte === 2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por provincia">
+                                    PROVINCIA
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.provincia}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="distrito" *ngIf="reporte === 2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por distrito">
+                                    DISTRITO
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.distrito}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="persona_reporta" *ngIf="reporte === 2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por persona_reporta">
+                                    PERSONA_REPORTA
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.persona_reporta}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="motivo_de_llamada" *ngIf="reporte === 2">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por motivo_de_llamada">
+                                    MOTIVO_DE_LLAMADA
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.motivo_de_llamada}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="empresa" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por empresa">
+                                    EMPRESA
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.empresa}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="empresa_ruc" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por empresa_ruc">
+                                    RUC_EMPRESA
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.empresa_ruc}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="plan" *ngIf="reporte === 1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por plan">
+                                    PLAN
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.plan}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="motivo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por motivo">
+                                    MOTIVO
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.motivo}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="usuario_creacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por usuario_creacion">
+                                    USUARIO_CREACIÓN
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.usuario_creacion}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="skill">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por skill">
+                                    SKILL
+                                </th>
+                                <td mat-cell *matCellDef="let row"> {{row.skill}} </td>
+                            </ng-container>
+
+                            <!--<ng-container matColumnDef="accion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ACCIONES </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <button mat-icon-button color="primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>-->
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <ng-container *ngIf="countRows === 0">
+                            <div class="row">
+                                <div class="col-sm-12 ml-4 mt-3">
+                                    <label class="font-weight-bold"> {{'No existen datos'}}</label>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
+                        aria-label="Seleccione página de registros">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

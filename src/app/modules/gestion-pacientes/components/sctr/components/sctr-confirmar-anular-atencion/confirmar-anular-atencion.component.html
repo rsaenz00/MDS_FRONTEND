@@ -1,0 +1,17 @@
+<div mat-dialog-title>
+    ¡Atención!
+</div>
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: 10px;">¿Desea anular la atención N° {{cod_historia_clinica}}?</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <button mat-flat-button color="warn" (click)="onNoClick()" style="width: 100%;">No</button>
+        </div>
+        <div class="col-md-6 text-center">
+            <button mat-flat-button color="accent" (click)="anularAtencion()" style="width: 100%;">Si,
+                Continuar</button>
+        </div>
+    </div>
+</mat-dialog-content>

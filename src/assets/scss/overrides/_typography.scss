@@ -5,7 +5,7 @@
 .mat-subtitle-1,
 .mat-subtitle-2,
 .mat-body-1,
-.mat-body-2 
+.mat-body-2s 
 {
   color: $textPrimary;
 }
@@ -69,4 +69,9 @@ $theme-typography: mat.define-typography-config(
 .mat-drawer 
 {
   color: $textPrimary;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__content 
+{
+  color: $textPrimary !important;
 }

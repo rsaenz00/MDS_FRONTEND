@@ -125,9 +125,11 @@ $darksannatheme: mat.define-dark-theme(
 
 .theme-card.mat-mdc-card 
 {
-    .mat-mdc-card-header 
-    {
-      color: mat.get-color-from-palette($theme-primary, 100) !important;; 
-      background-color:mat.get-color-from-palette($theme-primary, 500) !important;;
-    }
+  box-shadow: none !important;
+    
+  .mat-mdc-card-header 
+  {
+    color: mat.get-color-from-palette($theme-primary, 100) !important;; 
+    background-color:mat.get-color-from-palette($theme-primary, 500) !important;;
+  }
 }
