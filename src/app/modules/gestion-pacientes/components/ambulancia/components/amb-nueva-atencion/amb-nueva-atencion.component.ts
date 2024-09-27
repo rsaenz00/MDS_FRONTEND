@@ -281,6 +281,9 @@ export class AmbNuevaAtencionComponent implements OnInit {
         if (localStorage.getItem('eventoAdverso') == 'Si') {
           this.valTipoServicio = '1041';
           this.selectTipoServicioCbo(null, this.valTipoServicio);
+          this.frmNuevaAtencion.controls['cboProveedorEventoAdverso'].enable();
+          this.frmNuevaAtencion.controls['cboProveedorEventoAdverso'].reset();
+          this.getProovedorList();
         } else {
           this.valTipoServicio = '1025';
         }

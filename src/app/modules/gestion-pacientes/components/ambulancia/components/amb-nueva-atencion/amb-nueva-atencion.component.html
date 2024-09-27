@@ -357,13 +357,13 @@
                                     <div class="col-4">
                                         <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
                                             <mat-label>Deducible</mat-label>
-                                            <input matInput formControlName="txtDeducible" (keypress)="soloDecimales($event)">
+                                            <input matInput formControlName="txtDeducible" (keyup)="soloDecimales($event)">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-5">
                                         <mat-form-field class="example-full-width dense-2 w-100" appearance="outline">
                                             <mat-label>Coaseguro (%)</mat-label>
-                                            <input matInput formControlName="txtCoaseguro" (keypress)="soloDecimales($event)">
+                                            <input matInput formControlName="txtCoaseguro" (keyup)="soloDecimales($event)">
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -393,7 +393,7 @@
                                 <mat-form-field class="example-full-width dense-3 w-100" appearance="outline"
                                     *ngIf="formaPago=='E'">
                                     <mat-label>Deducible</mat-label>
-                                    <input matInput formControlName="txtMontoEfectivo" (keypress)="soloDecimales($event)">
+                                    <input matInput formControlName="txtMontoEfectivo" (keyup)="soloDecimales($event)">
                                 </mat-form-field>
                             </div>
                         </div>
