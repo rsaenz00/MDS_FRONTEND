@@ -1,0 +1,41 @@
+<div mat-dialog-title>
+</div>
+<mat-dialog-content>
+    <mat-card class="example-card" style="background-color: yellow;">
+        <mat-card-content>
+            <div class="row">
+                <div class="col-md-12">
+                    <label style="font-weight: bold; font-family: Verdana, Geneva, Tahoma, sans-serif;padding: 3em;">
+                    {{vMensajeRegistroMad}}
+                    </label>
+                    <br>
+                    <label style="font-weight: bold; font-family: Verdana, Geneva, Tahoma, sans-serif;padding: 5em;">
+                    {{vMensajeRegistroPaciente}}
+                    </label>
+                    <br>
+                    <label style="font-weight: bold; font-family: Verdana, Geneva, Tahoma, sans-serif;padding: 3em;">
+                    {{vMensajeRegistroEspecialidad}}
+                </label>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <div class="row">
+        <div class="col-md-4" style="left: auto;">
+            <button mat-flat-button color="warn" style="width: 100%;" (click)="Salir()">
+                CERRAR VENTANA
+            </button>
+            <div style="padding: 3px 0;"></div>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="col-md-4" style="right: auto;">
+            <button mat-flat-button color="accent" style="width: 100%;" (click)="Aceptar()">
+                ACEPTAR
+            </button>
+            <div style="padding: 3px 0;"></div>
+        </div>
+    </div>
+</mat-dialog-content>

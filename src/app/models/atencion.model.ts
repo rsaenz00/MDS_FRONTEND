@@ -1,0 +1,33 @@
+export class Atencion {
+    id_atencion: number;
+    id_persona: number;
+    id_empresa: number;
+    id_clinica: number;
+    id_motivo: string;
+    id_plan: string;
+    horario_trabajo: string;
+    cargo: string;
+    relato: string;
+    fecha_accidente: string;
+    hora_accidente: string;
+    observacion: string;
+    primera_atencion: string;
+    metodo_validacion: string;
+    hoja_atencion: string;
+    ubigeo: string;
+    skill: number;
+    motivo_skill: number;
+    centro_clinico: number;
+    empresa: number;
+    corredor_seguro: number;
+    paciente_asegurado: number;
+    persona_reporta_clinica: string;
+    persona_reporta_empresa: string;
+    persona_reporta_seguro: string;
+    persona_reporta_asegurado: string;
+    estado: number;
+    usuario_creacion: string;
+    usuario_modificacion: string;
+    usuario_eliminacion: string;
+    id_clinica_primera_atencion: number;
+}

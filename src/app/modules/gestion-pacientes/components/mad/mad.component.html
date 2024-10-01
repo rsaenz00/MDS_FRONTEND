@@ -1,1 +1,679 @@
-<p>mad en mantenimiento!</p>
+<mat-progress-bar mode="query" *ngIf="showSpinner === true"></mat-progress-bar>
+<mat-card class="cardWithShadow">
+    <mat-card-content class="p-24">
+        <!--CONTROLES COMBOBOX DE BUSQUEDA-->
+        <div class="row" [formGroup]="FormularioBandejaMad">
+            <div class="col-2 m-t-24">
+                <mat-form-field appearance="outline" class="example-full-width dense-3 w-100">
+                    <mat-label>[Seleccionar...]</mat-label>
+                    <mat-select formControlName="cboCampo" [(ngModel)]="SeleccionarCampo" (click)="selectCampo()">
+                        <mat-option *ngFor="let campo of camposBusqueda" [value]="campo">{{campo}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-2 m-t-24">
+                <mat-form-field appearance="outline" class="example-full-width dense-3 w-100">
+                    <mat-label>[Seleccionar...]</mat-label>
+                    <mat-select formControlName="cboNumero"
+                        [(ngModel)]="SeleccionarValor"><!-- [(ngModel)]="SeleccionarValor"-->
+                        <mat-option *ngFor="let valor of camposValor" [value]="valor">{{valor}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-3 m-t-24">
+                <mat-form-field appearance="outline" class="dense-2 w-100">
+                    <mat-label>Ingrese datos a consultar ...</mat-label>
+                    <input matInput formControlName="txtConsulta" name="txtConsulta" id="txtConsulta">
+                </mat-form-field>
+            </div>
+            <div class="col-2 m-t-2">
+                <mat-label class="m-b-2 d-block">Desde</mat-label>
+                <mat-form-field appearance="outline" class="w-20 dense-3">
+                    <input matInput placeholder="Seleccionar fecha inicio" [matDatepicker]="dtpDesde"
+                        formControlName="dtpIni" />
+                    <mat-datepicker-toggle matIconSuffix [for]="dtpDesde"></mat-datepicker-toggle>
+                    <mat-datepicker #dtpDesde></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-2 m-t-2">
+                <mat-label class="m-b-2 d-block">Hasta</mat-label>
+                <mat-form-field appearance="outline" class="w-20 dense-3">
+                    <input matInput placeholder="Seleccionar fecha final" [matDatepicker]="dtpHasta"
+                        formControlName="dtpFin" />
+                    <mat-datepicker-toggle matIconSuffix [for]="dtpHasta"></mat-datepicker-toggle>
+                    <mat-datepicker #dtpHasta></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-1 m-t-24">
+                <button mat-flat-button color="primary" class="btn btn-success btn-md m-right-10 w-100"
+                    (click)="ConsultarEncabezado()">
+                    <i class="fas fa-plus"></i>Filtrar
+                </button>
+            </div>
+            <div class="col-6">
+                <section class="example-section">
+                    <mat-checkbox class="example-margin" value="General" formControlName="chkGeneral">Interna y
+                        General</mat-checkbox>
+                    <mat-checkbox class="example-margin" value="Pediatria"
+                        formControlName="chkPediatria">Pediatria</mat-checkbox>
+                    <mat-checkbox class="example-margin" value="Otras" formControlName="chkOtras">Otras</mat-checkbox>
+                    <mat-checkbox class="example-margin" [disabled]="false" value="Finalizadas"
+                        formControlName="chkFinalizadas">Finalizadas</mat-checkbox>
+                </section>
+            </div>
+            <div class="col-6 m-t-8">
+                <div class="legend">
+                    <mat-label>Leyenda:</mat-label>
+                </div>
+                <div class="legend">
+                    <span class="semaphore-green"
+                        matTooltip="Atención primera o proxima que realizara el médico (solo E=3)"></span>
+                </div>
+                <div class="legend">
+                    <span class="semaphore-red"
+                        matTooltip="Hora actual sobre pasa en mas de 5 minutos a tiempo estimado (solo E=6)"></span>
+                </div>
+                <div class="legend">
+                    <span class="semaphore-orange"
+                        matTooltip="Medico se encuentra en casa de paciente mas de 30 minutos (solo E=7)"></span>
+                </div>
+                <div class="legend">
+                    <span style="background: #c2cde4"
+                        matTooltip="Atención vencida de confirmación(Validación 48 horas antes E=2)"></span>
+                </div>
+                <div class="legend">
+                    <span style="background: #dbd0cc"
+                        matTooltip="CRONICOS : atención vencida de realizar(24 horas despues, E=0...->6 )"></span>
+                </div>
+                <div class="legend">
+                    <span style="background: #f2e700"
+                        matTooltip="CRONICOS : atención validar medicación de atención"></span>
+                </div>
+            </div>
+        </div>
+
+        <!--INICIO LISTADO DE BANDEJA-->
+        <div class="row m-t-20">
+            <div class="col-12">
+                <div class="cardWithShadow">
+                    <div class="table-container table scrollwrapper">
+                        <table mat-table #table class="tbl_sctr dense-3" [dataSource]="dataSource" matSort
+                            (matSortChange)="announceSortChange($event)">
+                            <!--CABECERAS INICIO-->
+                            <!--1-->
+                            <ng-container matColumnDef="e">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por e">E</th>
+                                <td mat-cell *matCellDef="let row">{{row.e}}</td>
+                            </ng-container>
+                            <!--2-->
+                            <ng-container matColumnDef="prog">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por prog">PROG</th>
+                                <td mat-cell *matCellDef="let row">{{row.prog}}</td>
+                            </ng-container>
+                            <!--3-->
+                            <ng-container matColumnDef="codate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por codate">CODATE</th>
+                                <td mat-cell *matCellDef="let row">{{row.codate}}</td>
+                            </ng-container>
+                            <!--4-->
+                            <ng-container matColumnDef="clasif">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por clasif">CLASIF</th>
+                                <td mat-cell *matCellDef="let row">{{row.clasif}}</td>
+                            </ng-container>
+                            <!--5-->
+                            <ng-container matColumnDef="e_tablet">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por e_tablet">E_TABLET</th>
+                                <td mat-cell *matCellDef="let row">{{row.e_tablet}}</td>
+                            </ng-container>
+                            <!--6-->
+                            <ng-container matColumnDef="codautorizacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por codautorizacion">CODAUTORIZACION</th>
+                                <td mat-cell *matCellDef="let row">{{row.codautorizacion}}</td>
+                            </ng-container>
+                            <!--7-->
+                            <ng-container matColumnDef="feclla">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por feclla">FECLLA</th>
+                                <td mat-cell *matCellDef="let row">{{row.feclla}}</td>
+                            </ng-container>
+                            <!--8-->
+                            <ng-container matColumnDef="hrlla">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por hrlla">HRLLA</th>
+                                <td mat-cell *matCellDef="let row">{{row.hrlla}}</td>
+                            </ng-container>
+                            <!--9-->
+                            <ng-container matColumnDef="tiempo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por tiempo">TIEMPO</th>
+                                <td mat-cell *matCellDef="let row">{{row.tiempo}}</td>
+                            </ng-container>
+                            <!--10-->
+                            <ng-container matColumnDef="fecate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por fecate">FECATE</th>
+                                <td mat-cell *matCellDef="let row">{{row.fecate}}</td>
+                            </ng-container>
+                            <!--11-->
+                            <ng-container matColumnDef="hrxdefecto">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por hrxdefecto">HRXDEFECTO</th>
+                                <td mat-cell *matCellDef="let row">{{row.hrxdefecto}}</td>
+                            </ng-container>
+                            <!--12-->
+                            <ng-container matColumnDef="hrestimada">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por hrestimada">HRESTIMADA</th>
+                                <td mat-cell *matCellDef="let row">{{row.hrestimada}}</td>
+                            </ng-container>
+                            <!--13-->
+                            <ng-container matColumnDef="hrllegada">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por hrllegada">HRLLEGADA</th>
+                                <td mat-cell *matCellDef="let row">{{row.hrllegada}}</td>
+                            </ng-container>
+                            <!--14-->
+                            <ng-container matColumnDef="provincia">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por provincia">PROVINCIA</th>
+                                <td mat-cell *matCellDef="let row">{{row.provincia}}</td>
+                            </ng-container>
+                            <!--15-->
+                            <ng-container matColumnDef="distrito">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por distrito">DISTRITO</th>
+                                <td mat-cell *matCellDef="let row">{{row.distrito}}</td>
+                            </ng-container>
+                            <!--16-->
+                            <ng-container matColumnDef="paciente">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por paciente">PACIENTE</th>
+                                <td mat-cell *matCellDef="let row">{{row.paciente}}</td>
+                            </ng-container>
+                            <!--17-->
+                            <ng-container matColumnDef="fpago">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por fpago">FPAGO</th>
+                                <td mat-cell *matCellDef="let row">{{row.fpago}}</td>
+                            </ng-container>
+                            <!--18-->
+                            <ng-container matColumnDef="vip">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por vip">VIP</th>
+                                <td mat-cell *matCellDef="let row">{{row.vip}}</td>
+                            </ng-container>
+                            <!--19-->
+                            <ng-container matColumnDef="grupo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por grupo">GRUPO</th>
+                                <td mat-cell *matCellDef="let row">{{row.grupo}}</td>
+                            </ng-container>
+                            <!--20-->
+                            <ng-container matColumnDef="periodo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por periodo">PERIODO</th>
+                                <td mat-cell *matCellDef="let row">{{row.periodo}}</td>
+                            </ng-container>
+                            <!--21-->
+                            <ng-container matColumnDef="cont">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por cont">CONT</th>
+                                <td mat-cell *matCellDef="let row">{{row.cont}}</td>
+                            </ng-container>
+                            <!--22-->
+                            <ng-container matColumnDef="perfil">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por perfil">PERFIL</th>
+                                <td mat-cell *matCellDef="let row">{{row.perfil}}</td>
+                            </ng-container>
+                            <!--23-->
+                            <ng-container matColumnDef="espec">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por espec">ESPEC</th>
+                                <td mat-cell *matCellDef="let row">{{row.espec}}</td>
+                            </ng-container>
+                            <!--24-->
+                            <ng-container matColumnDef="doctor">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por doctor">DOCTOR</th>
+                                <td mat-cell *matCellDef="let row">{{row.doctor}}</td>
+                            </ng-container>
+                            <!--25-->
+                            <ng-container matColumnDef="grupos">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por grupos">GRUPOS</th>
+                                <td mat-cell *matCellDef="let row">{{row.grupos}}</td>
+                            </ng-container>
+                            <!--26-->
+                            <ng-container matColumnDef="empresa">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por empresa">EMPRESA</th>
+                                <td mat-cell *matCellDef="let row">{{row.empresa}}</td>
+                            </ng-container>
+                            <!--27-->
+                            <ng-container matColumnDef="usuario">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por usuario">USUARIO</th>
+                                <td mat-cell *matCellDef="let row">{{row.usuario}}</td>
+                            </ng-container>
+                            <!--28-->
+                            <ng-container matColumnDef="cod_doc">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Ordenar por cod_doc">COD_DOC</th>
+                                <td mat-cell *matCellDef="let row">{{row.cod_doc}}</td>
+                            </ng-container>
+                            <!--CABEZERA FIN-->
+
+                            <!--INICIO CAJAS DE BUSQUEDA-->
+                            <form class="row" [formGroup]="FormularioFiltroHistoria" style="margin-bottom: 10px;">
+                                <!--COLUMNA E-->
+                                <ng-container matColumnDef="E-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput
+                                                formControlName="txtE"><!--(keyup)="filtrarAtencion($event,'CodigoAtencion')"-->
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA PROG-->
+                                <ng-container matColumnDef="PROG-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtPROG">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA CODATE-->
+                                <ng-container matColumnDef="CODATE-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtCODATE">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA CLASIF-->
+                                <ng-container matColumnDef="CLASIF-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtCLASIF">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA E_TABLET-->
+                                <ng-container matColumnDef="E_TABLET-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtE_TABLET">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA CODAUTORIZACION-->
+                                <ng-container matColumnDef="CODAUTORIZACION-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtCODAUTORIZACION">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA FECLLA-->
+                                <ng-container matColumnDef="FECLLA-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtFECLLA">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA HRLLA-->
+                                <ng-container matColumnDef="HRLLA-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtHRLLA">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA TIEMPO-->
+                                <ng-container matColumnDef="TIEMPO-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtTIEMPO">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA FECATE-->
+                                <ng-container matColumnDef="FECATE-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtFECATE">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA HRXDEFECTO-->
+                                <ng-container matColumnDef="HRXDEFECTO-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtHRXDEFECTO">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA HRESTIMADA-->
+                                <ng-container matColumnDef="HRESTIMADA-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtHRESTIMADA">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA HRLLEGADA-->
+                                <ng-container matColumnDef="HRLLEGADA-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtHRLLEGADA">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA PROVINCIA-->
+                                <ng-container matColumnDef="PROVINCIA-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtPROVINCIA">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA DISTRITO-->
+                                <ng-container matColumnDef="DISTRITO-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtDISTRITO">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA PACIENTE-->
+                                <ng-container matColumnDef="PACIENTE-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtPACIENTE">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA FPAGO-->
+                                <ng-container matColumnDef="FPAGO-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtFPAGO">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA VIP-->
+                                <ng-container matColumnDef="VIP-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtVIP">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA GRUPO-->
+                                <ng-container matColumnDef="GRUPO-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtGRUPO">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA PERIODO-->
+                                <ng-container matColumnDef="PERIODO-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtPERIODO">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA CONT-->
+                                <ng-container matColumnDef="CONT-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtCONT">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA PERFIL-->
+                                <ng-container matColumnDef="PERFIL-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtPERFIL">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA ESPEC-->
+                                <ng-container matColumnDef="ESPEC-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtESPEC">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA DOCTOR-->
+                                <ng-container matColumnDef="DOCTOR-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtDOCTOR">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA GRUPOS-->
+                                <ng-container matColumnDef="GRUPOS-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtGRUPOS">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA EMPRESA-->
+                                <ng-container matColumnDef="EMPRESA-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtEMPRESA">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA USUARIO-->
+                                <ng-container matColumnDef="USUARIO-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtUSUARIO">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+                                <!--COLUMNA COD_DOC-->
+                                <ng-container matColumnDef="COD_DOC-search">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field appearance="outline" class="m-t-10 dense-2" style="width: 75px">
+                                            <input matInput formControlName="txtCOD_DOC">
+                                        </mat-form-field>
+                                    </th>
+                                </ng-container>
+
+                            </form>
+                            <!--FIN DE CAJA DE BUSQUEDAS-->
+
+                            <!--DATOS-->
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-header-row
+                                *matHeaderRowDef="['E-search','PROG-search','CODATE-search','CLASIF-search','E_TABLET-search','CODAUTORIZACION-search','FECLLA-search','HRLLA-search','TIEMPO-search','FECATE-search','HRXDEFECTO-search','HRESTIMADA-search','HRLLEGADA-search','PROVINCIA-search','DISTRITO-search','PACIENTE-search','FPAGO-search','VIP-search','GRUPO-search','PERIODO-search','CONT-search','PERFIL-search','ESPEC-search','DOCTOR-search','GRUPOS-search','EMPRESA-search','USUARIO-search','COD_DOC-search'];sticky: true">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; let index = index"></tr>
+
+                            <!--
+       [class.row_selected]="index == positionRow" (click)="getRowSelected(row,index)"
+           (dblclick)="openVerDatosDialog()">
+       -->
+                        </table>
+
+                        <ng-container *ngIf="countRows === 0">
+                            <div class="row">
+                                <div class="col-sm-12 ml-4 mt-3">
+                                    <label class="font-weight-bold"> {{'No existen datos'}}</label>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                        aria-label="Seleccione p�gina de registros">
+                    </mat-paginator>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!--FIN LISTADO DE BANDEJA-->
+
+        <!--PIE DE PAGINA-->
+        <div class="row m-t-20">
+            <div class="col-12 d-flex align-items-center">
+                <button mat-flat-button color="accent" [disabled]="countRows === 0" (click)="openMadSeguimientoDialog()"
+                    class="btn btn-success btn-sm m-right-10">
+                    Seguimiento
+                </button>
+                <button mat-flat-button color="accent" (click)="openClinicaDialog()"
+                    class="btn btn-success btn-sm m-right-10 m-l-8">
+                    Nueva Atencion
+                </button>
+                <button mat-flat-button color="accent" [disabled]="countRows === 0"
+                    class="btn btn-success btn-sm m-right-10 m-l-8">
+                    Incidencia
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0">
+                    Mostrar datos
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0">
+                    Datos Paciente
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0">
+                    Editar
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0">
+                    Ficha
+                </button>
+            </div>
+        </div>
+        <div class="row m-t-20">
+            <div class="col-12 d-flex align-items-center">
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10"
+                    [disabled]="countRows === 0">
+                    Historial encuesta
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0">
+                    Datos Comprobante Copago
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0">
+                    Codigos
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0">
+                    Auditoría atención
+                </button>
+                <button mat-flat-button color="accent" class="btn btn-success btn-sm m-right-10 m-l-8"
+                    [disabled]="countRows === 0" (click)="FechaNacimiento()">
+                    Soporte
+                </button>
+            </div>
+
+
+
+
+
+            <!--<div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0"
+                    (click)="openMadSeguimientoDialog()">
+                    Seguimiento
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" (click)="openClinicaDialog()">
+                    Nueva Atencion
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 110%;" [disabled]="countRows === 0">
+                    Incidencia
+                </button>
+                <div style="padding: 1px 0; margin-left: 0px; margin-right: 0px;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0">
+                    Mostrar datos
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0">
+                    Datos Paciente
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent"
+                    style="width: 100%; padding-top: 10px !important; padding-bottom: 10px !important;"
+                    [disabled]="countRows === 0">
+                    Editar
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0">
+                    Ficha
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0">
+                    Historial encuesta
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 110%;" [disabled]="countRows === 0">
+                    Datos Comprobante Copago
+                </button>
+                <div style="padding: 3px 0"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0">
+                    Codigos
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0">
+                    Auditoría atención
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-2">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="countRows === 0"
+                    (click)="FechaNacimiento()">
+                    Soporte
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>-->
+        </div>
+    </mat-card-content>
+</mat-card>

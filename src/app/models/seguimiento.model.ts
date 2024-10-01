@@ -4,4 +4,5 @@ export class Seguimiento {
     hora_creacion: string;
     observacion: string;
     usuario: string;
+    id_servicio: number;
 }

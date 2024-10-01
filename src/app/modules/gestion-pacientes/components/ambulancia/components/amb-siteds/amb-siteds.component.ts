@@ -172,9 +172,9 @@ export class AmbSitedsComponent implements OnInit {
       next: (res) => {
         this.clientes = res.resultData;
         for (let option_ of this.clientes) {
-          if (option_.id.trim() == '044') {
+          if (option_.id_cliente.trim() == '044') {
             this.valCliente = option_.nombre.trim();
-            this.codCliente = (option_.id).trim();
+            this.codCliente = (option_.id_cliente).trim();
             this.codFinancimientoCliente = (option_.codigo_financiamiento).trim();
             this.cboCliente.nativeElement.focus();
             break;

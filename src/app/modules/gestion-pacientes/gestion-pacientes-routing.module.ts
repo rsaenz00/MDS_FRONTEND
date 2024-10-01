@@ -35,7 +35,7 @@ const routes: Routes =
   {
     path: 'mad',
     component: MadComponent,
-    data: { title:'Medicos a Domicilio' },
+    data: { title:'MAD - Médicos a Domicilio' },
     // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
     canActivate: [AuthGuard]
   },

@@ -30,4 +30,9 @@ export class UbigeoService {
         return this._http.get('HistoriaClinica/GetHistoriaClinica_Ubigeo_Codigo?vDepartamento=' + vDepartamento + '&vProvincia=' + vProvincia + '&vDistrito=' + vDistrito);
     }
 
+    getUbigeoCodigo(codigoUbigeo: string): Observable<any> {
+        return this._http.get('Ubigeos/GetUbigeo_Codigo?vCodigoUbigeo=' + codigoUbigeo);
+    }
+
+
 }

@@ -78,6 +78,7 @@ export class SctrSeguimientoComponent {
       this.seguimiento.cod_historia_clinica = this.cod_historia_clinica.toString();
       this.seguimiento.observacion = this.frmSeguimientoSctr.value["txtObservacion"] || '';
       this.seguimiento.usuario = this.usuarioEnlinea.id?.toString() || '';
+      this.seguimiento.id_servicio = 5;
 
       this._seguimientoService.AddSeguimientoSctr(this.seguimiento).subscribe({
         next: (val: any) => {

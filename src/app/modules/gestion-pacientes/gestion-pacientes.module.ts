@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MaterialModule } from 'src/app/material.module';
-
 // icons
 import { TablerIconsModule } from 'angular-tabler-icons';
 import * as TablerIcons from 'angular-tabler-icons/icons';
@@ -14,16 +12,30 @@ import { CronicosComponent } from './components/cronicos/cronicos.component';
 import { MadComponent } from './components/mad/mad.component';
 import { DrOnlineComponent } from './components/dr-online/dr-online.component';
 import { MatTableModule } from '@angular/material/table';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MaterialModule } from 'src/app/material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+//SERVICIOS MAD
+import { MensajeComponent } from './components/mad/components/mensaje/mensaje.component';
+import { MadSeguimientoComponent } from './components/mad/components/seguimiento/mad-seguimiento.component';
+import { MadNuevaAtencionComponent } from './components/mad/components/nuevaatencion/mad-nuevaatencion.component';
+import { ConsultaDniComponent } from './components/mad/components/consultadni/consultadni.component';
+import { NuevoPacienteComponent } from './components/mad/components/nuevopaciente/mad-nuevopaciente.component';
+import { NuevaDireccionComponent } from './components/mad/components/nuevadireccion/mad-nuevadireccion.component';
+import { MadNuevoMedicoComponent } from './components/mad/components/nuevomedico/mad-nuevomedico.component';
+import { SitedsComponent } from './components/mad/components/siteds/siteds.component';
+
+//SERVICIOS SCTR
 import { ListadopacientesComponent } from './components/sctr/components/sctr-listado-pacientes/listado-pacientes.component';
 import { SctrTiposervicioComponent } from './components/sctr/components/sctr-tipo-servicio/sctr-tipo-servicio.component';
 import { ListadoclinicasComponent } from './components/sctr/components/sctr-listado-clinicas/listado-clinicas.component';
@@ -34,11 +46,11 @@ import { SctrRegistramotivoComponent } from './components/sctr/components/sctr-r
 import { SctrSeguimientoComponent } from './components/sctr/components/sctr-seguimiento/sctr-seguimiento.component';
 import { SctrSoporteComponent } from './components/sctr/components/sctr-soporte/sctr-soporte.component';
 import { SctrVerdatosComponent } from './components/sctr/components/sctr-ver-datos/sctr-ver-datos.component';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ConfirmaranularatencionComponent } from './components/sctr/components/sctr-confirmar-anular-atencion/confirmar-anular-atencion.component';
 import { RegistraclienteComponent } from './components/sctr/components/sctr-registra-cliente/registra-cliente.component';
 import { SctrReporteComponent } from './components/sctr/components/sctr-reporte/sctr-reporte.component';
-import { SitedsComponent } from './components/mad/components/siteds/siteds.component';
+
+//SERVICIOS AMBULANCIA
 import { AmbNuevoServicioComponent } from './components/ambulancia/components/amb-nuevo-servicio/amb-nuevo-servicio.component';
 import { AmbDatosAtencionComponent } from './components/ambulancia/components/amb-datos-atencion/amb-datos-atencion.component';
 import { AmbSoporteComponent } from './components/ambulancia/components/amb-soporte/amb-soporte.component';
@@ -59,7 +71,14 @@ import { AmbMantenimientoDireccionesComponent } from './components/ambulancia/co
   declarations: [
     AmbulanciaComponent,
     CronicosComponent,
+    MensajeComponent,
+    MadNuevoMedicoComponent,
     MadComponent,
+    MadSeguimientoComponent,
+    MadNuevaAtencionComponent,
+    ConsultaDniComponent,
+    NuevoPacienteComponent,
+    NuevaDireccionComponent,
     DrOnlineComponent,
     ListadoclinicasComponent,
     ListadopacientesComponent,
@@ -93,9 +112,7 @@ import { AmbMantenimientoDireccionesComponent } from './components/ambulancia/co
     AmbMantenimientoSedesComponent,
     AmbMantenimientoDireccionesComponent
   ],
-  imports: 
-  [
-    MaterialModule,
+  imports: [
     CommonModule,
     GestionPacientesRoutingModule,
     MatTableModule,

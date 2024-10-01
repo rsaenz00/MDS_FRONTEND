@@ -1,0 +1,115 @@
+<div [ngClass]=" {
+    orange_theme: options.activeTheme == 'orange_theme',
+    blue_theme: options.activeTheme == 'blue_theme',
+    aqua_theme: options.activeTheme == 'aqua_theme',
+    purple_theme: options.activeTheme == 'purple_theme',
+    green_theme: options.activeTheme == 'green_theme',
+    cyan_theme: options.activeTheme == 'cyan_theme',
+    sanna_theme: options.activeTheme == 'sanna_theme',
+}">
+    <mat-card class="theme-card" style="margin-bottom: 0;">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    BUSCADOR DE PACIENTE POR DNI
+                </mat-card-title>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <div fxLayoutAlign="center center">
+                <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+            </div>
+        </mat-card-header>
+        <mat-progress-bar mode="query" *ngIf="showSpinner === true"></mat-progress-bar>
+    </mat-card>
+<mat-dialog-content>
+    <mat-progress-bar mode="query" *ngIf="showSpinner === true"></mat-progress-bar>
+    <mat-card class="example-card">
+        <mat-card-content>
+            <form class="row" [formGroup]="formularioClinicas" style="margin-bottom: 10px;">
+                <div class="col-md-8">
+                    <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                        <mat-label>Ingrese su numero de DNI...</mat-label>
+                        <input  matInput  placeholder="Buscar Numero del Dni..." 
+                                maxlength="8"
+                                formControlName="txtTodos">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <button mat-flat-button color="accent" style="width: 100%;" (click)="BuscarNumeroDni()"><!--(click)="BuscarNumeroDni()"-->
+                        Buscar
+                    </button>    
+                </div>
+            </form>
+            <div class="row m-t-20">
+                <div class="col-12">
+                    <div class="cardWithShadow">
+                        <div class="table-container table scrollwrapper">
+                            <table mat-table [dataSource]="dataSource" matSort
+                                (matSortChange)="announceSortChange($event)" class="tbl_sctr dense-3">    
+                                <!--COLUMNA DNI-->
+                                <ng-container matColumnDef="dni">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Ordenar por dni" class="text-center">
+                                    DNI    
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dni}} </td>
+                                </ng-container>
+                                <!--COLUMNA NOMBRES DEL PACIENTE-->
+                                <ng-container matColumnDef="paciente">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Ordenar por paciente" class="text-center">
+                                    NOMBRES Y APELLIDOS
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.paciente}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns; let index = index"
+                                    [class.row_selected]="index == positionRow" (click)="getRowSelected(row,index)"
+                                    (dblclick)="openNuevaAtencionPacienteDialog()">
+                                </tr>
+                            </table>
+                            <ng-container *ngIf="countRows === 0">
+                                <div class="row">
+                                    <div class="col-sm-12 ml-4 mt-3">
+                                        <label class="font-weight-bold"> {{'No existen datos'}}</label>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                                aria-label="Seleccione página">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--BOTONES DE PIE DE PAGINA-->
+        &nbsp;
+        &nbsp;
+        <div class="row">
+            <div class="col-md-4">
+                <button mat-flat-button color="warn" style="width: 100%;" (click)="SalirVentanaPaciente()">
+                    Salir
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>
+            <div class="col-md-4">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="CMDRegistrar"  (click)="openNuevoPacienteDialog()">
+                    Nuevo Paciente
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>    
+            <div class="col-md-4">
+                <button mat-flat-button color="accent" style="width: 100%;" [disabled]="CMDAtencion" (click)="openNuevaAtencionPacienteDialog()"><!--(click)="openAtencionPacienteDialog()"-->
+                    Continuar Atención
+                </button>
+                <div style="padding: 3px 0;"></div>
+            </div>    
+        </div>
+    
+
+
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>
+</div>

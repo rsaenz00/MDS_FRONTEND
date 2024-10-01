@@ -11,6 +11,9 @@ export class DireccionService {
 
     constructor(private _http: HttpClient) { }
 
+    getDireccionLista(IdPersona: string): Observable<any> {
+        return this._http.get('Direcciones/GetListaDirecciones?vIdPersona=' + IdPersona);
+    }
     getDireccionesList(codPer: number): Observable<any> {
         return this._http.get('Direcciones/GetDirecciones?CPER_ID=' + codPer);
     }
@@ -41,10 +44,6 @@ export class DireccionService {
         cabecera = cabecera.set('Content-Type', 'application/json');
 
         return this._http.delete<Direccion>('Direcciones/DeleteDireccion', { headers: cabecera, body: datos });
-    }
-
-    getDireccionLista(): Observable<any> {
-        return this._http.get('Direcciones/GetListaDirecciones');
     }
 
 }

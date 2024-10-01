@@ -1,3 +1,121 @@
+
+export class SitedsPrueba
+{
+    numero_historia: number;
+    documentoautorizacion: string;
+    codigoafiliado: string;
+    usuario_creacion: number;
+    fecha_creacion: Date;    
+}
+
+export class Siteds_Codigo{
+    codigo: string;
+    numero: string;
+    cliente: string;
+}
+
+export class SitedsNumero
+{
+    paterno: string;
+    materno: string;
+    nombres: string;
+    edad: string;
+    fechanacimiento: string;
+    tipodocumento: string;
+    numerodocumento: string
+    genero: string;
+    producto: string;
+    numeroautorizacion: string;
+    numerocontrato: string;
+    codigoafiliado: string;
+    numeropoliza: string;
+    moneda: string;
+
+    copagofijo: number;
+
+    copagovariable: number;
+}
+
+export class Siteds
+{
+    //numero_siteds: number;
+    id_historia: number;
+    documentoautorizacion: string;
+    codigoafiliado: string;
+    numeropoliza: string;
+    numerocontrato: string;
+    numerocertificado: string;
+    codproducto: string;
+    desproducto: string;
+    apellidopaternoafiliado: string;
+    apellidomaternoafiliado: string;
+    nombresafiliado: string;
+    codgenero: string;
+    desgenero: string;
+    codfechanacimiento: string;
+    fechanacimiento: string;
+    codparentesco: string;
+    desparentesco: string;
+    codtipodocumentoafiliado: string;
+    destipodocumentoafiliado: string;
+    numerodocumentoafiliado: string;
+    edad: string;
+    codfechainiciovigencia: string;
+    fechainiciovigencia: string;
+    codfechafinvigencia: string;
+    fechafinvigencia: string;
+    codestadocivil: string;
+    desestadocivil: string;
+    codtipoplan: number;
+    destipoplan: string;
+    numeroplan: string;
+    codestado: string;
+    desestado: string;
+    codfechaactualizacionfoto: string;
+    fechaactualizacionfoto: string;
+    apellidopaternotitular: string;
+    apellidomaternotitular: string;
+    nombrestitular: string;
+    codigotitular: string;
+    codtipodocumentotitular: string;
+    destipodocumentotitular: string;
+    numerodocumentotitular: string;
+    codmoneda: number;
+    desmoneda: string;
+    nombrecontratante
+    codtipodocumentocontratante: string;
+    destipodocumentocontratante: string;
+    codtipoafiliacion: string;
+    destipoafiliacion: string;
+    codfechaafiliacion: string;
+    fechaafiliacion: string;
+    numerodocumentocontratante: string;
+    codigotipocobertura: string;
+    codigosubtipocobertura: string;
+    codigocobertura: string;
+    beneficios: string;
+    codindicadorrestriccion: string;
+    restricciones: string;
+    codcopagofijo: number;
+    descopagofijo: string;
+    codcopagovariable: number;
+    descopagovariable: string;
+    codfechafincarencia: string;
+    fechafincarencia: string;
+    condicionesespeciales: string;
+    observaciones: string;
+    codcalificacionservicio: string;
+    descalificacionservicio: string;
+    beneficiomaximoinicial: string;
+    numerocobertura: string;
+    fecha_creacion_doc_aut: string;
+    hora_creacion_doc_aut: Date;    
+    descripcion_producto: string;
+    usuario_creacion: number;
+    fecha_creacion: Date;
+    usuario_modificacion: number;
+    fecha_modificacion: Date;    
+}
 export class Request_Asegurado {
     CodTipoDocumentoAfiliado: string;
     NumeroDocumentoAfiliado: string;
@@ -161,83 +279,4 @@ export class Request_NumeroAutorizacion {
     CodTipoDocumentoTitular: string;
     CodTipoPlan: string;
     CodIndicadorRestriccion: string;
-}
-
-export class Siteds {
-    id_historia: number;
-    documentoautorizacion: string;
-    codigoafiliado: string;
-    numeropoliza: string;
-    numerocontrato: string;
-    numerocertificado: string;
-    codproducto: string;
-    desproducto: string;
-    apellidopaternoafiliado: string;
-    apellidomaternoafiliado: string;
-    nombresafiliado: string;
-    codgenero: string;
-    desgenero: string;
-    codfechanacimiento: string;
-    fechanacimiento: string;
-    codparentesco: string;
-    desparentesco: string;
-    codtipodocumentoafiliado: string;
-    destipodocumentoafiliado: string;
-    numerodocumentoafiliado: string;
-    edad: string;
-    codfechainiciovigencia: string;
-    fechainiciovigencia: string;
-    codfechafinvigencia: string;
-    fechafinvigencia: string;
-    codestadocivil: string;
-    desestadocivil: string;
-    codtipoplan: number;
-    destipoplan: string;
-    numeroplan: string;
-    codestado: string;
-    desestado: string;
-    codfechaactualizacionfoto: string;
-    fechaactualizacionfoto: string;
-    apellidopaternotitular: string;
-    apellidomaternotitular: string;
-    nombrestitular: string;
-    codigotitular: string;
-    codtipodocumentotitular: string;
-    destipodocumentotitular: string;
-    numerodocumentotitular: string;
-    codmoneda: number;
-    desmoneda: string;
-    nombrecontratante
-    codtipodocumentocontratante: string;
-    destipodocumentocontratante: string;
-    codtipoafiliacion: string;
-    destipoafiliacion: string;
-    codfechaafiliacion: string;
-    fechaafiliacion: string;
-    numerodocumentocontratante: string;
-    codigotipocobertura: string;
-    codigosubtipocobertura: string;
-    codigocobertura: string;
-    beneficios: string;
-    codindicadorrestriccion: string;
-    restricciones: string;
-    codcopagofijo: number;
-    descopagofijo: string;
-    codcopagovariable: number;
-    descopagovariable: string;
-    codfechafincarencia: string;
-    fechafincarencia: string;
-    condicionesespeciales: string;
-    observaciones: string;
-    codcalificacionservicio: string;
-    descalificacionservicio: string;
-    beneficiomaximoinicial: string;
-    numerocobertura: string;
-    fecha_creacion_doc_aut: string;
-    hora_creacion_doc_aut: Date;    
-    descripcion_producto: string;
-    usuario_creacion: number;
-    fecha_creacion: Date;
-    usuario_modificacion: number;
-    fecha_modificacion: Date;    
 }

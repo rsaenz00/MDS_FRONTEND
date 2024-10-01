@@ -1,6 +1,14 @@
+export class ListadoDirecciones
+{
+    paciente: string;
+    tipo: string;
+    direccion: string;
+}
+
 export class Direccion{
     id_direccion: number;
     id_persona: number;
+    id_ubigeo: string;
     tipo_direccion: string;
     id_tipo_direccion: number;
     descripcion: string;
@@ -17,14 +25,6 @@ export class Direccion{
     urbanizacion: string;
     referencia: string;
     dpto_interior: string;
-    id_ubigeo: string;
     usuario_creacion: string;
     usuario_modificacion: string;
-}
-
-export class ListadoDirecciones
-{
-    paciente: string;
-    tipo: string;
-    direccion: string;
 }

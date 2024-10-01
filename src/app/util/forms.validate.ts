@@ -46,7 +46,7 @@ export const soloNumeros = (e): boolean => {
 
 export const soloDecimales = (obj): boolean => {
     obj.target.value = obj.target.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');
-    return false;
+    return true;
 }
 
 export const soloLetras = (e): boolean => {

@@ -23,3 +23,15 @@ export class ClinicasFiltro {
     direccion: string;
     telefono: string;
 }
+
+
+export class HistoriaDni
+{
+    //id_paciente: string;
+    //nombres: string;
+    //paterno: string;
+    //materno: string;
+    dni: string;
+    //email: string;
+    paciente: string;
+}

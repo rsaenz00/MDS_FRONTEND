@@ -10,7 +10,7 @@ export class Cliente {
 }
 
 export class ClienteSiteds {
-    id: string;
+    id_cliente: string;
     codigo_financiamiento: string;
     nombre: string;
 }
