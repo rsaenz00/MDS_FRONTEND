@@ -4,28 +4,28 @@ import { UsuarioListComponent } from './components/usuario-list/usuario-list.com
 import { AuthGuard } from 'src/app/helpers/security/auth.guard';
 import { UsuarioManageComponent } from './components/usuario-manage/usuario-manage.component';
 
-const routes: Routes = 
-[
-  {
-    path: '',
-    component: UsuarioListComponent,
-    data: { claimType: 'usuario_list',title:'Usuario' },
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'gestion',
-    component: UsuarioManageComponent,
-    data: { title:'Agregar Usuario' },
-    // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'gestion/:id',
-    component: UsuarioManageComponent,
-    data: { claimType: 'usuario_edit',title:'Agregar Usuario' },
-    canActivate: [AuthGuard]
-  },
-];
+const routes: Routes =
+  [
+    {
+      path: '',
+      component: UsuarioListComponent,
+      data: { claimType: 'usuario_list', title: 'Usuarios del sistema' },
+      canActivate: [AuthGuard]
+    }/*,
+    {
+      path: 'gestion',
+      component: UsuarioManageComponent,
+      data: { title: 'Gestión de Usuario' },
+      // data: { claimType: 'usuario_add',title:'Agregar Usuario' },
+      canActivate: [AuthGuard]
+    },
+    {
+      path: 'gestion/:id',
+      component: UsuarioManageComponent,
+      data: { claimType: 'usuario_edit', title: 'Agregar Usuario' },
+      canActivate: [AuthGuard]
+    },*/
+  ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -98,7 +98,7 @@ export class SecurityService {
     authObj.apellidoPaterno = user.apellidoPaterno;
     authObj.apellidoMaterno = user.apellidoMaterno;
     authObj.foto = user.foto;
-    authObj.telefonoCelular = user.telefonoCelular;
+    authObj.telefonoCelular = user.telefonoMovil;
     authObj.foto = user.foto;
     localStorage.setItem('authObj', JSON.stringify(authObj));
     this._securityObject$.next(this.clonerService.deepClone<UsuarioAuth>(authObj));

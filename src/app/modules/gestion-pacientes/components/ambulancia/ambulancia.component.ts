@@ -65,7 +65,6 @@ export class AmbulanciaComponent extends BaseComponent implements OnInit, AfterV
   dataSource: AmbulanciaDataSource;
   ambulancia: Ambulancia[] = [];
   ambulanciaResource: AmbulanciaResource;
-  // displayedColumns: string[] = ['usuario','nombres','email','estado','accion'];
   displayedColumns: string[] =
     [
       'cod_historia_clinica',

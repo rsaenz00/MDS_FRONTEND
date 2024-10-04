@@ -1,139 +1,172 @@
-<mat-card class="cardWithShadow theme-card">
+<mat-card class="theme-card" style="margin-bottom: 0;">
     <mat-card-header>
-      <mat-card-title class="m-b-0">Formulario de Registro</mat-card-title>
+        <mat-card-title-group>
+            <mat-card-title class="m-b-0">{{tituloFormulario}}</mat-card-title>
+        </mat-card-title-group>
+        <div fxFlex></div>
+        <div fxLayoutAlign="center center">
+            <a class="btn-close" [mat-dialog-close]="true"><mat-icon class="close-icon">close</mat-icon></a>
+        </div>
     </mat-card-header>
-    <mat-card-content class="b-t-1 form-group">
+    <mat-progress-bar mode="query" *ngIf="showSpinner === true"></mat-progress-bar>
+</mat-card>
+<mat-dialog-content>
+    <div [formGroup]="frmUsuario">
+        <div class="p-16 bg-light-primary rounded" *ngIf="crearPersona == false">
+            <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
+                <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>
+                Busque y seleccione una persona existente
+            </h5>
+        </div>
+
+        <div class="row m-t-20" *ngIf="crearPersona == false">
+            <div class="col-lg-9">
+                <mat-form-field class="example-full-width dense-3 w-100" appearance="outline">
+                    <mat-label>Persona</mat-label>
+                    <input matInput (keyup)="preFiltro()" (click)="limpiarCaja()"
+                        formControlName="txtPersona" #txtPersona [value]="valPersona" [matAutocomplete]="auto"
+                        class="w-100">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="verPersona"
+                        (optionSelected)="selectPersona($event.option)">
+                        @for (option of filtradoPersonasSinUsuario; track option) {
+                        <mat-option [value]="option">{{option.numero_documento+" - "+option.nombres+ "
+                            "+option.apellido_paterno+ " "+option.apellido_materno}}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-3">
+                <button mat-flat-button color="primary" class="w-100" (click)="filterClientes()"
+                    [disabled]="statusBtnFiltrar">Buscar</button>
+            </div>
+            <div class="col-lg-12 m-b-16 text-right">
+                <a mat-button color="accent" (click)="nuevaPersona()">Crear una nueva persona</a>
+            </div>
+        </div>
+
+        <div class="p-16 bg-light-primary rounded" *ngIf="crearPersona == true">
+            <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
+                <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>
+                Ingrese los datos de la persona
+            </h5>
+        </div>
+
+        <div class="row m-t-20" *ngIf="crearPersona == true">
+            <div class="col-lg-6">
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Tipo Documento</mat-label>
+                <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                    <mat-select formControlName="cboTipoDocumento" [value]="valTipoDocumento"
+                        (selectionChange)="getTipoDocumento($event,null)">
+                        <mat-option [value]="tipoDocumento.id"
+                            *ngFor="let tipoDocumento of tipoDocumentos">{{tipoDocumento.descripcion}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Número documento</mat-label>
+                <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline" class="dense-2">
+                    <input matInput formControlName="txtNroDocumento" (keyup)="limpiarNumero($event)"
+                        (change)="limpiarNumero($event)" (blur)="rellenaCaracteres($event)" maxlength="8"
+                        (keypress)="soloNumeros($event)">
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Apellido paterno</mat-label>
+                <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline" class="dense-2">
+                    <input matInput formControlName="txtApePaterno" (keyup)="limpiarLetras($event); validaAutogenera()"
+                        (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Apellido materno</mat-label>
+                <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline" class="dense-2">
+                    <input matInput formControlName="txtApeMaterno" (keyup)="limpiarLetras($event)"
+                        (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Nombres</mat-label>
+                <mat-form-field class="example-full-width" style="width: 100%;" appearance="outline" class="dense-2">
+                    <input matInput formControlName="txtNombres" (keyup)="limpiarLetras($event); validaAutogenera()"
+                        (change)="limpiarLetras($event)" (keypress)="soloLetras($event)">
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Fecha nacimiento</mat-label>
+                <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                    <input matInput [matDatepicker]="dtpFechaNacimiento" formControlName="txtFechaNacimiento"
+                        [value]="fechaNacimiento">
+                    <mat-hint>DD/MM//YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="dtpFechaNacimiento"></mat-datepicker-toggle>
+                    <mat-datepicker #dtpFechaNacimiento startView="year"></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Sexo</mat-label>
+                <mat-form-field style="width: 100%;" appearance="outline" class="dense-2">
+                    <mat-select formControlName="cboSexo" [value]="valSexo" (selectionChange)="getSexo($event,null)">
+                        <mat-option [value]="sexo.id" *ngFor="let sexo of sexos">{{sexo.descripcion}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6 m-t-30 text-right">
+                <a mat-button color="accent" (click)="nuevaPersona()">Esta persona ya existe</a>
+            </div>
+        </div>
+
         <div class="p-16 bg-light-primary rounded">
             <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
                 <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>
-                Información Personal
+                Cree las credenciales de acceso
             </h5>
         </div>
 
         <div class="row m-t-20">
             <div class="col-lg-6">
-                <!-- Tipo de Documento -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Tipo de Documento</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2">
-                    <mat-select value="0">
-                        <mat-option value="0">Seleccionar</mat-option>
-                        <mat-option value="1">DNI</mat-option>
-                        <mat-option value="2">Carnet de Extranjeria</mat-option>
-                    </mat-select>
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Usuario</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-3" color="primary">
+                    <input matInput type="text" formControlName="txtNombreUsuario" autocomplete="off"
+                        #txtNombreUsuario />
                 </mat-form-field>
             </div>
-            
-            <div class="col-lg-6">
-                <!-- Número de documento -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Número de Documento</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
-                </mat-form-field>
-            </div>
-        </div>
 
-        <div class="row">
             <div class="col-lg-6">
-                <!-- Nombres -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Nombres</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
-                </mat-form-field>
-            </div>
-            <div class="col-lg-6">
-                <!-- Apellido Paterno -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Apellido Paterno</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6">
-                <!-- Apellido Materno -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Apellido Materno</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
-                </mat-form-field>
-            </div>
-            <div class="col-lg-6">
-                <!-- Genero -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Genero</mat-label>
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-select value="0">
-                        <mat-option value="0">Seleccionar</mat-option>
-                        <mat-option value="1">Masculino</mat-option>
-                        <mat-option value="2">Femenino</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6">
-                <!-- Fecha de Nacimiento -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Fecha de Nacimiento</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2">
-                    <input matInput [matDatepicker]="picker" />
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div class="col-lg-6">
-                <!-- Email -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Email</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
-                </mat-form-field>
-            </div>
-        </div>
-  
-        <div class="p-16 bg-light-primary rounded m-y-20">
-            <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
-                <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>
-                Información de Usuario
-            </h5>
-        </div>
-
-        <div class="row m-t-20">
-            <div class="col-lg-6">
-                <!-- Nombre de Usuario -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Nombre de Usuario</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
-                </mat-form-field>
-            </div>
-            
-            <div class="col-lg-6">
-                <!-- Contraseña -->
                 <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Contraseña</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
+                <mat-form-field appearance="outline" class="w-100 dense-3" color="primary">
+                    <input matInput type="password" formControlName="txtClave" #txtClave autocomplete="off" />
                 </mat-form-field>
             </div>
         </div>
-        
+
         <div class="row m-t-20">
             <div class="col-lg-6">
-                <!-- Telefono Corporativo -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Email Corporativo</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Correo corporativo</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-3" color="primary">
+                    <input matInput type="text" formControlName="txtEmailCorp" (blur)="validarEmail($event)" />
                 </mat-form-field>
             </div>
-            
+
             <div class="col-lg-6">
-                <!-- Telefono Corporativo -->
-                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Teléfono Corporativo</mat-label>
-                <mat-form-field appearance="outline" class="w-100 dense-2" color="primary">
-                    <input matInput type="text" />
+                <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Celular corporativo</mat-label>
+                <mat-form-field appearance="outline" class="w-100 dense-3" color="primary">
+                    <input matInput type="text" formControlName="txtTelefCorp" (keypress)="soloNumeros($event)"
+                        (change)="limpiarNumero($event)" (keyup)="limpiarNumero($event); primer9($event)"
+                        maxlength="9" />
                 </mat-form-field>
             </div>
         </div>
-    </mat-card-content>
-    <mat-card-actions class="b-t-1">
-      <button mat-flat-button color="warn">Cancelar</button>
-      <button mat-flat-button color="primary" class="m-l-8">Guardar</button>
-    </mat-card-actions>
-  </mat-card>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button (click)="exitGestionUsuario()" mat-flat-button color="warn">Salir</button>
+                <button mat-flat-button color="primary" class="m-l-8" (click)="saveUser()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>

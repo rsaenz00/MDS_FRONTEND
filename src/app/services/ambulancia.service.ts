@@ -22,6 +22,7 @@ export class AmbulanciaService {
     const customParams = new HttpParams()
       .set('pageSize', resource.pageSize.toString())
       .set('skip', resource.skip.toString())
+      .set('OrderBy', resource.orderBy.toString())
 
       // filter
       .set('fechaDesde', resource.fechaDesde.toString())

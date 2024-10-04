@@ -76,7 +76,7 @@ export class DashboardComponent extends BaseComponent implements OnInit
 
   getRecentlyRegisteredUsers() 
   {
-    this.sub$.sink = this.usuarioService.getRecentlyRegisteredUsers().subscribe((usuarios: any) => {
+    this.sub$.sink = this.usuarioService.GetRecentlyRegisteredUsers().subscribe((usuarios: any) => {
       this.recentlyRegisteredUsers = usuarios;
     });
   }

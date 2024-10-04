@@ -1,3 +1,4 @@
+<mat-progress-bar mode="query" *ngIf="dataSource.load === true"></mat-progress-bar>
 <mat-card class="cardWithShadow">
     <mat-card-content class="p-24">
         <div class="row justify-content-between form-group">
@@ -8,44 +9,43 @@
                 <div class="legend">
                     <span class="semaphore-red"></span> Desactivado
                 </div>
-                <div class="legend">
+                <!--<div class="legend">
                     <span class="semaphore-orange"></span> Bloqueado
-                </div>
+                </div>-->
             </div>
             <div class="col-lg-2 d-flex align-items-center justify-content-end">
-                <button 
-                    mat-flat-button  
-                    color="primary"
-                    
-                    class="btn btn-success btn-sm m-right-10" 
-                    [routerLink]="['/usuario/gestion']">
-                    <i class="fas fa-plus"></i> 
+                <button mat-flat-button color="primary" class="btn btn-success btn-sm m-right-10"
+                    (click)="openGestionUsuarioDialog()">
+                    <!--[routerLink]="['/usuario/gestion']">-->
+                    <i class="fas fa-plus"></i>
                     Agregar Usuario
                 </button>
-
-                <!-- <button mat-flat-button  color="primary">
-                  Add Employee
-                </button> -->
             </div>
         </div>
         <div class="row m-t-20 form-group">
             <div class="col-12">
                 <div class="table-container cardWithShadow">
-                    <table mat-table [dataSource]="dataSource" matSort matSortActive="email">
+                    <table mat-table class="tbl_amb dense-3" [dataSource]="dataSource" matSort matSortActive="usuario">
+                        <!--COLUMNAS-->
                         <ng-container matColumnDef="usuario">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Usuario'}}</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Usuario sistema'}}</th>
                             <td mat-cell *matCellDef="let user">{{user.usuario}}</td>
                         </ng-container>
                         <ng-container matColumnDef="nombres">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Nombres'}}</th>
-                            <td mat-cell *matCellDef="let user">{{user.nombres}}</td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Persona'}}</th>
+                            <td mat-cell *matCellDef="let user">{{user.nombres + " " + user.apellidoPaterno + "
+                                " + user.apellidoMaterno}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="numero_documento">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Número documento'}}</th>
+                            <td mat-cell *matCellDef="let user">{{user.numero_documento}}</td>
                         </ng-container>
                         <ng-container matColumnDef="email">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Email'}}</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Correo electrónico'}}</th>
                             <td mat-cell *matCellDef="let user">{{user.email}}</td>
                         </ng-container>
                         <ng-container matColumnDef="estado">
-                            <th mat-header-cell *matHeaderCellDef class="text-center">
+                            <th class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 {{'Estado'}}
                             </th>
                             <td mat-cell *matCellDef="let user" class="text-center">
@@ -63,46 +63,27 @@
                         </ng-container>
                         <ng-container matColumnDef="accion">
                             <th mat-header-cell *matHeaderCellDef class="text-center">
-                              {{'Accion'}}
+                                {{'Acciones'}}
                             </th>
                             <td mat-cell *matCellDef="let user" class="text-center ">
-                              <button class="btn btn-primary btn-sm" [matMenuTriggerFor]="menu" aria-label="Action">
-                                <i class="fas fa-ellipsis-v"></i>
-                              </button>
-                              <mat-menu #menu="matMenu">
-                                <button 
-                                    class="btn btn-light btn-sm m-0" 
-                                    mat-menu-item
-                                    (click)="editUser(user.id)">
-                                    <i class="fas fa-pencil-alt"></i>
-                                    <span class="ml-1">{{'EDIT'}}</span>
+                                <button mat-mini-fab color="accent"
+                                    (click)="editarUsuario(user.codigoUsuario, user.id_persona)"
+                                    *ngIf="user.estado == true" class="m-r-10">
+                                    <mat-icon>edit</mat-icon>
                                 </button>
-                                <button 
-                                    class="btn btn-light btn-sm m-0" 
-                                    mat-menu-item
-                                    (click)="deleteUser(user)">
-                                    <i class="fas fa-trash-alt"></i> 
-                                    <span class="ml-1">{{'DELETE'}}</span>
+                                <button mat-mini-fab color="warn" (click)="desactivarUsuario(user.codigoUsuario,user.usuario)"
+                                    *ngIf="user.estado == true" class="m-r-10">
+                                    <mat-icon>remove_circle_outline</mat-icon>
                                 </button>
-                                <button 
-                                    class="btn btn-light btn-sm m-0" 
-                                    mat-menu-item
-                                    (click)="userPermission(user.id)">
-                                    <i class="fas fa-user-friends"></i>
-                                    <span class="ml-1">{{'PERMISSION'}}</span>
+                                <button mat-mini-fab color="accent" (click)="activarUsuario(user.codigoUsuario,user.usuario)"
+                                    *ngIf="user.estado == false" class="m-r-10">
+                                    <mat-icon>refresh</mat-icon>
                                 </button>
-                                <button 
-                                    class="btn btn-light btn-sm m-0" 
-                                    mat-menu-item
-                                    (click)="resetPassword(user)">
-                                    <i class="fas fa-lock"></i>
-                                    <span class="ml-1">{{'RESET_PASSWORD'}}</span>
-                                </button>
-                              </mat-menu>
                             </td>
-                          </ng-container>
+                        </ng-container>
+                        <!-- BOX SEARCH -->
                         <ng-container matColumnDef="usuario-search">
-                            <th mat-header-cell *matHeaderCellDef >
+                            <th mat-header-cell *matHeaderCellDef>
                                 <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
                                     <input matInput type="text" class="form-control" [formControl]="usuarioFilterCtl">
                                 </mat-form-field>
@@ -115,8 +96,15 @@
                                 </mat-form-field>
                             </th>
                         </ng-container>
+                        <ng-container matColumnDef="numdoc-search">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
+                                    <input matInput type="text" class="form-control" [formControl]="numeroDocumentoFilterCtl">
+                                </mat-form-field>
+                            </th>
+                        </ng-container>
                         <ng-container matColumnDef="email-search">
-                            <th mat-header-cell *matHeaderCellDef >
+                            <th mat-header-cell *matHeaderCellDef>
                                 <mat-form-field appearance="outline" class="w-100 m-t-20 dense-2">
                                     <input matInput type="text" class="form-control" [formControl]="emailFilterCtl">
                                 </mat-form-field>
@@ -128,13 +116,16 @@
                         </ng-container>
                         <ng-container matColumnDef="footer">
                             <td mat-footer-cell colspan="5" *matFooterCellDef>
-                                <mat-paginator [length]="usuarioResource.totalCount" [pageSize]="usuarioResource.pageSize"
-                                [pageSizeOptions]="[10, 20, 30]"></mat-paginator>
+                                <mat-paginator [length]="usuarioResource.totalCount"
+                                    [pageSize]="usuarioResource.pageSize"
+                                    [pageSizeOptions]="[10, 20, 30]"></mat-paginator>
                             </td>
                         </ng-container>
+
+                        <!--DATA ROWS-->
                         <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
                         <tr mat-header-row
-                        *matHeaderRowDef="['usuario-search','nombres-search','email-search','accion-search'];sticky: true">
+                            *matHeaderRowDef="['usuario-search','nombres-search','numdoc-search','email-search','accion-search'];sticky: true">
                         </tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         <tr mat-footer-row *matFooterRowDef="footerToDisplayed;sticky: true"></tr>
@@ -142,14 +133,12 @@
                     <ng-container *ngIf="dataSource.count === 0">
                         <div class="row">
                             <div class="col-sm-12 ml-4 mt-3">
-                                <label class="font-weight-bold"> {{'NO_DATA_FOUND'}}</label>
+                                <label class="font-weight-bold"> {{'No existen datos'}}</label>
                             </div>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            
-            
         </div>
     </mat-card-content>
 </mat-card>

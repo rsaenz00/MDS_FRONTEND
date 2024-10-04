@@ -1,9 +1,7 @@
 import { DataSource } from '@angular/cdk/table';
 import { BehaviorSubject, Observable, catchError, finalize, of } from 'rxjs';
-import { Ambulancia } from 'src/app/models/ambulancia.model';
 import { AmbulanciaResource } from 'src/app/models/resources/ambulancia-resource';
 import { ResponseHeader } from 'src/app/models/resources/response-header';
-import { AmbulanciaService } from 'src/app/services/ambulancia.service';
 import { HttpResponse } from '@angular/common/http';
 import { HistoriaClinicaService } from 'src/app/services/historiaclinica.service';
 import { HistoriaClinica } from 'src/app/models/historiaclinica.model';
